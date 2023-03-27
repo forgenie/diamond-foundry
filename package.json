@@ -1,0 +1,31 @@
+{
+  "name": "diamond-foundry",
+  "description": "Foundry-based project for creating and managing Diamond proxy smart contracts",
+  "version": "0.1.0",
+  "author": {
+    "name": "Forgenie Labs",
+    "url": "https://github.com/Forgenie"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.4",
+    "rimraf": "^4.1.2",
+    "solhint": "^3.4.0"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "diamond",
+    "forge",
+    "foundry",
+    "smart-contracts",
+    "solidity"
+  ],
+  "private": true,
+  "scripts": {
+    "clean": "rimraf cache out",
+    "lint": "pnpm lint:sol && pnpm prettier:check",
+    "lint:sol": "forge fmt --check && pnpm solhint \"{script,src,test}/**/*.sol\"",
+    "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,yml}\""
+  }
+}
