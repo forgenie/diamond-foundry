@@ -7,6 +7,9 @@
     "url": "https://github.com/Forgenie"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.5.0",
+    "@commitlint/config-conventional": "^17.4.4",
+    "husky": "^8.0.3",
     "prettier": "^2.8.4",
     "rimraf": "^4.1.2",
     "solhint": "^3.4.0"

@@ -1,10 +1,10 @@
 # Diamond Foundry
 
-Welcome to the Diamond Foundry repository! This project is focused on creating a powerful system for managing universal and reusable smart contracts by leveraging the [EIP2535 Diamond Proxy Standard](https://eips.ethereum.org/EIPS/eip-2535). 
+Welcome to the Diamond Foundry repository! This project is focused on creating a powerful system for managing universal and reusable smart contracts by leveraging the [EIP2535 Diamond Proxy Standard](https://eips.ethereum.org/EIPS/eip-2535).
 
 This repository contains the core code for the [Diamond Factory and Facet Registry](https://medium.com/@alexeluca.spataru/achieving-universal-and-reusable-smart-contracts-via-erc2535-diamond-proxy-standard-ba4c9f5ac5bc), which are designed to facilitate the creation of new Diamond proxies and manage their interactions with a library template-like contracts called Facets.
 
-We invite community members to contribute to the project by detecting bugs, developing new Facets, and extending functionality. 
+We invite community members to contribute to the project by detecting bugs, developing new Facets, and extending functionality.
 
 Please note that this software is provided "as is" without warranty of any kind.
 
@@ -16,13 +16,24 @@ The Forgenie project aims to address the challenges associated with smart contra
 ## Installation
 This is a project fully built with [foundry](https://github.com/foundry-rs/foundry). If you are new to foundry, please check the installation instructions.
 
+Also, `pnpm` is used as a default package manager, so please follow [these](https://pnpm.io/installation) instructions for installation.
+
 For guidance on how to integrate a Foundry project in VSCode, please refer to this
 [guide](https://book.getfoundry.sh/config/vscode).
 
+### Set Up
+
+```
+git clone https://github.com/Forgenie/diamond-foundry.git
+cd diamond-foundry
+pnpm install
+```
 
 ## Usage
 
 This is a list of the most frequently needed commands.
+
+Note: You need to have `foundry` installed in order to work with the contracts.
 
 ### Build
 
@@ -54,7 +65,7 @@ Get a test coverage report:
 
 ```sh
 $ forge coverage
-``` 
+```
 
 
 ### Format
@@ -97,7 +108,6 @@ We welcome contributions from the community to help improve the Diamond Foundry.
 MIT License (c) 2023 Forgenie Labs
 
 ## Acknowledgements
-
-Nick Mudge @mudgen [diamond-hardhat](https://github.com/mudgen/diamond)  
+Nick Mudge @mudgen [diamond-hardhat](https://github.com/mudgen/diamond)<br />
 Paul Razvan Berg @PaulRBerg [foundry-template](https://github.com/PaulRBerg/foundry-template)
 
