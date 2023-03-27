@@ -9,9 +9,6 @@ This repository contains the core code for the
 which are designed to facilitate the creation of new Diamond proxies and manage their interactions with a library
 template-like contracts called Facets.
 
-We invite community members to contribute to the project by detecting bugs, developing new Facets, and extending
-functionality.
-
 Please note that this software is provided "as is" without warranty of any kind.
 
 ## Background
@@ -113,7 +110,10 @@ $ forge test
 
 ## Contributing
 
-We welcome contributions from the community to help improve the Diamond Foundry.
+We invite community members to contribute to the project by detecting bugs, developing new Facets, and extending
+functionality.
+
+Open up a PR, discussion or issue, clearly explaining the changes and the motivation behind.
 
 ## License
 
