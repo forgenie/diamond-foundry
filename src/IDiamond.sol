@@ -4,9 +4,9 @@ pragma solidity 0.8.19;
 interface IDiamond {
     /// @dev Expresses the action of adding, replacing, or removing a facet.
     enum FacetCutAction {
-        Add,
-        Replace,
-        Remove
+        Add, // 0
+        Replace, // 1
+        Remove // 2
     }
 
     /// @dev Describes a facet to be added, replaced or removed.
@@ -14,9 +14,9 @@ interface IDiamond {
     /// @param action The action to be performed.
     /// @param functionSelectors The selectors of the functions to be cut.
     struct FacetCut {
-        address facetAddress;
+        address facet;
         FacetCutAction action;
-        bytes4[] functionSelectors;
+        bytes4[] selectors;
     }
 
     /// @dev Emitted when a facet is added, replaced or removed.

@@ -2,6 +2,7 @@
 pragma solidity 0.8.19;
 
 import { IDiamond } from "./IDiamond.sol";
+import { DiamondCutStorage } from "./facets/base/cut/DiamondCutStorage.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
