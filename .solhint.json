@@ -8,6 +8,8 @@
     "max-line-length": ["error", 120],
     "named-parameters-mapping": "warn",
     "no-console": "off",
-    "not-rely-on-time": "off"
+    "not-rely-on-time": "off",
+    "use-forbidden-name": "off",
+    "payable-fallback": "off"
   }
 }

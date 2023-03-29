@@ -9,7 +9,8 @@ This repository contains the core code for the
 which are designed to facilitate the creation of new Diamond proxies and manage their interactions with a library
 template-like contracts called Facets.
 
-Please note that this software is provided "as is" without warranty of any kind.
+Please note that this software is work in progress and is provided "as is" without warranty of any kind, use at your own
+risk.
 
 ## Background
 
@@ -18,6 +19,14 @@ complexity and the need for skilled developers and auditors. By using the
 [Diamond Management System](https://medium.com/@alexeluca.spataru/transforming-web3-through-a-diamond-management-system-d2efa560ea7f),
 the project proposes a more accessible and efficient method for building and managing smart contracts across the web3
 landscape.
+
+## Features
+
+1. Granular immutability for Diamonds.
+1. TBA Compose a Facet which is a Diamond over other Facets.
+1. TBA Customizable Fallback function.
+1. TBA Wide range of available and ready-to-use Facets.
+1. TBA Thoroughly tested and verified with slither.
 
 ## Installation
 
@@ -44,9 +53,9 @@ This is a list of the most frequently needed commands.
 
 Note: You need to have `foundry` installed in order to work with the contracts.
 
-### Build
+### Compile
 
-Build the contracts:
+Compile the contracts:
 
 ```sh
 $ forge build
@@ -60,28 +69,12 @@ Delete the build artifacts and cache directories:
 $ forge clean
 ```
 
-### Compile
-
-Compile the contracts:
-
-```sh
-$ forge build
-```
-
 ### Coverage
 
 Get a test coverage report:
 
 ```sh
 $ forge coverage
-```
-
-### Format
-
-Format the contracts:
-
-```sh
-$ forge fmt
 ```
 
 ### Gas Usage
@@ -114,6 +107,10 @@ We invite community members to contribute to the project by detecting bugs, deve
 functionality.
 
 Open up a PR, discussion or issue, clearly explaining the changes and the motivation behind.
+
+### Guidelines
+
+- Use DiamondStorage when declaring facets
 
 ## License
 

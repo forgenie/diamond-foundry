@@ -14,9 +14,7 @@ contract Diamond is IDiamond {
         bytes initData;
     }
 
-    constructor() {
-        InitParams memory params = IDiamondFactory(msg.sender).parameters();
-
+    constructor(InitParams memory params) {
         // Initializer on `init` will set up the state
         // NOTE: If `diamondCut` facet is not provided, the diamond will be immutable
         DiamondCutBehavior.diamondCut(params.baseFacets, params.init, params.initData);
@@ -30,9 +28,9 @@ contract Diamond is IDiamond {
         _fallback();
     }
 
-    /// IDEA: Allow fallback function to be implemented/overriden by a base facet
-    ///       This would allow different customization possibilities
-    ///       Such as delegate directly from facets in the `FacetRegistry` which can be upgraded there
+    /// IDEA: Allow fallback function to be implemented/overriden by a base facet.
+    ///       This would allow different customization possibilities,
+    ///       such as delegate directly the `FacetRegistry` where Facets can be upgraded
     function _fallback() internal {
         address facet = DiamondCutBehavior.getFacetFromSelector(msg.sig);
 

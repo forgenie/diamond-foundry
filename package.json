@@ -26,8 +26,10 @@
   "private": true,
   "scripts": {
     "clean": "rimraf cache out",
+    "test": "forge test",
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "forge fmt --check && pnpm solhint \"{script,src,test}/**/*.sol\"",
+    "fmt": "forge fmt && pnpm prettier:write",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
     "prettier:write": "prettier --write \"**/*.{json,md,yml}\""
   }

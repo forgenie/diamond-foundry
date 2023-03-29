@@ -9,9 +9,10 @@ import { DiamondLoupeBehavior, IDiamondLoupe } from "./loupe/DiamondLoupeBehavio
 import { IntrospectionBehavior, IERC165 } from "./introspection/IntrospectionBehavior.sol";
 import { OwnableBehavior, IERC173 } from "./ownable/OwnableBehavior.sol";
 
+// TODO add OZ Initializable and constructor with _disableInitializers().
 contract DiamondBaseFacet is IDiamondBase, IDiamondLoupe, IDiamondCut, IERC165, IERC173 {
-    function initialize(address deployer) external {
-        OwnableBehavior.transferOwnership(deployer);
+    function initialize(address owner_) external {
+        OwnableBehavior.transferOwnership(owner_);
 
         IntrospectionBehavior.addInterface(type(IDiamondBase).interfaceId);
         IntrospectionBehavior.addInterface(type(IDiamondLoupe).interfaceId);

@@ -8,7 +8,7 @@ import { IERC173 } from "./IERC173.sol";
 import { OwnableStorage } from "./OwnableStorage.sol";
 
 error Ownable_transferOwnership_ZeroAddress();
-error Ownable_checkOwner_NotOwner();
+error Ownable_checkOwner_NotOwner(address account);
 
 library OwnableBehavior {
     /// IERC173 event
@@ -20,7 +20,7 @@ library OwnableBehavior {
     }
 
     function checkOwner(address account) internal view {
-        if (account != owner()) revert Ownable_checkOwner_NotOwner();
+        if (account != owner()) revert Ownable_checkOwner_NotOwner(account);
     }
 
     function transferOwnership(address newOwner) internal {
@@ -29,8 +29,6 @@ library OwnableBehavior {
         _transferOwnership(newOwner);
     }
 
-    // if diamondCut function is protected by owner,
-    // renounce must happen when the diamondCut function is removed
     function renounceOwnership() internal {
         _transferOwnership(address(0));
     }

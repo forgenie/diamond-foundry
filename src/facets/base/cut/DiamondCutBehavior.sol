@@ -31,7 +31,6 @@ library DiamondCutBehavior {
     /**
      * -------------- Abstraction methods for accessing DiamondCutStorage --------------
      */
-
     using DiamondCutStorage for DiamondCutStorage.Layout;
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
@@ -56,7 +55,7 @@ library DiamondCutBehavior {
     function addFacet(address facet, bytes4[] memory selectors) internal {
         DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
 
-        // does not add facet address if already exists
+        // does not add address if already exists
         ds.facets.add(facet);
         for (uint256 i; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
@@ -127,9 +126,10 @@ library DiamondCutBehavior {
     }
     /**
      * -------------- Methods containing actual Behavior --------------
-     * @notice These methods are not using DiamondCutStorage directly for getting and setting storage
+     * These methods are not using DiamondCutStorage directly for getting and setting storage
      */
 
+    /// @dev We redeclare the event here because Solidity does not allow emitting events from other interfaces.
     event DiamondCut(IDiamond.FacetCut[] facetCuts, address init, bytes initData);
 
     function diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) internal {
