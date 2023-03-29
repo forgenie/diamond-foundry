@@ -4,10 +4,11 @@ pragma solidity 0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 
-import { IDiamond } from "src/IDiamond.sol";
-
 import { IDiamondCut } from "./IDiamondCut.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
+
+import { IDiamond } from "src/IDiamond.sol";
+import { DiamondBaseBehavior } from "src/facets/base/DiamondBaseBehavior.sol";
 
 error DiamondCut_validateFacetCut_SelectorArrayEmpty(address facet);
 error DiamondCut_validateFacetCut_FacetIsZeroAddress();
@@ -19,21 +20,22 @@ error DiamondCut_addFacet_FunctionAlreadyExistsInDiamond(bytes4 selector);
 error DiamondCut_removeFacet_FacetDoesNotExist(address facet);
 error DiamondCut_removeFacet_CannotRemoveFromOtherFacet(address facet, bytes4 selector);
 error DiamondCut_removeFacet_InvalidSelector(bytes4 selector);
+error DiamondCut_removeFacet_ImmutableFunction(bytes4 selector);
 error DiamondCut_replaceFacet_FunctionFromSameFacet(bytes4 selector);
 error DiamondCut_replaceFacet_InexistingFunction(bytes4 selector);
+error DiamondCut_replaceFacet_ImmutableFunction(bytes4 selector);
 error DiamondCut_initializeDiamondCut_InitializationReverted();
-error DiamondCut_initalizeDiamondCut_InitIsNotContract(address init);
+error DiamondCut_initializeDiamondCut_InitIsNotContract(address init);
 
-error CannotReplaceImmutableFunction(bytes4 _selector); // TBA
+library DiamondCutBehavior {
+    /**
+     * -------------- Abstraction methods for accessing DiamondCutStorage --------------
+     */
 
-library DiamondCutStorageBehavior {
     using DiamondCutStorage for DiamondCutStorage.Layout;
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
-    /**
-     * -------------- Abstraction library for accessing DiamondCutStorage --------------
-     */
     function getFacetAddresses() internal view returns (address[] memory facets) {
         return DiamondCutStorage.layout().facets.values();
     }
@@ -76,8 +78,9 @@ library DiamondCutStorageBehavior {
         for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
-            // TODO check selector is not immutable
-
+            if (DiamondBaseBehavior.isImmutable(selector)) {
+                revert DiamondCut_removeFacet_ImmutableFunction(selector);
+            }
             if (ds.selectorToFacet[selector] != facet) {
                 revert DiamondCut_removeFacet_CannotRemoveFromOtherFacet(facet, selector);
             }
@@ -86,6 +89,7 @@ library DiamondCutStorageBehavior {
             }
             ds.selectorToFacet[selector] = address(0);
 
+            // if no more selectors in facet, remove facet address
             if (ds.facetSelectors[facet].length() == 0) {
                 ds.facets.remove(facet);
             }
@@ -99,8 +103,9 @@ library DiamondCutStorageBehavior {
             bytes4 selector = selectors[i];
             address oldFacet = ds.selectorToFacet[selector];
 
-            // TODO check selector is not immutable
-
+            if (DiamondBaseBehavior.isImmutable(selector)) {
+                revert DiamondCut_replaceFacet_ImmutableFunction(selector);
+            }
             if (oldFacet == facet) {
                 revert DiamondCut_replaceFacet_FunctionFromSameFacet(selector);
             }
@@ -112,20 +117,19 @@ library DiamondCutStorageBehavior {
             ds.selectorToFacet[selector] = facet;
             ds.facetSelectors[facet].add(selector);
 
-            // remove selector from list of old facet
+            // remove selector from old facet
             ds.facetSelectors[oldFacet].remove(selector);
+            // if no more selectors in old facet, remove old facet address
             if (ds.facetSelectors[oldFacet].length() == 0) {
                 ds.facets.remove(oldFacet);
             }
         }
     }
-}
-
-library DiamondCutBehavior {
     /**
-     * -------------- Library containing actual Behavior --------------
-     * @notice These methods are using the DiamondCutStorageBehavior library for getting and setting storage
+     * -------------- Methods containing actual Behavior --------------
+     * @notice These methods are not using DiamondCutStorage directly for getting and setting storage
      */
+
     event DiamondCut(IDiamond.FacetCut[] facetCuts, address init, bytes initData);
 
     function diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) internal {
@@ -135,11 +139,11 @@ library DiamondCutBehavior {
             validateFacetCut(facetCut);
 
             if (facetCut.action == IDiamond.FacetCutAction.Add) {
-                DiamondCutStorageBehavior.addFacet(facetCut.facet, facetCut.selectors);
+                addFacet(facetCut.facet, facetCut.selectors);
             } else if (facetCut.action == IDiamond.FacetCutAction.Replace) {
-                DiamondCutStorageBehavior.replaceFacet(facetCut.facet, facetCut.selectors);
+                replaceFacet(facetCut.facet, facetCut.selectors);
             } else if (facetCut.action == IDiamond.FacetCutAction.Remove) {
-                DiamondCutStorageBehavior.removeFacet(facetCut.facet, facetCut.selectors);
+                removeFacet(facetCut.facet, facetCut.selectors);
             }
         }
 
@@ -170,7 +174,7 @@ library DiamondCutBehavior {
         // TODO: add multicall initialization from diamondFactory
 
         if (!Address.isContract(init)) {
-            revert DiamondCut_initalizeDiamondCut_InitIsNotContract(init);
+            revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
         }
 
         (bool success, bytes memory error) = init.delegatecall(initData);

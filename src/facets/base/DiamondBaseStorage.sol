@@ -6,6 +6,7 @@ library DiamondBaseStorage {
 
     struct Layout {
         address diamondFactory;
+        mapping(bytes4 selector => bool isImmutable) immutableFunctions;
     }
 
     function layout() internal pure returns (Layout storage l) {

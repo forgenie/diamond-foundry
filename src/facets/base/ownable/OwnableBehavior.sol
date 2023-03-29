@@ -19,8 +19,8 @@ library OwnableBehavior {
         return OwnableStorage.layout().owner;
     }
 
-    function checkOwner() internal view {
-        if (msg.sender != owner()) revert Ownable_checkOwner_NotOwner();
+    function checkOwner(address account) internal view {
+        if (account != owner()) revert Ownable_checkOwner_NotOwner();
     }
 
     function transferOwnership(address newOwner) internal {
@@ -29,9 +29,8 @@ library OwnableBehavior {
         _transferOwnership(newOwner);
     }
 
-    // if diamondCut function is protected by owner renounce should
-    // be supported when the diamond is turned immutable
-    // that is when the diamondCut function is removed
+    // if diamondCut function is protected by owner,
+    // renounce must happen when the diamondCut function is removed
     function renounceOwnership() internal {
         _transferOwnership(address(0));
     }

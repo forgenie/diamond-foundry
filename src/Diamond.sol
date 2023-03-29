@@ -1,14 +1,25 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+import { IDiamondFactory } from "./factory/IDiamondFactory.sol";
 import { IDiamond } from "./IDiamond.sol";
-import { DiamondCutStorage } from "./facets/base/cut/DiamondCutStorage.sol";
+import { DiamondCutBehavior } from "./facets/base/cut/DiamondCutBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
 contract Diamond is IDiamond {
     struct InitParams {
-        address owner;
+        FacetCut[] baseFacets;
+        address init;
+        bytes initData;
+    }
+
+    constructor() {
+        InitParams memory params = IDiamondFactory(msg.sender).parameters();
+
+        // Initializer on `init` will set up the state
+        // NOTE: If `diamondCut` facet is not provided, the diamond will be immutable
+        DiamondCutBehavior.diamondCut(params.baseFacets, params.init, params.initData);
     }
 
     fallback() external {
@@ -19,8 +30,11 @@ contract Diamond is IDiamond {
         _fallback();
     }
 
+    /// IDEA: Allow fallback function to be implemented/overriden by a base facet
+    ///       This would allow different customization possibilities
+    ///       Such as delegate directly from facets in the `FacetRegistry` which can be upgraded there
     function _fallback() internal {
-        address facet = DiamondCutStorage.layout().selectorToFacet[msg.sig];
+        address facet = DiamondCutBehavior.getFacetFromSelector(msg.sig);
 
         if (facet == address(0)) revert Diamond_Fallback_UnsupportedFunction();
 

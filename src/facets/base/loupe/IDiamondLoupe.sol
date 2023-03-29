@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 /**
  * @title IDiamondLoupe
  * @notice A loupe is a small magnifying glass used to look at diamonds.
- * @dev Definition from EIP 2535.
+ *         See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
 interface IDiamondLoupe {
     struct Facet {
