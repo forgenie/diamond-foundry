@@ -16,18 +16,18 @@ interface IDiamondFactory {
 
     /**
      * @notice Creates a diamond with the given base Facets
-     * @param baseFacetIds The facetIds of the base facets to be added to the diamond.
-     * @return diamondAddr The address of the diamond.
+     * @param baseFacetId The Id of the base facet to be added to the diamond.
+     * @return diamond The address of the diamond.
      */
-    function createDiamond(bytes32[] calldata baseFacetIds) external returns (address diamondAddr);
+    function createDiamond(bytes32 baseFacetId) external returns (address diamond);
 
     /**
      * @notice Creates a diamond with the given base Facets and salt.
      * @param baseFacetIds The facetIds of the base facets to be added to the diamond.
      * @param salt The salt to be used in the diamond address computation.
-     * @return diamondAddr The address of the diamond.
+     * @return diamond The address of the diamond.
      */
-    function createDiamond(bytes32[] calldata baseFacetIds, uint256 salt) external returns (address diamondAddr);
+    // function createDiamond(bytes32[] calldata baseFacetIds, uint256 salt) external returns (address diamond);
 
     /**
      * @notice Builds a FacetCut struct from a given facetId.

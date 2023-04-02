@@ -22,10 +22,30 @@ interface IFacetRegistry {
     }
 
     /**
+     * @notice Emitted when a facet is registered.
+     * @param facetId The id of the facet.
+     * @param facet The address of the facet.
+     */
+    event FacetRegistered(bytes32 indexed facetId, address indexed facet);
+
+    /**
+     * @notice Emitted when a facet is removed from the registry.
+     * @param facetId The id of the facet.
+     * @param facet The address of the facet.
+     */
+    event FacetRemoved(bytes32 indexed facetId, address indexed facet);
+
+    /**
      * @notice Registers a new facet for use in the diamond.
      * @param facetInfo FacetInfo struct containing facet name, address, selectors, and initializer.
      */
     function registerFacet(FacetInfo calldata facetInfo) external;
+
+    /**
+     * @notice Removes a facet from the registry.
+     * @param facetId The id of the facet.
+     */
+    function removeFacet(bytes32 facetId) external;
 
     /**
      * @notice Computes the id of the facet.
@@ -33,6 +53,13 @@ interface IFacetRegistry {
      * @return facetId The id of the facet.
      */
     function computeFacetId(string calldata name) external view returns (bytes32 facetId);
+
+    /**
+     * @notice Returns the address of a given facetId.
+     * @param facetId The id of the facet.
+     * @return facet The address of the facet.
+     */
+    function getFacetAddress(bytes32 facetId) external view returns (address facet);
 
     /**
      * @notice Returns the facetId of a given facet address.
@@ -58,7 +85,7 @@ interface IFacetRegistry {
     /**
      * @notice Returns the selectors of a given facet.
      * @param facetId The id of the facet.
-     * @return selectors The selectors of the facet, to be replaced with bytes4[].
+     * @return selectors The selectors of the facet.
      */
-    function getFacetSelectors(bytes32 facetId) external view returns (bytes32[] memory selectors);
+    function getFacetSelectors(bytes32 facetId) external view returns (bytes4[] memory selectors);
 }

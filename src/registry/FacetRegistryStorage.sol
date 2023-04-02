@@ -2,13 +2,11 @@
 pragma solidity 0.8.19;
 
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 
 error FacetRegistryStorage_addFacet_SelectorsArrayEmpty();
 error FacetRegistryStorage_addFacet_FacetAddressZero();
 error FacetRegistryStorage_addFacet_SelectorZero(uint256 index);
-
 error FacetRegistryStorage_removeFacet_FacetNotRegistered(address facet);
 
 library FacetRegistryStorage {
@@ -16,9 +14,6 @@ library FacetRegistryStorage {
 
     bytes32 public constant FACET_REGISTRY_STORAGE_POSITION = keccak256("facet.registry.storage");
 
-    // TBA custom data
-    // bytes4 dataType;
-    // bytes data;
     struct FacetData {
         address addr;
         bytes4 initializer;
@@ -57,6 +52,9 @@ library FacetRegistryStorage {
         if (facet == address(0)) revert FacetRegistryStorage_removeFacet_FacetNotRegistered(facet);
 
         delete self.facetIds[facet];
+        delete self.facets[facetId].addr;
+        delete self.facets[facetId].initializer;
+        delete self.facets[facetId].interfaceId;
 
         uint256 selectorCount = self.facets[facetId].selectors.length();
         for (uint256 i = 0; i < selectorCount; i++) {
