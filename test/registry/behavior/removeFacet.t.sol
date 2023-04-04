@@ -5,6 +5,7 @@ import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 import { FacetRegistryTest } from "../FacetRegistry.t.sol";
 import { FacetRegistry_removeFacet_FacetNotRegistered } from "src/registry/Errors.sol";
 
+// solhint-disable-next-line contract-name-camelcase
 contract FacetRegistry_removeFacet is FacetRegistryTest {
     function test_RevertsWhen_FacetNotRegistered() public {
         bytes32 facetId = facetRegistry.computeFacetId("UnexistentFacet");

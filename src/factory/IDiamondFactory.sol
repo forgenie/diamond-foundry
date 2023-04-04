@@ -12,7 +12,7 @@ interface IDiamondFactory {
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
-    event DiamondCreated(address indexed diamond, address indexed deployer, bytes32[] baseFacetIds);
+    event DiamondCreated(address indexed diamond, address indexed deployer, bytes32 baseFacetId);
 
     /**
      * @notice Creates a diamond with the given base Facets

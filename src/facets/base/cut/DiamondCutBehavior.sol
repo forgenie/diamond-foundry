@@ -177,11 +177,11 @@ library DiamondCutBehavior {
             revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
         }
 
+        // solhint-disable-next-line avoid-low-level-calls
         (bool success, bytes memory error) = init.delegatecall(initData);
         if (!success) {
             if (error.length > 0) {
-                // bubble up error
-                /// @solidity memory-safe-assembly
+                // solhint-disable-next-line no-inline-assembly
                 assembly {
                     let returndata_size := mload(error)
                     revert(add(32, error), returndata_size)

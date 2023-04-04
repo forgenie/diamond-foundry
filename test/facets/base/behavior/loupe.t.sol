@@ -13,7 +13,7 @@ contract DiamondLoupeTest is DiamondBaseFacetTest {
     function setUp() public override {
         super.setUp();
 
-        diamondLoupe = IDiamondLoupe(diamondBase);
+        diamondLoupe = IDiamondLoupe(diamond);
     }
 
     function test_facetAddresses() public {

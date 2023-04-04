@@ -19,7 +19,7 @@ contract DiamondCutBehaviorTest is DiamondBaseFacetTest {
 
         vm.startPrank(users.owner);
 
-        diamondCut = IDiamondCut(diamondBase);
+        diamondCut = IDiamondCut(diamond);
 
         // cache selectors and facetCuts
         _selectors.push(MockFacet.mockFunction.selector);
@@ -37,7 +37,7 @@ contract DiamondCutBehaviorTest is DiamondBaseFacetTest {
     }
 
     function test_diamondCut_addFacet() public {
-        expectEmit(address(diamondBase));
+        expectEmit(address(diamond));
         emit DiamondCut(_facetCuts, address(0), new bytes(0));
 
         diamondCut.diamondCut(_facetCuts, address(0), new bytes(0));
@@ -49,7 +49,7 @@ contract DiamondCutBehaviorTest is DiamondBaseFacetTest {
 
         // remove facet
         _facetCuts[0].action = IDiamond.FacetCutAction.Remove;
-        expectEmit(address(diamondBase));
+        expectEmit(address(diamond));
         emit DiamondCut(_facetCuts, address(0), new bytes(0));
 
         diamondCut.diamondCut(_facetCuts, address(0), new bytes(0));

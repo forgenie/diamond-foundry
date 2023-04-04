@@ -10,6 +10,8 @@ library IntrospectionStorage {
 
     function layout() internal pure returns (Storage storage l) {
         bytes32 position = INTROSPECTION_STORAGE_POSITION;
+
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }

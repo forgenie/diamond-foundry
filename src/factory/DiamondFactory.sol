@@ -12,8 +12,10 @@ contract DiamondFactory is IDiamondFactory {
     }
 
     /// @inheritdoc IDiamondFactory
-    function createDiamond(bytes32 baseFacetId) external returns (address) {
-        return _deployDiamondBase(baseFacetId);
+    function createDiamond(bytes32 baseFacetId) external returns (address diamond) {
+        diamond = _deployDiamondBase(baseFacetId);
+
+        emit DiamondCreated(diamond, msg.sender, baseFacetId);
     }
 
     /// @inheritdoc IDiamondFactory

@@ -59,6 +59,7 @@ library FacetRegistryStorage {
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = FACET_REGISTRY_STORAGE_POSITION;
 
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }

@@ -4,9 +4,9 @@ pragma solidity 0.8.19;
 import { DiamondFactoryTest } from "../DiamondFactory.t.sol";
 import { IERC173, IERC165 } from "src/facets/base/DiamondBaseFacet.sol";
 
+// solhint-disable-next-line contract-name-camelcase
 contract DiamondFactory_createDiamond is DiamondFactoryTest {
     function test_createDiamond() public {
-        bytes32 baseFacetId = facetRegistry.computeFacetId("DiamondBase");
         address owner = address(this);
         address diamond = diamondFactory.createDiamond(baseFacetId);
 

@@ -37,6 +37,7 @@ contract Diamond is IDiamond {
         if (facet == address(0)) revert Diamond_Fallback_UnsupportedFunction();
 
         // Execute external function from facet using delegatecall and return any value.
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             // copy function selector and any arguments
             calldatacopy(0, 0, calldatasize())
