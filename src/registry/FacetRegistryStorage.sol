@@ -4,8 +4,6 @@ pragma solidity 0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 
-error FacetRegistryStorage_addFacet_SelectorZero(uint256 index);
-
 library FacetRegistryStorage {
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
@@ -15,6 +13,7 @@ library FacetRegistryStorage {
         address addr;
         bytes4 initializer;
         bytes4 interfaceId;
+        // bytes4 version;
         EnumerableSet.Bytes32Set selectors;
     }
 
@@ -32,7 +31,7 @@ library FacetRegistryStorage {
         for (uint256 i = 0; i < facetInfo.selectors.length; i++) {
             bytes4 selector = facetInfo.selectors[i];
 
-            if (selector == bytes4(0)) revert FacetRegistryStorage_addFacet_SelectorZero(i);
+            if (selector == bytes4(0)) continue;
 
             self.facets[facetId].selectors.add(selector);
             // XOR selectors to get interfaceId

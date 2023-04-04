@@ -12,7 +12,7 @@ interface IFacetRegistry {
      * @param addr The address of the facet.
      * @param selectors The function selectors of the facet.
      * @param initializer The selector of the initializer function.
-     * TODO:  Allow reinitializers and migrators to be registered.
+     * TODO:  Allow just initializers to be registered.
      */
     struct FacetInfo {
         string name;

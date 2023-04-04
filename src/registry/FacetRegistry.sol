@@ -5,15 +5,20 @@ import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableS
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 import { FacetRegistryStorage } from "./FacetRegistryStorage.sol";
 
-error FacetRegistry_registerFacet_FacetAlreadyRegistered();
-error FacetRegistry_validateFacetInfo_FacetAddressZero();
-error FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
-error FacetRegistry_validateFacetInfo_FacetNameEmpty();
-error FacetRegistry_removeFacet_FacetNotRegistered(address facet);
+import {
+    FacetRegistry_registerFacet_FacetAlreadyRegistered,
+    FacetRegistry_validateFacetInfo_FacetAddressZero,
+    FacetRegistry_validateFacetInfo_FacetMustHaveSelectors,
+    FacetRegistry_validateFacetInfo_FacetNameEmpty,
+    FacetRegistry_removeFacet_FacetNotRegistered
+} from "./Errors.sol";
 
 contract FacetRegistry is IFacetRegistry {
     using EnumerableSet for EnumerableSet.Bytes32Set;
     using FacetRegistryStorage for FacetRegistryStorage.Layout;
+
+    // solhint-disable-next-line no-empty-blocks
+    constructor() { }
 
     /// @inheritdoc IFacetRegistry
     function registerFacet(FacetInfo calldata facetInfo) external {
@@ -31,7 +36,7 @@ contract FacetRegistry is IFacetRegistry {
     function removeFacet(bytes32 facetId) external {
         address facet = FacetRegistryStorage.layout().facets[facetId].addr;
 
-        if (facet == address(0)) revert FacetRegistry_removeFacet_FacetNotRegistered(facet);
+        if (facet == address(0)) revert FacetRegistry_removeFacet_FacetNotRegistered();
 
         FacetRegistryStorage.layout().removeFacet(facetId);
 
