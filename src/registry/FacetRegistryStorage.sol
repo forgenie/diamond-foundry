@@ -4,10 +4,7 @@ pragma solidity 0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 
-error FacetRegistryStorage_addFacet_SelectorsArrayEmpty();
-error FacetRegistryStorage_addFacet_FacetAddressZero();
 error FacetRegistryStorage_addFacet_SelectorZero(uint256 index);
-error FacetRegistryStorage_removeFacet_FacetNotRegistered(address facet);
 
 library FacetRegistryStorage {
     using EnumerableSet for EnumerableSet.Bytes32Set;
@@ -27,9 +24,6 @@ library FacetRegistryStorage {
     }
 
     function addFacet(Layout storage self, IFacetRegistry.FacetInfo memory facetInfo, bytes32 facetId) internal {
-        if (facetInfo.selectors.length == 0) revert FacetRegistryStorage_addFacet_SelectorsArrayEmpty();
-        if (facetInfo.addr == address(0)) revert FacetRegistryStorage_addFacet_FacetAddressZero();
-
         self.facetIds[facetInfo.addr] = facetId;
         self.facets[facetId].addr = facetInfo.addr;
         self.facets[facetId].initializer = facetInfo.initializer;
@@ -49,7 +43,6 @@ library FacetRegistryStorage {
 
     function removeFacet(Layout storage self, bytes32 facetId) internal {
         address facet = self.facets[facetId].addr;
-        if (facet == address(0)) revert FacetRegistryStorage_removeFacet_FacetNotRegistered(facet);
 
         delete self.facetIds[facet];
         delete self.facets[facetId].addr;

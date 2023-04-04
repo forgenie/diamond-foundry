@@ -22,18 +22,11 @@ interface IFacetRegistry {
     }
 
     /**
-     * @notice Emitted when a facet is registered.
+     * @notice Emitted when a facet is registered or removed.
      * @param facetId The id of the facet.
-     * @param facet The address of the facet.
+     * @param facet The address of the facet. Zero on remove.
      */
-    event FacetRegistered(bytes32 indexed facetId, address indexed facet);
-
-    /**
-     * @notice Emitted when a facet is removed from the registry.
-     * @param facetId The id of the facet.
-     * @param facet The address of the facet.
-     */
-    event FacetRemoved(bytes32 indexed facetId, address indexed facet);
+    event FacetImplementationSet(bytes32 indexed facetId, address indexed facet);
 
     /**
      * @notice Registers a new facet for use in the diamond.

@@ -42,4 +42,16 @@ contract DiamondCutBehaviorTest is DiamondBaseFacetTest {
 
         diamondCut.diamondCut(_facetCuts, address(0), new bytes(0));
     }
+
+    function test_diamondCut_removeFacet() public {
+        // add facet
+        diamondCut.diamondCut(_facetCuts, address(0), new bytes(0));
+
+        // remove facet
+        _facetCuts[0].action = IDiamond.FacetCutAction.Remove;
+        expectEmit(address(diamondBase));
+        emit DiamondCut(_facetCuts, address(0), new bytes(0));
+
+        diamondCut.diamondCut(_facetCuts, address(0), new bytes(0));
+    }
 }
