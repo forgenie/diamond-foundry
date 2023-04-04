@@ -10,7 +10,7 @@ abstract contract FacetRegistryTest is BaseTest {
 
     event FacetImplementationSet(bytes32 indexed facetId, address indexed facet);
 
-    function setUp() public override {
+    function setUp() public virtual override {
         super.setUp();
 
         facetRegistry = new FacetRegistry();

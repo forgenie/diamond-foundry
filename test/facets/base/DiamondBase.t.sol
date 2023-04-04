@@ -17,6 +17,8 @@ abstract contract DiamondBaseFacetTest is BaseTest {
         super.setUp();
 
         diamondBase = new DiamondBaseFacet();
+
+        // to be replaced with diamond init
         diamondBase.initialize(users.owner);
     }
 }
