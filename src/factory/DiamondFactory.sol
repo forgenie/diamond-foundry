@@ -13,7 +13,7 @@ contract DiamondFactory is IDiamondFactory {
 
     /// @inheritdoc IDiamondFactory
     function createDiamond(bytes32 baseFacetId) external returns (address diamond) {
-        diamond = _deployDiamondBase(baseFacetId);
+        diamond = _deployDiamondBase(baseFacetId, msg.sender);
 
         emit DiamondCreated(diamond, msg.sender, baseFacetId);
     }
@@ -40,7 +40,7 @@ contract DiamondFactory is IDiamondFactory {
         facetCut.selectors = _facetRegistry.getFacetSelectors(facetId);
     }
 
-    function _deployDiamondBase(bytes32 baseFacetId) private returns (address) {
+    function _deployDiamondBase(bytes32 baseFacetId, address owner) private returns (address) {
         IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](1);
         facetCuts[0] = makeFacetCut(IDiamond.FacetCutAction.Add, baseFacetId);
 
@@ -53,8 +53,7 @@ contract DiamondFactory is IDiamondFactory {
             initData = bytes("");
         } else {
             init = _facetRegistry.getFacetAddress(baseFacetId);
-            // msg.sender is owner
-            initData = abi.encodeWithSelector(initializer, msg.sender);
+            initData = abi.encodeWithSelector(initializer, owner);
         }
 
         Diamond.InitParams memory initParams =

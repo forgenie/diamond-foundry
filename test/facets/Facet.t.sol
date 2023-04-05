@@ -20,6 +20,7 @@ abstract contract FacetTest is BaseTest {
 
         diamond = address(
             new Diamond(Diamond.InitParams({
+                // currently accept only one base facet
                 baseFacets: cuts, init: facets[0].facet(),
                 initData: abi.encodeWithSelector(
                         facets[0].initializer(),
