@@ -22,6 +22,7 @@ landscape.
 
 ## Features
 
+1. Facet Registry and Diamond Factory
 1. Granular immutability for Diamonds.
 1. TBA Compose a Facet which is a Diamond over other Facets.
 1. TBA Customizable Fallback function.

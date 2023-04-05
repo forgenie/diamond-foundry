@@ -1,26 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IDiamond } from "src/IDiamond.sol";
+import { IDiamond, Diamond } from "src/Diamond.sol";
 
 import { DiamondBaseFacet } from "src/facets/base/DiamondBaseFacet.sol";
-import { FacetTest } from "../Facet.t.sol";
-import { FacetHelper } from "../FacetHelper.t.sol";
+import { FacetTest, FacetHelper } from "../Facet.t.sol";
 
 abstract contract DiamondBaseFacetTest is FacetTest {
     DiamondBaseFacetHelper public diamondBaseHelper;
 
-    address[] internal _facets;
-    IDiamond.FacetCut[] internal _facetCuts;
-    bytes4[] internal _selectors;
-
     function setUp() public virtual override {
-        // Adding to facets helpers before calling super
         diamondBaseHelper = new DiamondBaseFacetHelper();
         facets.push(diamondBaseHelper);
 
-        // super will create a diamond with this facet
         super.setUp();
+    }
+
+    function diamondInitParams() internal virtual override returns (Diamond.InitParams memory) {
+        address init = diamondBaseHelper.facet();
+        bytes memory initData = abi.encodeWithSelector(diamondBaseHelper.initializer(), users.owner);
+
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
+        baseFacets[0] = diamondBaseHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+
+        return Diamond.InitParams({ baseFacets: baseFacets, init: init, initData: initData });
     }
 }
 
@@ -31,7 +34,7 @@ contract DiamondBaseFacetHelper is FacetHelper {
         diamondBaseFacet = new DiamondBaseFacet();
     }
 
-    function facet() public override returns (address) {
+    function facet() public view override returns (address) {
         return address(diamondBaseFacet);
     }
 

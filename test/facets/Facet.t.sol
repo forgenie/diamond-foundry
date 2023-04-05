@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
+import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 import { IDiamond, Diamond } from "src/Diamond.sol";
 import { BaseTest } from "../Base.t.sol";
-import { FacetHelper } from "./FacetHelper.t.sol";
 
 abstract contract FacetTest is BaseTest {
     address public diamond;
@@ -12,21 +12,31 @@ abstract contract FacetTest is BaseTest {
     function setUp() public virtual override {
         super.setUp();
 
-        IDiamond.FacetCut[] memory cuts = new IDiamond.FacetCut[](facets.length);
+        diamond = address(new Diamond(diamondInitParams()));
+    }
 
-        for (uint256 i = 0; i < facets.length; i++) {
-            cuts[i] = facets[i].makeFacetCut(IDiamond.FacetCutAction.Add);
-        }
+    function diamondInitParams() internal virtual returns (Diamond.InitParams memory);
+}
 
-        diamond = address(
-            new Diamond(Diamond.InitParams({
-                // currently accept only one base facet
-                baseFacets: cuts, init: facets[0].facet(),
-                initData: abi.encodeWithSelector(
-                        facets[0].initializer(),
-                        users.owner
-                )
-            }))
-        );
+abstract contract FacetHelper {
+    function facet() public virtual returns (address);
+
+    function selectors() public pure virtual returns (bytes4[] memory);
+
+    function initializer() public pure virtual returns (bytes4);
+
+    function name() public pure virtual returns (string memory);
+
+    function facetInfo() public returns (IFacetRegistry.FacetInfo memory info) {
+        info = IFacetRegistry.FacetInfo({
+            name: name(),
+            addr: facet(),
+            initializer: initializer(),
+            selectors: selectors()
+        });
+    }
+
+    function makeFacetCut(IDiamond.FacetCutAction action) public returns (IDiamond.FacetCut memory) {
+        return IDiamond.FacetCut({ action: action, facet: facet(), selectors: selectors() });
     }
 }
