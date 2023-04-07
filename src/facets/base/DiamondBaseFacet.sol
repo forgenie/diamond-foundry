@@ -12,9 +12,10 @@ import { IntrospectionBehavior, IERC165 } from "./introspection/IntrospectionBeh
 import { OwnableBehavior, IERC173 } from "./ownable/OwnableBehavior.sol";
 
 contract DiamondBaseFacet is IDiamondBase, IDiamondLoupe, IDiamondCut, IERC165, IERC173, Initializable {
-    // constructor() {
-    // _disableInitializers();
-    // }
+    /// @dev Prevents initializer from being called in the implementation.
+    constructor() {
+        _disableInitializers();
+    }
 
     function initialize(address owner_) external initializer {
         OwnableBehavior.transferOwnership(owner_);
