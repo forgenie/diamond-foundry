@@ -1,7 +1,7 @@
 # Diamond Foundry
 
-Welcome to the Diamond Foundry repository! This public project is focused on creating a powerful system for managing universal
-and reusable smart contracts by leveraging the
+Welcome to the Diamond Foundry repository! This public project is focused on creating a powerful system for managing
+universal and reusable smart contracts by leveraging the
 [EIP2535 Diamond Proxy Standard](https://eips.ethereum.org/EIPS/eip-2535).
 
 This repository contains the core code for the
@@ -105,10 +105,11 @@ $ forge test
 
 ## Contributing
 
-We invite community members to contribute to the project by reviewing code, detecting bugs, developing new Facets, and extending
-functionality.
+We invite community members to contribute to the project by reviewing code, detecting bugs, developing new Facets, and
+extending functionality.
 
-Open up and review a PR, discussion or issue, and provide feedback by clearly explaining the changes and the motivation behind.
+Open up and review a PR, discussion or issue, and provide feedback by clearly explaining the changes and the motivation
+behind.
 
 ### Guidelines
 
@@ -124,12 +125,13 @@ Open up and review a PR, discussion or issue, and provide feedback by clearly ex
 
 - Deploy test contracts in the `setUp` of an `abstract contract`
 - Test facets by attaching their `interface` to a diamond address.
-- There is one `Test` contract per each function within a Facet. It's naming should follow the `<Contract>_<method>` rule, so that we can isolate it with `--match-contract <REGEX>`.
+- There is one `Test` contract per each function within a Facet. It's naming should follow the `<Contract>_<method>`
+  rule, so that we can isolate it with `--match-contract <REGEX>`.
 - Facet Naming guidelines:
   - Optional: `<Name>Storage` for independent facet storage. Facets can be stateless and use other storage.
   - `<Name>Behavior` for behavior library.
   - `I<Name>` for interface, or should comply with eip number.
-  - `<Name>Facet` final deployable implementation.
+  - `<Name>Facet` final deployable implementation. Use the `Behavior` library here for defining functionality.
 
 ## License
 
