@@ -26,7 +26,7 @@ library DiamondBaseBehavior {
     /// @notice Sets multiple functions as immutable.
     //          A granular alternative to removing the `diamondCut` method.
     function immute(bytes4[] memory selectors) internal {
-        for (uint256 i; i < selectors.length; i++) {
+        for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
             if (isImmutable(selector)) {
