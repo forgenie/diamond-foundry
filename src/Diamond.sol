@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import { IDiamondFactory } from "./factory/IDiamondFactory.sol";
 import { IDiamond } from "./IDiamond.sol";
 import { DiamondCutBehavior } from "./facets/cut/DiamondCutBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
-contract Diamond is IDiamond {
+contract Diamond is IDiamond, ReentrancyGuard {
     struct InitParams {
         FacetCut[] baseFacets;
         address init;
@@ -31,7 +32,7 @@ contract Diamond is IDiamond {
     /// IDEA: Allow fallback function to be implemented/overriden by a base facet.
     ///       This would allow different customization possibilities,
     ///       such as delegate directly the `FacetRegistry` where Facets can be upgraded
-    function _fallback() internal {
+    function _fallback() internal nonReentrant {
         address facet = DiamondCutBehavior.getFacetFromSelector(msg.sig);
 
         if (facet == address(0)) revert Diamond_Fallback_UnsupportedFunction();
