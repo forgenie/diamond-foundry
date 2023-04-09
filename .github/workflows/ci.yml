@@ -78,7 +78,6 @@ jobs:
       - name: "Run Slither"
         uses: crytic/slither-action@v0.3.0
 
-
   test:
     needs: ["lint", "build"]
     runs-on: "ubuntu-latest"
