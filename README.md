@@ -24,10 +24,10 @@ landscape.
 
 1. Facet Registry and Diamond Factory
 1. Granular immutability for Diamonds.
+1. Linting & Slither in CI
 1. TBA Customizable Fallback function.
 1. TBA Wide range of available and re-usable Facets.
 1. TBA Ready-to-use deployment scripts
-1. TBA Thoroughly tested and verified with slither.
 1. TBA Compose a Facet which is a Diamond over other Facets.
 
 ## Installation
