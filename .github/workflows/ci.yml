@@ -67,7 +67,7 @@ jobs:
           echo "## Build result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
-  analyze:
+  slither:
     runs-on: "ubuntu-latest"
       steps:
         - name: "Check out the repo"
