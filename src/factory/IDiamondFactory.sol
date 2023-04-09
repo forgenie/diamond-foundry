@@ -27,7 +27,7 @@ interface IDiamondFactory {
      * @param salt The salt to be used in the diamond address computation.
      * @return diamond The address of the diamond.
      */
-    // function createDiamond(bytes32[] calldata baseFacetIds, uint256 salt) external returns (address diamond);
+    // TODO: function createDiamond(bytes32[] calldata baseFacetIds, uint256 salt) external returns (address diamond);
 
     /**
      * @notice Builds a FacetCut struct from a given facetId.

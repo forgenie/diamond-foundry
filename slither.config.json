@@ -1,0 +1,5 @@
+{
+  "filter_paths": "lib,test",
+  "exclude_informational": true,
+  "detectors_to_exclude": "solc-version,dead-code,assembly"
+}

@@ -70,12 +70,11 @@ contract FacetRegistry is IFacetRegistry {
 
     /// @inheritdoc IFacetRegistry
     function getFacetSelectors(bytes32 facetId) public view override returns (bytes4[] memory selectors) {
-        // just make the Bytes4Set bro
         bytes32[] memory selectorBytes = FacetRegistryStorage.layout().facets[facetId].selectors.values();
 
         selectors = new bytes4[](selectorBytes.length);
 
-        for (uint256 i; i < selectorBytes.length; i++) {
+        for (uint256 i = 0; i < selectorBytes.length; i++) {
             selectors[i] = bytes4(selectorBytes[i]);
         }
     }

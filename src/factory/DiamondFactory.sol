@@ -5,6 +5,7 @@ import { Diamond } from "../Diamond.sol";
 import { IDiamondFactory, IFacetRegistry, IDiamond } from "./IDiamondFactory.sol";
 
 contract DiamondFactory is IDiamondFactory {
+    /// @custom:security non-reentrant
     IFacetRegistry private immutable _facetRegistry;
 
     constructor(IFacetRegistry registry) {
@@ -15,6 +16,7 @@ contract DiamondFactory is IDiamondFactory {
     function createDiamond(bytes32 baseFacetId) external returns (address diamond) {
         diamond = _deployDiamondBase(baseFacetId, msg.sender);
 
+        // slither-disable-next-line reentrancy-events
         emit DiamondCreated(diamond, msg.sender, baseFacetId);
     }
 

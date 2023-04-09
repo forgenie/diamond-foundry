@@ -27,12 +27,14 @@ library FacetRegistryStorage {
         self.facets[facetId].addr = facetInfo.addr;
         self.facets[facetId].initializer = facetInfo.initializer;
 
+        // slither-disable-next-line uninitialized-local
         bytes4 interfaceId;
         for (uint256 i = 0; i < facetInfo.selectors.length; i++) {
             bytes4 selector = facetInfo.selectors[i];
 
             if (selector == bytes4(0)) continue;
 
+            // slither-disable-next-line unused-return
             self.facets[facetId].selectors.add(selector);
             // XOR selectors to get interfaceId
             i == 0 ? interfaceId = selector : interfaceId ^= selector;
@@ -52,6 +54,7 @@ library FacetRegistryStorage {
         for (uint256 i = 0; i < selectorCount; i++) {
             bytes4 selector = bytes4(self.facets[facetId].selectors.at(i));
 
+            // slither-disable-next-line unused-return
             self.facets[facetId].selectors.remove(selector);
         }
     }

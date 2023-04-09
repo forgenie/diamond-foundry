@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT License
+// solhint-disable avoid-low-level-calls
 pragma solidity 0.8.19;
 
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
@@ -47,7 +48,7 @@ library DiamondCutBehavior {
         EnumerableSet.Bytes32Set storage facetSelectors = DiamondCutStorage.layout().facetSelectors[facet];
         uint256 selectorCount = facetSelectors.length();
         selectors = new bytes4[](selectorCount);
-        for (uint256 i; i < selectorCount; i++) {
+        for (uint256 i = 0; i < selectorCount; i++) {
             selectors[i] = bytes4(facetSelectors.at(i));
         }
     }
@@ -56,8 +57,9 @@ library DiamondCutBehavior {
         DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
 
         // does not add address if already exists
+        // slither-disable-next-line unused-return
         ds.facets.add(facet);
-        for (uint256 i; i < selectors.length; i++) {
+        for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
             if (ds.selectorToFacet[selector] != address(0)) {
@@ -90,6 +92,7 @@ library DiamondCutBehavior {
 
             // if no more selectors in facet, remove facet address
             if (ds.facetSelectors[facet].length() == 0) {
+                // slither-disable-next-line unused-return
                 ds.facets.remove(facet);
             }
         }
@@ -114,12 +117,16 @@ library DiamondCutBehavior {
 
             // overwrite selector to new facet
             ds.selectorToFacet[selector] = facet;
+
+            // slither-disable-next-line unused-return
             ds.facetSelectors[facet].add(selector);
 
-            // remove selector from old facet
+            // slither-disable-next-line unused-return
             ds.facetSelectors[oldFacet].remove(selector);
-            // if no more selectors in old facet, remove old facet address
+
+            // if no more selectors, remove old facet address
             if (ds.facetSelectors[oldFacet].length() == 0) {
+                // slither-disable-next-line unused-return
                 ds.facets.remove(oldFacet);
             }
         }
@@ -133,7 +140,7 @@ library DiamondCutBehavior {
     event DiamondCut(IDiamond.FacetCut[] facetCuts, address init, bytes initData);
 
     function diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) internal {
-        for (uint256 i; i < facetCuts.length; i++) {
+        for (uint256 i = 0; i < facetCuts.length; i++) {
             IDiamond.FacetCut memory facetCut = facetCuts[i];
 
             validateFacetCut(facetCut);
@@ -177,7 +184,7 @@ library DiamondCutBehavior {
             revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
         }
 
-        // solhint-disable-next-line avoid-low-level-calls
+        // slither-disable-next-line low-level-calls
         (bool success, bytes memory error) = init.delegatecall(initData);
         if (!success) {
             if (error.length > 0) {
