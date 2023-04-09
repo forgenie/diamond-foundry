@@ -15,7 +15,7 @@ contract IntrospectionTest is DiamondBaseFacetTest {
     function setUp() public override {
         super.setUp();
 
-        introspection = IERC165(diamondBase);
+        introspection = IERC165(diamond);
     }
 
     function test_SupportsBasicInterface() public {

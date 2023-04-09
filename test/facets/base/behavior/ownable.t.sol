@@ -17,7 +17,7 @@ contract OwnableTest is DiamondBaseFacetTest {
     function setUp() public override {
         super.setUp();
 
-        ownable = IERC173(diamondBase);
+        ownable = IERC173(diamond);
         vm.startPrank(users.owner);
     }
 
@@ -39,7 +39,7 @@ contract OwnableTest is DiamondBaseFacetTest {
     }
 
     function test_EmitsEvent() public {
-        expectEmit(address(diamondBase));
+        expectEmit(address(diamond));
         emit OwnershipTransferred(users.owner, users.stranger);
 
         ownable.transferOwnership(users.stranger);

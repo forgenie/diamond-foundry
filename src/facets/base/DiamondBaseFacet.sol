@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+
 import { IDiamond } from "src/IDiamond.sol";
 import { DiamondBaseBehavior, IDiamondBase } from "./DiamondBaseBehavior.sol";
 
@@ -9,9 +11,13 @@ import { DiamondLoupeBehavior, IDiamondLoupe } from "./loupe/DiamondLoupeBehavio
 import { IntrospectionBehavior, IERC165 } from "./introspection/IntrospectionBehavior.sol";
 import { OwnableBehavior, IERC173 } from "./ownable/OwnableBehavior.sol";
 
-// TODO add OZ Initializable and constructor with _disableInitializers().
-contract DiamondBaseFacet is IDiamondBase, IDiamondLoupe, IDiamondCut, IERC165, IERC173 {
-    function initialize(address owner_) external {
+contract DiamondBaseFacet is IDiamondBase, IDiamondLoupe, IDiamondCut, IERC165, IERC173, Initializable {
+    /// @dev Prevents initializer from being called in the implementation.
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(address owner_) external initializer {
         OwnableBehavior.transferOwnership(owner_);
 
         IntrospectionBehavior.addInterface(type(IDiamondBase).interfaceId);

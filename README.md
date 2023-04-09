@@ -1,7 +1,7 @@
 # Diamond Foundry
 
-Welcome to the Diamond Foundry repository! This project is focused on creating a powerful system for managing universal
-and reusable smart contracts by leveraging the
+Welcome to the Diamond Foundry repository! This public project is focused on creating a powerful system for managing
+universal and reusable smart contracts by leveraging the
 [EIP2535 Diamond Proxy Standard](https://eips.ethereum.org/EIPS/eip-2535).
 
 This repository contains the core code for the
@@ -10,7 +10,7 @@ which are designed to facilitate the creation of new Diamond proxies and manage 
 template-like contracts called Facets.
 
 Please note that this software is work in progress and is provided "as is" without warranty of any kind, use at your own
-risk.
+risk, not yet stable for production environments.
 
 ## Background
 
@@ -22,11 +22,13 @@ landscape.
 
 ## Features
 
+1. Facet Registry and Diamond Factory
 1. Granular immutability for Diamonds.
-1. TBA Compose a Facet which is a Diamond over other Facets.
 1. TBA Customizable Fallback function.
-1. TBA Wide range of available and ready-to-use Facets.
+1. TBA Wide range of available and re-usable Facets.
+1. TBA Ready-to-use deployment scripts
 1. TBA Thoroughly tested and verified with slither.
+1. TBA Compose a Facet which is a Diamond over other Facets.
 
 ## Installation
 
@@ -103,14 +105,33 @@ $ forge test
 
 ## Contributing
 
-We invite community members to contribute to the project by detecting bugs, developing new Facets, and extending
-functionality.
+We invite community members to contribute to the project by reviewing code, detecting bugs, developing new Facets, and
+extending functionality.
 
-Open up a PR, discussion or issue, clearly explaining the changes and the motivation behind.
+Open up and review a PR, discussion or issue, and provide feedback by clearly explaining the changes and the motivation
+behind.
 
 ### Guidelines
 
-- Use DiamondStorage when declaring facets
+1. Adding facets
+
+- Use `DiamondStorage` pattern for storing variables
+- Interact with storage in the Behavior `library`
+- Compose the final implementation in Facet `contract`
+- If possible, don't use inherited `interface`
+- Follow naming structure and rules of a Facet
+
+2. Testing & naming
+
+- Deploy test contracts in the `setUp` of an `abstract contract`
+- Test facets by attaching their `interface` to a diamond address.
+- There is one `Test` contract per each function within a Facet. It's naming should follow the `<Contract>_<method>`
+  rule, so that we can isolate it with `--match-contract <REGEX>`.
+- Facet Naming guidelines:
+  - Optional: `<Name>Storage` for independent facet storage. Facets can be stateless and use other storage.
+  - `<Name>Behavior` for behavior library.
+  - `I<Name>` for interface, or should comply with eip number.
+  - `<Name>Facet` final deployable implementation. Use the `Behavior` library here for defining functionality.
 
 ## License
 

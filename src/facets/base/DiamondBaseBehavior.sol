@@ -26,8 +26,6 @@ library DiamondBaseBehavior {
     /// @notice Sets multiple functions as immutable.
     //          A granular alternative to removing the `diamondCut` method.
     function immute(bytes4[] memory selectors) internal {
-        DiamondBaseStorage.Layout storage ds = DiamondBaseStorage.layout();
-
         for (uint256 i; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
@@ -35,7 +33,7 @@ library DiamondBaseBehavior {
                 revert DiamondBase_immute_AlreadyImmutable(selector);
             }
 
-            ds.immutableFunctions[selectors[i]] = true;
+            DiamondBaseStorage.layout().immutableFunctions[selectors[i]] = true;
         }
     }
 

@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 library DiamondBaseStorage {
-    bytes32 constant DIAMOND_BASE_STORAGE_POSITION = keccak256("diamond.base.storage");
+    bytes32 internal constant DIAMOND_BASE_STORAGE_POSITION = keccak256("diamond.base.storage");
 
     struct Layout {
         address diamondFactory;
@@ -12,6 +12,7 @@ library DiamondBaseStorage {
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = DIAMOND_BASE_STORAGE_POSITION;
 
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }

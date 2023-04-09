@@ -5,7 +5,7 @@ pragma solidity 0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 library DiamondCutStorage {
-    bytes32 constant DIAMOND_CUT_STORAGE_POSITION = keccak256("diamond.cut.storage");
+    bytes32 internal constant DIAMOND_CUT_STORAGE_POSITION = keccak256("diamond.cut.storage");
 
     struct Layout {
         EnumerableSet.AddressSet facets;
@@ -16,6 +16,7 @@ library DiamondCutStorage {
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = DIAMOND_CUT_STORAGE_POSITION;
 
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }
