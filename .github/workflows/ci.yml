@@ -69,14 +69,14 @@ jobs:
 
   slither:
     runs-on: "ubuntu-latest"
-      steps:
-        - name: "Check out the repo"
-          uses: "actions/checkout@v3"
-          with:
-            submodules: "recursive"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+        with:
+          submodules: "recursive"
 
-        - name: "Run Slither"
-          uses: crytic/slither-action@v0.3.0
+      - name: "Run Slither"
+        uses: crytic/slither-action@v0.3.0
 
 
   test:
