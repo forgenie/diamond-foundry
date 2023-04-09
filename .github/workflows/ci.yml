@@ -48,17 +48,6 @@ jobs:
           echo "## Lint result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
-  analyze:
-    runs-on: "ubuntu-latest"
-      steps:
-        - name: "Check out the repo"
-          uses: "actions/checkout@v3"
-          with:
-            submodules: "recursive"
-
-        - name: "Run Slither"
-        - uses: crytic/slither-action@v0.3.0
-
   build:
     runs-on: "ubuntu-latest"
     steps:
@@ -77,6 +66,18 @@ jobs:
         run: |
           echo "## Build result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+
+  analyze:
+    runs-on: "ubuntu-latest"
+      steps:
+        - name: "Check out the repo"
+          uses: "actions/checkout@v3"
+          with:
+            submodules: "recursive"
+
+        - name: "Run Slither"
+          uses: crytic/slither-action@v0.3.0
+
 
   test:
     needs: ["lint", "build"]
