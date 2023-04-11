@@ -15,7 +15,7 @@ library Ownable2StepBehavior {
         return Ownable2StepStorage.layout().pendingOwner;
     }
 
-    function transferOwnership(address newOwner) internal {
+    function transferOwnership(address pendingOwner, address newOwner) internal {
         Ownable2StepStorage.layout().pendingOwner = newOwner;
     }
 
