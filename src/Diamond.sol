@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { IDiamondFactory } from "./factory/IDiamondFactory.sol";
 import { IDiamond } from "./IDiamond.sol";
-import { DiamondCutBehavior } from "./facets/base/cut/DiamondCutBehavior.sol";
+import { DiamondCutBehavior } from "./facets/cut/DiamondCutBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 

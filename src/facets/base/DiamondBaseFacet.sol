@@ -7,8 +7,8 @@ import { IDiamond } from "src/IDiamond.sol";
 import { OwnableBehavior, IERC173 } from "src/facets/ownable/OwnableBehavior.sol";
 import { IntrospectionBehavior, IERC165 } from "src/facets/introspection/IntrospectionBehavior.sol";
 
-import { DiamondCutBehavior, IDiamondCut } from "./cut/DiamondCutBehavior.sol";
-import { DiamondLoupeBehavior, IDiamondLoupe } from "./loupe/DiamondLoupeBehavior.sol";
+import { DiamondCutBehavior, IDiamondCut } from "src/facets//cut/DiamondCutBehavior.sol";
+import { DiamondLoupeBehavior, IDiamondLoupe } from "src/facets/loupe/DiamondLoupeBehavior.sol";
 
 import { DiamondBaseBehavior, IDiamondBase } from "./DiamondBaseBehavior.sol";
 

@@ -9,7 +9,7 @@ import { DiamondBaseStorage } from "./DiamondBaseStorage.sol";
 
 // uses behavior
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
-import { IDiamondCut } from "./cut/IDiamondCut.sol";
+import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 
 error DiamondBase_immute_AlreadyImmutable(bytes4 selector);
 error DiamondBase_checkDiamondFactory_InvalidDiamondFactory();

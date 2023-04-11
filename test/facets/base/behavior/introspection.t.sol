@@ -5,8 +5,8 @@ import { DiamondBaseFacetTest } from "test/facets/base/DiamondBase.t.sol";
 
 import { IERC165 } from "src/facets/introspection/IERC165.sol";
 import { IERC173 } from "src/facets/ownable/IERC173.sol";
-import { IDiamondCut } from "src/facets/base/cut/IDiamondCut.sol";
-import { IDiamondLoupe } from "src/facets/base/loupe/IDiamondLoupe.sol";
+import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
+import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 import { IDiamondBase } from "src/facets/base/IDiamondBase.sol";
 
 contract IntrospectionTest is DiamondBaseFacetTest {

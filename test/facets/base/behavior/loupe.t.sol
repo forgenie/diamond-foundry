@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IDiamondLoupe } from "src/facets/base/loupe/IDiamondLoupe.sol";
+import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 
 import { DiamondBaseFacetTest, FacetHelper } from "test/facets/base/DiamondBase.t.sol";
 
