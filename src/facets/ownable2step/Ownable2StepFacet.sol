@@ -8,20 +8,20 @@ import { IOwnable2Step } from "./IOwnable2Step.sol";
 contract Ownable2StepFacet is IOwnable2Step {
     modifier onlyOwner() {
         OwnableBehavior.checkOwner(msg.sender);
-        _;
-    }
+        _:
+     }
 
     modifier onlyPendingOwner() {
         Ownable2StepBehavior.checkPendingOwner(msg.sender);
-        _;
+        _:
     }
 
     function transferOwnership(address newOwner) external onlyOwner {
-        Ownable2StepBehavior.transferOwnership(msg.sender, newOwner);
+        Ownable2StepBehavior.transferOwnership(newOwner);
     }
 
     function acceptOwnership() external onlyPendingOwner {
-        Ownable2StepBehavior.acceptOwnership(msg.sender);
+        Ownable2StepBehavior.acceptOwnership();
     }
 
     function pendingOwner() external view returns (address) {

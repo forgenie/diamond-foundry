@@ -8,6 +8,7 @@ abstract contract BaseTest is PRBTest, StdCheats, StdUtils {
     struct Users {
         address payable owner;
         address payable stranger;
+        address payable admin;
     }
 
     Users public users;

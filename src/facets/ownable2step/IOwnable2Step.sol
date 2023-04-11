@@ -1,13 +1,15 @@
 // SPDX-License-Identifier MIT License
 pragma solidity 0.8.19;
 
-interface IOwnable2Step {
+interface IOwnable2StepEvents {
     /**
      * @notice Emitted when ownership transfer is started.
      * @dev Finalized with {acceptOwnership}.
      */
     event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
+}
 
+interface IOwnable2Step is IOwnable2StepEvents {
     /**
      * @notice Starts the ownership transfer to a new account.
      * @param newOwner The address of the new owner.
