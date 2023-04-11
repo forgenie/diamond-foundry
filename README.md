@@ -140,4 +140,4 @@ MIT License (c) 2023 Forgenie Labs
 ## Acknowledgements
 
 Nick Mudge @mudgen [diamond-hardhat](https://github.com/mudgen/diamond)<br /> Paul Razvan Berg @PaulRBerg
-[foundry-template](https://github.com/PaulRBerg/foundry-template)
+[foundry-template](https://github.com/PaulRBerg/foundry-template) <br /> OpenZeppelin  @OpenZeppelin [openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts)
