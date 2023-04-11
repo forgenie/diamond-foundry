@@ -17,13 +17,13 @@ library Ownable2StepBehavior {
         return OwnableBehavior.owner();
     }
 
-    function transferOwnership(address newOwner) internal {
+    function transferOwnership(address pendingOwner, address newOwner) internal {
         Ownable2StepStorage.layout().pendingOwner = newOwner;
-        emit OwnershipTransferStarted(sender, newOwner);
+        emit OwnershipTransferStarted(pendingOwner, newOwner);
     }
 
-    function acceptOwnership() internal {
-        _transferOwnership(sender);
+    function acceptOwnership(address pendingOwner) internal {
+        _transferOwnership(pendingOwner);
     }
 
     function _transferOwnership(address newOwner) private {

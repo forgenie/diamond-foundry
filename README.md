@@ -119,8 +119,8 @@ behind.
 1. Adding facets
 
 - Use `DiamondStorage` pattern for storing variables
-- Interact with storage in the Behavior `library`
-- Compose the final implementation in Facet `contract`
+- Interact with storage and emit events in the Behavior `library`
+- Compose external calls in the final implementation of Facet `contract`
 - If possible, don't use inherited `interface`
 - Follow naming structure and rules of a Facet
 

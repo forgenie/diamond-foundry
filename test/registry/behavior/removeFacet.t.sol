@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
+import { IFacetRegistry, FacetRegistry_removeFacet_FacetNotRegistered } from "src/registry/FacetRegistry.sol";
 import { FacetRegistryTest } from "../FacetRegistry.t.sol";
-import { FacetRegistry_removeFacet_FacetNotRegistered } from "src/registry/Errors.sol";
 
 // solhint-disable-next-line contract-name-camelcase
 contract FacetRegistry_removeFacet is FacetRegistryTest {
