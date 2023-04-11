@@ -4,12 +4,13 @@ pragma solidity 0.8.19;
 import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
 import { IDiamond } from "src/IDiamond.sol";
-import { DiamondBaseBehavior, IDiamondBase } from "./DiamondBaseBehavior.sol";
+import { OwnableBehavior, IERC173 } from "src/facets/ownable/OwnableBehavior.sol";
+import { IntrospectionBehavior, IERC165 } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 import { DiamondCutBehavior, IDiamondCut } from "./cut/DiamondCutBehavior.sol";
 import { DiamondLoupeBehavior, IDiamondLoupe } from "./loupe/DiamondLoupeBehavior.sol";
-import { IntrospectionBehavior, IERC165 } from "./introspection/IntrospectionBehavior.sol";
-import { OwnableBehavior, IERC173 } from "./ownable/OwnableBehavior.sol";
+
+import { DiamondBaseBehavior, IDiamondBase } from "./DiamondBaseBehavior.sol";
 
 contract DiamondBaseFacet is IDiamondBase, IDiamondLoupe, IDiamondCut, IERC165, IERC173, Initializable {
     /// @dev Prevents initializer from being called in the implementation.

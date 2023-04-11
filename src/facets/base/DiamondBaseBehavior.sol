@@ -8,7 +8,7 @@ import { IDiamondBase } from "./IDiamondBase.sol";
 import { DiamondBaseStorage } from "./DiamondBaseStorage.sol";
 
 // uses behavior
-import { IntrospectionBehavior } from "./introspection/IntrospectionBehavior.sol";
+import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { IDiamondCut } from "./cut/IDiamondCut.sol";
 
 error DiamondBase_immute_AlreadyImmutable(bytes4 selector);

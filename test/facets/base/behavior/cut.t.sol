@@ -6,7 +6,7 @@ import { IDiamondCut } from "src/facets/base/cut/IDiamondCut.sol";
 import { DiamondBaseFacetTest } from "../DiamondBase.t.sol";
 
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
-import { Ownable_checkOwner_NotOwner } from "src/facets/base/ownable/OwnableBehavior.sol";
+import { Ownable_checkOwner_NotOwner } from "src/facets/ownable/OwnableBehavior.sol";
 
 // TODO import events from separate IEvents interface.
 contract DiamondCutBehaviorTest is DiamondBaseFacetTest {

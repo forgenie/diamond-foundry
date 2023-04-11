@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IERC173 } from "src/facets/base/ownable/IERC173.sol";
+import { IERC173 } from "src/facets/ownable/IERC173.sol";
 import { DiamondBaseFacetTest } from "test/facets/base/DiamondBase.t.sol";
 
 import {
-    Ownable_transferOwnership_ZeroAddress,
-    Ownable_checkOwner_NotOwner
-} from "src/facets/base/ownable/OwnableBehavior.sol";
+    Ownable_transferOwnership_ZeroAddress, Ownable_checkOwner_NotOwner
+} from "src/facets/ownable/OwnableBehavior.sol";
 
 contract OwnableTest is DiamondBaseFacetTest {
     IERC173 public ownable;

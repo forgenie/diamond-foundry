@@ -3,8 +3,8 @@ pragma solidity 0.8.19;
 
 import { DiamondBaseFacetTest } from "test/facets/base/DiamondBase.t.sol";
 
-import { IERC165 } from "src/facets/base/introspection/IERC165.sol";
-import { IERC173 } from "src/facets/base/ownable/IERC173.sol";
+import { IERC165 } from "src/facets/introspection/IERC165.sol";
+import { IERC173 } from "src/facets/ownable/IERC173.sol";
 import { IDiamondCut } from "src/facets/base/cut/IDiamondCut.sol";
 import { IDiamondLoupe } from "src/facets/base/loupe/IDiamondLoupe.sol";
 import { IDiamondBase } from "src/facets/base/IDiamondBase.sol";
