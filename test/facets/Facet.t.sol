@@ -21,7 +21,7 @@ abstract contract FacetTest is BaseTest {
 abstract contract FacetHelper {
     function facet() public virtual returns (address);
 
-    function selectors() public pure virtual returns (bytes4[] memory);
+    function selectors() public view virtual returns (bytes4[] memory);
 
     function initializer() public pure virtual returns (bytes4);
 

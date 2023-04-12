@@ -5,13 +5,18 @@ import { IERC173 } from "./IERC173.sol";
 import { OwnableBehavior } from "./OwnableBehavior.sol";
 
 abstract contract Ownable is IERC173 {
+    modifier onlyOwner() {
+        OwnableBehavior.checkOwner(msg.sender);
+        _;
+    }
+
     /// @inheritdoc IERC173
-    function owner() external view override returns (address) {
+    function owner() public view returns (address) {
         return OwnableBehavior.owner();
     }
 
     /// @inheritdoc IERC173
-    function transferOwnership(address newOwner) external override {
+    function transferOwnership(address newOwner) public onlyOwner {
         OwnableBehavior.transferOwnership(newOwner);
     }
 }

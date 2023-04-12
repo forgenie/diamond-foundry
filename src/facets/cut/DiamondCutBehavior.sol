@@ -9,7 +9,7 @@ import { IDiamondCut } from "./IDiamondCut.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
 
 import { IDiamond } from "src/IDiamond.sol";
-import { DiamondBaseBehavior } from "src/facets/base/DiamondBaseBehavior.sol";
+import { DiamondIncrementalBehavior } from "src/facets/incremental/DiamondIncrementalBehavior.sol";
 
 error DiamondCut_validateFacetCut_SelectorArrayEmpty(address facet);
 error DiamondCut_validateFacetCut_FacetIsZeroAddress();
@@ -79,7 +79,7 @@ library DiamondCutBehavior {
         for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
-            if (DiamondBaseBehavior.isImmutable(selector)) {
+            if (DiamondIncrementalBehavior.isImmutable(selector)) {
                 revert DiamondCut_removeFacet_ImmutableFunction(selector);
             }
             if (ds.selectorToFacet[selector] != facet) {
@@ -105,7 +105,7 @@ library DiamondCutBehavior {
             bytes4 selector = selectors[i];
             address oldFacet = ds.selectorToFacet[selector];
 
-            if (DiamondBaseBehavior.isImmutable(selector)) {
+            if (DiamondIncrementalBehavior.isImmutable(selector)) {
                 revert DiamondCut_replaceFacet_ImmutableFunction(selector);
             }
             if (oldFacet == facet) {

@@ -38,19 +38,18 @@ contract DiamondBaseFacetHelper is FacetHelper {
         return address(diamondBaseFacet);
     }
 
-    function selectors() public pure override returns (bytes4[] memory selectors_) {
+    function selectors() public view override returns (bytes4[] memory selectors_) {
         selectors_ = new bytes4[](11);
-        selectors_[0] = DiamondBaseFacet.immute.selector;
-        selectors_[1] = DiamondBaseFacet.isImmutable.selector;
-        selectors_[2] = DiamondBaseFacet.diamondFactory.selector;
-        selectors_[3] = DiamondBaseFacet.diamondCut.selector;
-        selectors_[4] = DiamondBaseFacet.facets.selector;
-        selectors_[5] = DiamondBaseFacet.facetFunctionSelectors.selector;
-        selectors_[6] = DiamondBaseFacet.facetAddresses.selector;
-        selectors_[7] = DiamondBaseFacet.facetAddress.selector;
-        selectors_[8] = DiamondBaseFacet.supportsInterface.selector;
-        selectors_[9] = DiamondBaseFacet.owner.selector;
-        selectors_[10] = DiamondBaseFacet.transferOwnership.selector;
+        selectors_[0] = diamondBaseFacet.immute.selector;
+        selectors_[1] = diamondBaseFacet.isImmutable.selector;
+        selectors_[3] = diamondBaseFacet.diamondCut.selector;
+        selectors_[4] = diamondBaseFacet.facets.selector;
+        selectors_[5] = diamondBaseFacet.facetFunctionSelectors.selector;
+        selectors_[6] = diamondBaseFacet.facetAddresses.selector;
+        selectors_[7] = diamondBaseFacet.facetAddress.selector;
+        selectors_[8] = diamondBaseFacet.supportsInterface.selector;
+        selectors_[9] = diamondBaseFacet.owner.selector;
+        selectors_[10] = diamondBaseFacet.transferOwnership.selector;
     }
 
     function initializer() public pure override returns (bytes4) {

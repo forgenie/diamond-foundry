@@ -7,7 +7,7 @@ import { IERC165 } from "src/facets/introspection/IERC165.sol";
 import { IERC173 } from "src/facets/ownable/IERC173.sol";
 import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
-import { IDiamondBase } from "src/facets/base/IDiamondBase.sol";
+import { IDiamondIncremental } from "src/facets/incremental/IDiamondIncremental.sol";
 
 contract IntrospectionTest is DiamondBaseFacetTest {
     IERC165 public introspection;
@@ -23,6 +23,6 @@ contract IntrospectionTest is DiamondBaseFacetTest {
         assertTrue(introspection.supportsInterface(type(IERC173).interfaceId));
         assertTrue(introspection.supportsInterface(type(IDiamondCut).interfaceId));
         assertTrue(introspection.supportsInterface(type(IDiamondLoupe).interfaceId));
-        assertTrue(introspection.supportsInterface(type(IDiamondBase).interfaceId));
+        assertTrue(introspection.supportsInterface(type(IDiamondIncremental).interfaceId));
     }
 }
