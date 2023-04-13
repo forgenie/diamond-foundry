@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 library OwnableStorage {
-    bytes32 internal constant OWNABLE_STORAGE_SLOT = keccak256("diamond.ownable.storage");
+    bytes32 internal constant OWNABLE_STORAGE_SLOT = keccak256("ownable.storage");
 
     struct Layout {
         address owner;

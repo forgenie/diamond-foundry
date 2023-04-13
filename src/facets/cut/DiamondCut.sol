@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { DiamondCutBehavior, IDiamondCut, IDiamond } from "src/facets/cut/DiamondCutBehavior.sol";
+import { IDiamondCut } from "./IDiamondCut.sol";
+import { DiamondCutBehavior, IDiamond } from "./DiamondCutBehavior.sol";
 
 abstract contract DiamondCut is IDiamondCut {
     /// @inheritdoc IDiamondCut

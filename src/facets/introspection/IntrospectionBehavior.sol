@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-// implements interface
-import { IERC165 } from "./IERC165.sol";
-
 // uses storage
 import { IntrospectionStorage } from "./IntrospectionStorage.sol";
 

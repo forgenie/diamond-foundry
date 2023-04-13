@@ -5,7 +5,6 @@ pragma solidity 0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 
-import { IDiamondCut } from "./IDiamondCut.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
 
 import { IDiamond } from "src/IDiamond.sol";
@@ -15,10 +14,8 @@ error DiamondCut_validateFacetCut_SelectorArrayEmpty(address facet);
 error DiamondCut_validateFacetCut_FacetIsZeroAddress();
 error DiamondCut_validateFacetCut_FacetIsNotContract(address facet);
 error DiamondCut_validateFacetCut_IncorrectFacetCutAction();
-error DiamondCut_addFacet_FacetAlreadyExists(address facet);
 error DiamondCut_addFacet_FacetSelectorAlreadyExists(bytes4 selector);
 error DiamondCut_addFacet_FunctionAlreadyExistsInDiamond(bytes4 selector);
-error DiamondCut_removeFacet_FacetDoesNotExist(address facet);
 error DiamondCut_removeFacet_CannotRemoveFromOtherFacet(address facet, bytes4 selector);
 error DiamondCut_removeFacet_InvalidSelector(bytes4 selector);
 error DiamondCut_removeFacet_ImmutableFunction(bytes4 selector);
