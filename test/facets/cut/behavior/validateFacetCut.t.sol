@@ -11,7 +11,7 @@ import {
     DiamondCut_validateFacetCut_SelectorArrayEmpty
 } from "src/facets/cut/DiamondCutBehavior.sol";
 
-contract DiamondCutBehavior_validateFacetCut is DiamondCutBehaviorTest {
+contract DiamondCut_validateFacetCut is DiamondCutBehaviorTest {
     function test_RevertsWhen_IncorrectFacetCutAction() public {
         // solhint-disable-previous-line no-empty-blocks
         // can't reproduce this

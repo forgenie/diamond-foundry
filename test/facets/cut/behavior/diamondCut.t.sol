@@ -6,7 +6,7 @@ import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamond } from "src/IDiamond.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.sol";
 
-contract DiamondCutBehavior_diamondCut is DiamondCutBehaviorTest {
+contract DiamondCut_diamondCut is DiamondCutBehaviorTest {
     MockFacetHelper public newFacetHelper;
     address public init = address(0);
     bytes public initData = "";

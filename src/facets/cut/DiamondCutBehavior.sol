@@ -120,6 +120,9 @@ library DiamondCutBehavior {
                 revert DiamondCut_replaceFacet_InexistingFunction(selector);
             }
 
+            // slither-disable-next-line unused-return
+            ds.facets.add(facet);
+
             // overwrite selector to new facet
             ds.selectorToFacet[selector] = facet;
 

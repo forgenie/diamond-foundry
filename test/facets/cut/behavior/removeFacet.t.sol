@@ -10,7 +10,7 @@ import {
 } from "src/facets/cut/DiamondCutBehavior.sol";
 import { DiamondIncrementalBehavior } from "src/facets/incremental/DiamondIncrementalBehavior.sol";
 
-contract DiamondCutBehavior_removeFacet is DiamondCutBehaviorTest {
+contract DiamondCut_removeFacet is DiamondCutBehaviorTest {
     address public facet;
     bytes4[] public selectors;
 

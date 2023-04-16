@@ -12,7 +12,7 @@ import {
 import { DiamondIncrementalBehavior } from "src/facets/incremental/DiamondIncrementalBehavior.sol";
 import { MockFacet } from "test/mocks/MockFacet.sol";
 
-contract DiamondCutBehavior_replaceFacet is DiamondCutBehaviorTest {
+contract DiamondCut_replaceFacet is DiamondCutBehaviorTest {
     address public oldFacet;
     address public newFacet;
     bytes4[] public selectors;

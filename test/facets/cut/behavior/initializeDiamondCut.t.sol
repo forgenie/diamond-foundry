@@ -11,7 +11,7 @@ import { IDiamond } from "src/IDiamond.sol";
 
 // import { MockReverter } from "test/mocks/MockReverter.sol";
 
-contract DiamondCutBehavior_initializeDiamondCut is DiamondCutBehaviorTest {
+contract DiamondCut_initializeDiamondCut is DiamondCutBehaviorTest {
     function test_RevertsWhen_InitIsNotContract() public {
         IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](0);
         address init = users.owner;

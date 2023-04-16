@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 import { OwnableBehaviorTest } from "../ownable.t.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 
-contract OwnableBehavior_renounceOwnership is OwnableBehaviorTest {
+contract Ownable_renounceOwnership is OwnableBehaviorTest {
     function test_EmitsEvent() public {
         expectEmit();
         emit OwnershipTransferred(users.owner, address(0));

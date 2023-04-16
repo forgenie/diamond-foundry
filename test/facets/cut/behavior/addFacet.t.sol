@@ -8,7 +8,7 @@ import {
     DiamondCut_addFacet_FunctionAlreadyExists
 } from "src/facets/cut/DiamondCutBehavior.sol";
 
-contract DiamondCutBehavior_addFacet is DiamondCutBehaviorTest {
+contract DiamondCut_addFacet is DiamondCutBehaviorTest {
     function test_RevertsWhen_FunctionAlreadyExists() public {
         address facet = address(mockFacetHelper.facet());
         bytes4[] memory selectors = mockFacetHelper.selectors();

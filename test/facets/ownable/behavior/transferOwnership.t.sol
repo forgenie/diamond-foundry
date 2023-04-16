@@ -5,7 +5,7 @@ import { OwnableBehaviorTest } from "../ownable.t.sol";
 
 import { OwnableBehavior, Ownable_transferOwnership_ZeroAddress } from "src/facets/ownable/OwnableBehavior.sol";
 
-contract OwnableBehavior_transferOwnership is OwnableBehaviorTest {
+contract Ownable_transferOwnership is OwnableBehaviorTest {
     function test_RevertsWhen_NewOwnerIsZeroAddress() public {
         vm.expectRevert(Ownable_transferOwnership_ZeroAddress.selector);
 
