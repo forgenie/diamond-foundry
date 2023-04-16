@@ -5,7 +5,7 @@ import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 import { IDiamond, Diamond } from "src/Diamond.sol";
 import { BaseTest } from "../Base.t.sol";
 
-abstract contract FacetTest is BaseTest {
+abstract contract BaseFacetTest is BaseTest {
     address public diamond;
     FacetHelper[] public facets;
 

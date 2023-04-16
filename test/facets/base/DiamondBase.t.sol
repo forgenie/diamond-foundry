@@ -4,9 +4,9 @@ pragma solidity 0.8.19;
 import { IDiamond, Diamond } from "src/Diamond.sol";
 
 import { DiamondBaseFacet } from "src/facets/base/DiamondBaseFacet.sol";
-import { FacetTest, FacetHelper } from "../Facet.t.sol";
+import { BaseFacetTest, FacetHelper } from "../Facet.t.sol";
 
-abstract contract DiamondBaseFacetTest is FacetTest {
+abstract contract DiamondBaseFacetTest is BaseFacetTest {
     DiamondBaseFacetHelper public diamondBaseHelper;
 
     function setUp() public virtual override {

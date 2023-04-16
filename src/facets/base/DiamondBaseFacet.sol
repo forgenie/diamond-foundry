@@ -1,20 +1,16 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import { BaseFacet } from "src/facets/BaseFacet.sol";
 import { DiamondIncremental, IDiamondIncremental } from "src/facets/incremental/DiamondIncremental.sol";
 import { DiamondCut, IDiamondCut } from "src/facets/cut/DiamondCut.sol";
 import { DiamondLoupe, IDiamondLoupe } from "src/facets/loupe/DiamondLoupe.sol";
 import { Ownable, OwnableBehavior, IERC173 } from "src/facets/ownable/Ownable.sol";
 import { Introspection, IntrospectionBehavior, IERC165 } from "src/facets/introspection/Introspection.sol";
 
-contract DiamondBaseFacet is DiamondCut, DiamondLoupe, Ownable, Introspection, DiamondIncremental, Initializable {
-    /// @dev Prevents initializer from being called in the implementation.
-    constructor() {
-        _disableInitializers();
-    }
-
+contract DiamondBaseFacet is BaseFacet, DiamondCut, DiamondLoupe, Ownable, Introspection, DiamondIncremental {
     function initialize(address owner_) external initializer {
+        // todo: replace with Ownable__init etc
         OwnableBehavior.transferOwnership(owner_);
 
         IntrospectionBehavior.addInterface(type(IDiamondIncremental).interfaceId);

@@ -14,11 +14,13 @@ error DiamondCut_validateFacetCut_SelectorArrayEmpty(address facet);
 error DiamondCut_validateFacetCut_FacetIsZeroAddress();
 error DiamondCut_validateFacetCut_FacetIsNotContract(address facet);
 error DiamondCut_validateFacetCut_IncorrectFacetCutAction();
+error DiamondCut_addFacet_SelectorIsZero();
 error DiamondCut_addFacet_FacetSelectorAlreadyExists(bytes4 selector);
-error DiamondCut_addFacet_FunctionAlreadyExistsInDiamond(bytes4 selector);
+error DiamondCut_addFacet_FunctionAlreadyExists(bytes4 selector);
 error DiamondCut_removeFacet_CannotRemoveFromOtherFacet(address facet, bytes4 selector);
-error DiamondCut_removeFacet_InvalidSelector(bytes4 selector);
+error DiamondCut_removeFacet_SelectorIsZero();
 error DiamondCut_removeFacet_ImmutableFunction(bytes4 selector);
+error DiamondCut_replaceFacet_SelectorIsZero();
 error DiamondCut_replaceFacet_FunctionFromSameFacet(bytes4 selector);
 error DiamondCut_replaceFacet_InexistingFunction(bytes4 selector);
 error DiamondCut_replaceFacet_ImmutableFunction(bytes4 selector);
@@ -53,20 +55,21 @@ library DiamondCutBehavior {
     function addFacet(address facet, bytes4[] memory selectors) internal {
         DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
 
-        // does not add address if already exists
         // slither-disable-next-line unused-return
         ds.facets.add(facet);
         for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
+            if (selector == bytes4(0)) {
+                revert DiamondCut_addFacet_SelectorIsZero();
+            }
             if (ds.selectorToFacet[selector] != address(0)) {
-                revert DiamondCut_addFacet_FunctionAlreadyExistsInDiamond(selector);
+                revert DiamondCut_addFacet_FunctionAlreadyExists(selector);
             }
-            ds.selectorToFacet[selector] = facet;
 
-            if (!ds.facetSelectors[facet].add(selector)) {
-                revert DiamondCut_addFacet_FacetSelectorAlreadyExists(selector);
-            }
+            ds.selectorToFacet[selector] = facet;
+            // slither-disable-next-line unused-return
+            ds.facetSelectors[facet].add(selector);
         }
     }
 
@@ -76,17 +79,19 @@ library DiamondCutBehavior {
         for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
-            if (DiamondIncrementalBehavior.isImmutable(selector)) {
-                revert DiamondCut_removeFacet_ImmutableFunction(selector);
+            // also reverts if left side returns zero address
+            if (selector == bytes4(0)) {
+                revert DiamondCut_removeFacet_SelectorIsZero();
             }
             if (ds.selectorToFacet[selector] != facet) {
                 revert DiamondCut_removeFacet_CannotRemoveFromOtherFacet(facet, selector);
             }
-            if (!ds.facetSelectors[facet].remove(selector)) {
-                revert DiamondCut_removeFacet_InvalidSelector(selector);
+            if (DiamondIncrementalBehavior.isImmutable(selector)) {
+                revert DiamondCut_removeFacet_ImmutableFunction(selector);
             }
 
             delete ds.selectorToFacet[selector];
+            ds.facetSelectors[facet].remove(selector);
             // if no more selectors in facet, remove facet address
             if (ds.facetSelectors[facet].length() == 0) {
                 // slither-disable-next-line unused-return
@@ -102,6 +107,9 @@ library DiamondCutBehavior {
             bytes4 selector = selectors[i];
             address oldFacet = ds.selectorToFacet[selector];
 
+            if (selector == bytes4(0)) {
+                revert DiamondCut_replaceFacet_SelectorIsZero();
+            }
             if (DiamondIncrementalBehavior.isImmutable(selector)) {
                 revert DiamondCut_replaceFacet_ImmutableFunction(selector);
             }
@@ -153,7 +161,7 @@ library DiamondCutBehavior {
 
         emit DiamondCut(facetCuts, init, initData);
 
-        _initializeDiamondCut(facetCuts, init, initData);
+        initializeDiamondCut(facetCuts, init, initData);
     }
 
     function validateFacetCut(IDiamond.FacetCut memory facetCut) internal view {
@@ -171,17 +179,15 @@ library DiamondCutBehavior {
         }
     }
 
-    /// @dev This method should not be reused by other facets, only callable by `diamondCut`
-    function _initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) private {
+    function initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
         if (init == address(0)) return;
 
         // TODO: add multicall initialization to diamondFactory
-
         if (!Address.isContract(init)) {
             revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
         }
 
-        // slither-disable-next-line low-level-calls
+        // is this necessary ?? delegate call should revert anyway
         (bool success, bytes memory error) = init.delegatecall(initData);
         if (!success) {
             if (error.length > 0) {
