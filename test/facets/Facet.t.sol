@@ -15,6 +15,10 @@ abstract contract BaseFacetTest is BaseTest {
         diamond = address(new Diamond(diamondInitParams()));
     }
 
+    // function test_diamondLoupe_facets() public {}
+
+    // function test_introspection_supportedInterfaces() public {}
+
     function diamondInitParams() internal virtual returns (Diamond.InitParams memory);
 }
 

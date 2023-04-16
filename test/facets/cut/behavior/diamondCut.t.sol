@@ -11,8 +11,6 @@ contract DiamondCutBehavior_diamondCut is DiamondCutBehaviorTest {
     address public init = address(0);
     bytes public initData = "";
 
-    event DiamondCut(IDiamond.FacetCut[] facetCuts, address init, bytes initData);
-
     function setUp() public override {
         super.setUp();
 

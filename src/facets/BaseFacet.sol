@@ -2,10 +2,11 @@
 pragma solidity 0.8.19;
 
 import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import { Context } from "@openzeppelin/contracts/utils/Context.sol";
 
 error BaseFacet_noDelegateCall_DelegateNotAllowed();
 
-abstract contract BaseFacet is Initializable {
+abstract contract BaseFacet is Initializable, Context {
     address private immutable __this = address(this);
 
     modifier noDelegateCall() {
