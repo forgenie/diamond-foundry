@@ -7,10 +7,10 @@ pragma solidity 0.8.19;
  */
 interface IDiamondIncremental {
     /**
-     * @notice Sets multiple functions as immutable.
-     * @param selectors The selectors of the functions to make immutable.
+     * @notice Sets function as immutable.
+     * @param selector The selector of the functions to make immutable.
      */
-    function immute(bytes4[] memory selectors) external;
+    function turnImmutable(bytes4 selector) external;
 
     /**
      * @notice Returns true if the function selector is immutable.

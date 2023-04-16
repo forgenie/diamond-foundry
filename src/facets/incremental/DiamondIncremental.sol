@@ -6,10 +6,10 @@ import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
 
 abstract contract DiamondIncremental is IDiamondIncremental {
     /// @inheritdoc IDiamondIncremental
-    function immute(bytes4[] memory selectors) public {
+    function turnImmutable(bytes4 selector) public {
         _authorizeImmute();
 
-        DiamondIncrementalBehavior.immute(selectors);
+        DiamondIncrementalBehavior.turnImmutable(selector);
     }
 
     /// @inheritdoc IDiamondIncremental

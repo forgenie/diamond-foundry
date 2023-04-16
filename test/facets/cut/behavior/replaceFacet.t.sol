@@ -52,7 +52,7 @@ contract DiamondCutBehavior_replaceFacet is DiamondCutBehaviorTest {
     }
 
     function test_RevertsWhen_FunctionIsImmutable() public {
-        DiamondIncrementalBehavior.immute(selectors);
+        DiamondIncrementalBehavior.turnImmutable(selectors[0]);
 
         vm.expectRevert(abi.encodeWithSelector(DiamondCut_replaceFacet_ImmutableFunction.selector, selectors[0]));
         DiamondCutBehavior.replaceFacet(newFacet, selectors);

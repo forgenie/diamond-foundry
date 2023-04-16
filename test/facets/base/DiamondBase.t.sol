@@ -40,7 +40,7 @@ contract DiamondBaseFacetHelper is FacetHelper {
 
     function selectors() public view override returns (bytes4[] memory selectors_) {
         selectors_ = new bytes4[](11);
-        selectors_[0] = diamondBaseFacet.immute.selector;
+        selectors_[0] = diamondBaseFacet.turnImmutable.selector;
         selectors_[1] = diamondBaseFacet.isImmutable.selector;
         selectors_[3] = diamondBaseFacet.diamondCut.selector;
         selectors_[4] = diamondBaseFacet.facets.selector;
