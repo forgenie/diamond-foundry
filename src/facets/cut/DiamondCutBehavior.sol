@@ -85,8 +85,8 @@ library DiamondCutBehavior {
             if (!ds.facetSelectors[facet].remove(selector)) {
                 revert DiamondCut_removeFacet_InvalidSelector(selector);
             }
-            ds.selectorToFacet[selector] = address(0);
 
+            delete ds.selectorToFacet[selector];
             // if no more selectors in facet, remove facet address
             if (ds.facetSelectors[facet].length() == 0) {
                 // slither-disable-next-line unused-return
@@ -175,7 +175,7 @@ library DiamondCutBehavior {
     function _initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) private {
         if (init == address(0)) return;
 
-        // TODO: add multicall initialization from diamondFactory
+        // TODO: add multicall initialization to diamondFactory
 
         if (!Address.isContract(init)) {
             revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);

@@ -24,11 +24,11 @@ contract DiamondBaseFacet is DiamondCut, DiamondLoupe, Ownable, Introspection, D
         IntrospectionBehavior.addInterface(type(IERC173).interfaceId);
     }
 
-    function authorizeDiamondCut() internal override onlyOwner {
+    function _authorizeDiamondCut() internal override onlyOwner {
         // solhint-disable-previous-line no-empty-blocks
     }
 
-    function authorizeImmute() internal override onlyOwner {
+    function _authorizeImmute() internal override onlyOwner {
         // solhint-disable-previous-line no-empty-blocks
     }
 }

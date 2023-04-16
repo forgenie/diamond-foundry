@@ -3,12 +3,11 @@ pragma solidity 0.8.19;
 
 import { IDiamond } from "src/IDiamond.sol";
 import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
-import { DiamondBaseFacetTest } from "../DiamondBase.t.sol";
+import { DiamondBaseFacetTest } from "test/facets/base/DiamondBase.t.sol";
 
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { Ownable_checkOwner_NotOwner } from "src/facets/ownable/OwnableBehavior.sol";
 
-// TODO import events from separate IEvents interface.
 contract DiamondCutBehaviorTest is DiamondBaseFacetTest {
     IDiamondCut public diamondCut;
     MockFacetHelper public mockFacetHelper;
