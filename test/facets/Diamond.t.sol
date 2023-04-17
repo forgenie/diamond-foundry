@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IDiamondLoupe } from "src/facets/base/loupe/IDiamondLoupe.sol";
+import { BaseTest } from "test/Base.t.sol";
+import { FacetHelper } from "./Helpers.t.sol";
+import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
+import { IERC165 } from "src/facets/introspection/IERC165.sol";
 
-import { DiamondBaseFacetTest, FacetHelper } from "test/facets/base/DiamondBase.t.sol";
-
-contract DiamondLoupeTest is DiamondBaseFacetTest {
+abstract contract DiamondContext is BaseTest {
+    address public diamond;
+    FacetHelper[] public facets;
     IDiamondLoupe public diamondLoupe;
+    IERC165 public introspection;
 
-    function setUp() public override {
-        super.setUp();
+    function setUp() public virtual override {
+        // note: here we don't call super
 
         diamondLoupe = IDiamondLoupe(diamond);
+        introspection = IERC165(diamond);
     }
 
     function test_facetAddresses() public {
@@ -69,6 +74,16 @@ contract DiamondLoupeTest is DiamondBaseFacetTest {
             assertEq(expectedSelectors.length, selectors.length);
             for (uint256 j = 0; j < selectors.length; j++) {
                 assertEq(expectedSelectors[j], selectors[j]);
+            }
+        }
+    }
+
+    function test_supportsInterfaces() public {
+        for (uint256 i = 0; i < facets.length; i++) {
+            bytes4[] memory supportedInterfaces = facets[i].supportedInterfaces();
+
+            for (uint256 j = 0; j < supportedInterfaces.length; j++) {
+                assertEq(introspection.supportsInterface(supportedInterfaces[j]), true);
             }
         }
     }

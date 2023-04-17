@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { FacetHelper } from "test/facets/Facet.t.sol";
+import { FacetHelper } from "test/facets/Helpers.t.sol";
 
 interface IMockFacet {
     function mockFunction() external pure returns (uint256);
@@ -31,6 +31,11 @@ contract MockFacetHelper is FacetHelper {
 
     function initializer() public pure override returns (bytes4) {
         return bytes4(0);
+    }
+
+    function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
+        interfaces = new bytes4[](1);
+        interfaces[0] = type(IMockFacet).interfaceId;
     }
 
     function name() public pure override returns (string memory) {

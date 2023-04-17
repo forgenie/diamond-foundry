@@ -22,12 +22,15 @@ landscape.
 
 ## Features
 
-1. Facet Registry and Diamond Factory
+1. Facet Registry and Diamond Factory.
 1. Granular immutability for Diamonds.
-1. Linting & Slither in CI
-1. TBA Customizable Fallback function.
+1. Linting, Build, Test & Slither in CI.
+1. Facets contain built-in initializers.
+1. TBA Automatic upgrades for required Facets.
+1. TBA Ready-to-use deployment scripts.
+1. TBA Automatic ERC165 handling.
+1. TBA Non-Reentrant & Customizable fallback by default.
 1. TBA Wide range of available and re-usable Facets.
-1. TBA Ready-to-use deployment scripts
 1. TBA Compose a Facet which is a Diamond over other Facets.
 
 ## Installation
@@ -140,4 +143,5 @@ MIT License (c) 2023 Forgenie Labs
 ## Acknowledgements
 
 Nick Mudge @mudgen [diamond-hardhat](https://github.com/mudgen/diamond)<br /> Paul Razvan Berg @PaulRBerg
-[foundry-template](https://github.com/PaulRBerg/foundry-template) <br /> OpenZeppelin  @OpenZeppelin [openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts)
+[foundry-template](https://github.com/PaulRBerg/foundry-template) <br /> OpenZeppelin @OpenZeppelin
+[openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts)
