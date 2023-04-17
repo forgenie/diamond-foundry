@@ -8,40 +8,46 @@ import { MockFacet } from "test/mocks/MockFacet.sol";
 
 contract DiamondLoupe_facetAddress is DiamondLoupeBehaviorTest {
     function test_OnAdd_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
-        DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+        bytes4[] memory expectedSelectors = facet.selectors();
+        address expectedFacetAddress = facet.facet();
 
-        for (uint256 i = 0; i < facet.selectors().length; i++) {
-            bytes4 selector = facet.selectors()[i];
-            address facetAddress = DiamondLoupeBehavior.facetAddress(selector);
+        DiamondCutBehavior.addFacet(expectedFacetAddress, expectedSelectors);
 
-            assertEq(facetAddress, facet.facet());
+        for (uint256 i = 0; i < expectedSelectors.length; i++) {
+            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+
+            assertEq(facetAddress, expectedFacetAddress);
         }
     }
 
-    function test_onRemove_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
-        DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+    function test_OnRemove_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
+        bytes4[] memory expectedSelectors = facet.selectors();
+        address expectedFacetAddress = facet.facet();
 
-        DiamondCutBehavior.removeFacet(facet.facet(), facet.selectors());
+        DiamondCutBehavior.addFacet(expectedFacetAddress, expectedSelectors);
 
-        for (uint256 i = 0; i < facet.selectors().length; i++) {
-            bytes4 selector = facet.selectors()[i];
-            address facetAddress = DiamondLoupeBehavior.facetAddress(selector);
+        DiamondCutBehavior.removeFacet(expectedFacetAddress, expectedSelectors);
+
+        for (uint256 i = 0; i < expectedSelectors.length; i++) {
+            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, address(0));
         }
     }
 
-    function test_onReplace_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
-        DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+    function test_OnReplace_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
+        bytes4[] memory expectedSelectors = facet.selectors();
+        address oldFacet = facet.facet();
 
-        MockFacet newFacet = new MockFacet();
-        DiamondCutBehavior.replaceFacet(address(newFacet), facet.selectors());
+        DiamondCutBehavior.addFacet(oldFacet, expectedSelectors);
 
-        for (uint256 i = 0; i < facet.selectors().length; i++) {
-            bytes4 selector = facet.selectors()[i];
-            address facetAddress = DiamondLoupeBehavior.facetAddress(selector);
+        address expectedFacet = address(new MockFacet());
+        DiamondCutBehavior.replaceFacet(expectedFacet, expectedSelectors);
 
-            assertEq(facetAddress, address(newFacet));
+        for (uint256 i = 0; i < expectedSelectors.length; i++) {
+            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+
+            assertEq(facetAddress, expectedFacet);
         }
     }
 }

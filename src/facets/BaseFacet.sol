@@ -7,10 +7,10 @@ import { Context } from "@openzeppelin/contracts/utils/Context.sol";
 error BaseFacet_noDelegateCall_DelegateNotAllowed();
 
 abstract contract BaseFacet is Initializable, Context {
-    address private immutable __this = address(this);
+    address private immutable _this = address(this);
 
     modifier noDelegateCall() {
-        if (address(this) != __this) revert BaseFacet_noDelegateCall_DelegateNotAllowed();
+        if (address(this) != _this) revert BaseFacet_noDelegateCall_DelegateNotAllowed();
         _;
     }
 

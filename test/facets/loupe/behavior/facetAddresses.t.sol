@@ -7,35 +7,51 @@ import { DiamondLoupeBehavior } from "src/facets/loupe/DiamondLoupeBehavior.sol"
 import { MockFacet } from "test/mocks/MockFacet.sol";
 
 contract DiamondLoupe_facetAddresses is DiamondLoupeBehaviorTest {
-    function test_OnAdd_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
-        DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+    function test_OnAdd_ReturnsCorrectly() public appendFacets(mockFacet()) {
+        for (uint256 i = 0; i < facets.length; i++) {
+            facet = facets[i];
+
+            DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+        }
 
         address[] memory facetAddresses = DiamondLoupeBehavior.facetAddresses();
 
-        assertContains(facetAddresses, facet.facet());
+        assertEq(facetAddresses.length, facets.length);
+        for (uint256 i = 0; i < facetAddresses.length; i++) {
+            address expectedFacet = facets[i].facet();
+
+            assertEq(expectedFacet, facetAddresses[i]);
+        }
     }
 
-    function test_onRemove_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
-        DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+    function test_OnRemove_ReturnsCorrectly() public appendFacets(mockFacet()) {
+        for (uint256 i = 0; i < facets.length; i++) {
+            facet = facets[i];
 
-        DiamondCutBehavior.removeFacet(facet.facet(), facet.selectors());
+            DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+            DiamondCutBehavior.removeFacet(facet.facet(), facet.selectors());
+        }
 
         address[] memory facetAddresses = DiamondLoupeBehavior.facetAddresses();
 
         assertEq(facetAddresses.length, 0);
     }
 
-    function test_onReplace_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
-        DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+    function test_OnReplace_ReturnsCorrectly() public appendFacets(mockFacet()) {
+        address newFacet = address(new MockFacet());
 
-        MockFacet newFacet = new MockFacet();
-        DiamondCutBehavior.replaceFacet(address(newFacet), facet.selectors());
+        for (uint256 i = 0; i < facets.length; i++) {
+            facet = facets[i];
+
+            DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+            DiamondCutBehavior.replaceFacet(newFacet, facet.selectors());
+        }
 
         address[] memory facetAddresses = DiamondLoupeBehavior.facetAddresses();
 
-        assertContains(facetAddresses, address(newFacet));
-
+        assertContains(facetAddresses, newFacet);
         for (uint256 i = 0; i < facetAddresses.length; i++) {
+            facet = facets[i];
             assertNotEq(facetAddresses[i], facet.facet());
         }
     }

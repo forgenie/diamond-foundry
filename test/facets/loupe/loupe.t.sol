@@ -18,6 +18,14 @@ abstract contract DiamondLoupeBehaviorTest is BaseTest {
         }
     }
 
+    modifier appendFacets(FacetHelper[] memory testFacets) {
+        delete facets;
+        for (uint256 i = 0; i < testFacets.length; i++) {
+            facets.push(testFacets[i]);
+        }
+        _;
+    }
+
     function setUp() public virtual override {
         super.setUp();
 

@@ -91,6 +91,7 @@ library DiamondCutBehavior {
             }
 
             delete ds.selectorToFacet[selector];
+            // slither-disable-next-line unused-return
             ds.facetSelectors[facet].remove(selector);
             // if no more selectors in facet, remove facet address
             if (ds.facetSelectors[facet].length() == 0) {
@@ -191,6 +192,7 @@ library DiamondCutBehavior {
         }
 
         // is this necessary ?? delegate call should revert anyway
+        // slither-disable-next-line low-level-calls
         (bool success, bytes memory error) = init.delegatecall(initData);
         if (!success) {
             if (error.length > 0) {

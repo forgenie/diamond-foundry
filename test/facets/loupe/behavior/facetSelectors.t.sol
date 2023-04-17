@@ -18,7 +18,7 @@ contract DiamondLoupe_facetSelectors is DiamondLoupeBehaviorTest {
         }
     }
 
-    function test_onRemove_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
+    function test_OnRemove_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
         DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
 
         DiamondCutBehavior.removeFacet(facet.facet(), facet.selectors());
@@ -28,7 +28,7 @@ contract DiamondLoupe_facetSelectors is DiamondLoupeBehaviorTest {
         assertEq(selectors.length, 0);
     }
 
-    function test_onReplace_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
+    function test_OnReplace_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
         DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
 
         address newFacet = address(new MockFacet());
