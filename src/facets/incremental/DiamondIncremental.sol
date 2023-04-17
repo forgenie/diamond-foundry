@@ -3,8 +3,14 @@ pragma solidity 0.8.19;
 
 import { IDiamondIncremental } from "./IDiamondIncremental.sol";
 import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
+import { Facet } from "src/facets/BaseFacet.sol";
+import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
-abstract contract DiamondIncremental is IDiamondIncremental {
+abstract contract DiamondIncremental is IDiamondIncremental, Facet {
+    function __DiamondIncremental_init() internal onlyInitializing {
+        IntrospectionBehavior.addInterface(type(IDiamondIncremental).interfaceId);
+    }
+
     /// @inheritdoc IDiamondIncremental
     function turnImmutable(bytes4 selector) public {
         _authorizeImmute();

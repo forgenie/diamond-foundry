@@ -8,19 +8,23 @@ import { IDiamondLoupe } from "src/facets/loupe/DiamondLoupe.sol";
 import { IERC165 } from "src/facets/introspection/IERC165.sol";
 import { IERC173 } from "src/facets/ownable/IERC173.sol";
 import { IDiamondIncremental } from "src/facets/incremental/IDiamondIncremental.sol";
-import { DiamondBaseFacet } from "src/facets/base/DiamondBaseFacet.sol";
+import { DiamondBaseFacet, IDiamondBase } from "src/facets/base/DiamondBaseFacet.sol";
+import { Ownable_checkOwner_NotOwner } from "src/facets/ownable/OwnableBehavior.sol";
 
 import { BaseFacetTest } from "test/facets/Facet.t.sol";
 import { FacetHelper } from "test/facets/Helpers.t.sol";
 
 contract DiamondBaseFacetTest is BaseFacetTest {
     DiamondBaseFacetHelper public diamondBaseHelper;
+    IDiamondBase public diamondBase;
 
     function setUp() public virtual override {
         diamondBaseHelper = new DiamondBaseFacetHelper();
         facets.push(diamondBaseHelper);
 
         super.setUp();
+
+        diamondBase = IDiamondBase(diamond);
     }
 
     function diamondInitParams() internal virtual override returns (Diamond.InitParams memory) {
@@ -31,6 +35,21 @@ contract DiamondBaseFacetTest is BaseFacetTest {
         baseFacets[0] = diamondBaseHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
         return Diamond.InitParams({ baseFacets: baseFacets, init: init, initData: initData });
+    }
+
+    function test_diamondCut_RevertsWhen_CallerIsNotOwner() public {
+        IDiamond.FacetCut[] memory cuts = new IDiamond.FacetCut[](1);
+        cuts[0] = diamondBaseHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+
+        vm.startPrank(users.stranger);
+        vm.expectRevert(abi.encodeWithSelector(Ownable_checkOwner_NotOwner.selector, users.stranger));
+        diamondBase.diamondCut(cuts, address(0), new bytes(0));
+    }
+
+    function test_turnImmutable_RevertsWhen_CallerIsNotOnwer() public {
+        vm.startPrank(users.stranger);
+        vm.expectRevert(abi.encodeWithSelector(Ownable_checkOwner_NotOwner.selector, users.stranger));
+        diamondBase.turnImmutable(bytes4(0x12345678));
     }
 }
 
