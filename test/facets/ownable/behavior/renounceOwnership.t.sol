@@ -6,7 +6,7 @@ import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 
 contract Ownable_renounceOwnership is OwnableBehaviorTest {
     function test_EmitsEvent() public {
-        expectEmit();
+        vm.expectEmit();
         emit OwnershipTransferred(users.owner, address(0));
 
         OwnableBehavior.renounceOwnership();

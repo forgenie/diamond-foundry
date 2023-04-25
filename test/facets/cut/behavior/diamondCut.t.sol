@@ -21,17 +21,17 @@ contract DiamondCut_diamondCut is DiamondCutBehaviorTest {
         IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](1);
         facetCuts[0] = mockFacetHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        expectEmit();
+        vm.expectEmit();
         emit DiamondCut(facetCuts, init, initData);
         DiamondCutBehavior.diamondCut(facetCuts, init, initData);
 
         facetCuts[0] = newFacetHelper.makeFacetCut(IDiamond.FacetCutAction.Replace);
-        expectEmit();
+        vm.expectEmit();
         emit DiamondCut(facetCuts, init, initData);
         DiamondCutBehavior.diamondCut(facetCuts, init, initData);
 
         facetCuts[0] = newFacetHelper.makeFacetCut(IDiamond.FacetCutAction.Remove);
-        expectEmit();
+        vm.expectEmit();
         emit DiamondCut(facetCuts, init, initData);
         DiamondCutBehavior.diamondCut(facetCuts, init, initData);
     }

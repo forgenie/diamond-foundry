@@ -10,9 +10,8 @@ import {
     FacetRegistry_validateFacetInfo_FacetMustHaveSelectors,
     FacetRegistry_validateFacetInfo_FacetNameEmpty,
     FacetRegistry_registerFacet_FacetAlreadyRegistered
-} from "src/registry/Errors.sol";
+} from "src/registry/FacetRegistry.sol";
 
-// solhint-disable-next-line contract-name-camelcase
 contract FacetRegistry_registerFacet is FacetRegistryTest {
     function test_RevertsWhen_FacetAddressIsZero() public {
         IFacetRegistry.FacetInfo memory facetInfo = IFacetRegistry.FacetInfo({
@@ -77,7 +76,7 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
 
         bytes32 facetId = facetRegistry.computeFacetId(facetName);
 
-        expectEmit(address(facetRegistry));
+        vm.expectEmit(address(facetRegistry));
         emit FacetImplementationSet(facetId, address(mockFacet));
 
         facetRegistry.registerFacet(facetInfo);

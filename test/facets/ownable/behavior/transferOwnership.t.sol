@@ -13,7 +13,7 @@ contract Ownable_transferOwnership is OwnableBehaviorTest {
     }
 
     function test_EmitsEvent() public {
-        expectEmit();
+        vm.expectEmit();
         emit OwnershipTransferred(users.owner, users.stranger);
 
         OwnableBehavior.transferOwnership(users.stranger);
