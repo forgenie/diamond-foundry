@@ -6,9 +6,6 @@ import { Diamond } from "../Diamond.sol";
 import { IDiamondFactory, IFacetRegistry, IDiamond, BaseFacetInfo, FacetInit } from "./IDiamondFactory.sol";
 import { console } from "forge-std/console.sol";
 
-error DiamondFactory_multiCall_InvalidLength();
-error DiamondFactory_deployDiamond_InvalidInitializer();
-
 contract DiamondFactory is IDiamondFactory {
     IFacetRegistry private immutable _facetRegistry;
 

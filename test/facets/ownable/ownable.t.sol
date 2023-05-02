@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
-
+import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
 import { BaseTest } from "test/Base.t.sol";
 
 abstract contract OwnableBehaviorTest is BaseTest {

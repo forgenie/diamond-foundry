@@ -6,7 +6,7 @@ import { OwnableBehavior } from "./OwnableBehavior.sol";
 import { Facet } from "src/facets/BaseFacet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
-abstract contract Ownable is IERC173, Facet {
+contract OwnableFacet is IERC173, Facet {
     modifier onlyOwner() {
         OwnableBehavior.checkOwner(_msgSender());
         _;
@@ -15,6 +15,10 @@ abstract contract Ownable is IERC173, Facet {
     function __Ownable_init(address owner_) internal onlyInitializing {
         OwnableBehavior.transferOwnership(owner_);
         IntrospectionBehavior.addInterface(type(IERC173).interfaceId);
+    }
+
+    function initialize(address owner_) external initializer {
+        __Ownable_init(owner_);
     }
 
     /// @inheritdoc IERC173

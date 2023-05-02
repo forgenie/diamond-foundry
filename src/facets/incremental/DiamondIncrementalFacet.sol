@@ -1,14 +1,19 @@
-// SPDX-License-Identifier MIT License
+// SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
 import { IDiamondIncremental } from "./IDiamondIncremental.sol";
 import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
 import { Facet } from "src/facets/BaseFacet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 
-abstract contract DiamondIncremental is IDiamondIncremental, Facet {
+contract DiamondIncrementalFacet is IDiamondIncremental, Facet {
     function __DiamondIncremental_init() internal onlyInitializing {
         IntrospectionBehavior.addInterface(type(IDiamondIncremental).interfaceId);
+    }
+
+    function initialize() external initializer {
+        __DiamondIncremental_init();
     }
 
     /// @inheritdoc IDiamondIncremental
@@ -23,5 +28,7 @@ abstract contract DiamondIncremental is IDiamondIncremental, Facet {
         return DiamondIncrementalBehavior.isImmutable(selector);
     }
 
-    function _authorizeImmute() internal virtual;
+    function _authorizeImmute() internal virtual {
+        OwnableBehavior.checkOwner(_msgSender());
+    }
 }

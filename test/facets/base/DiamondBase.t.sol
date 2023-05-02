@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 import { IDiamond, Diamond } from "src/Diamond.sol";
 
 import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
-import { IDiamondLoupe } from "src/facets/loupe/DiamondLoupe.sol";
+import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 import { IERC165 } from "src/facets/introspection/IERC165.sol";
 import { IERC173 } from "src/facets/ownable/IERC173.sol";
 import { IDiamondIncremental } from "src/facets/incremental/IDiamondIncremental.sol";

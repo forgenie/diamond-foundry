@@ -2,13 +2,18 @@
 pragma solidity 0.8.19;
 
 import { IDiamondCut } from "./IDiamondCut.sol";
-import { DiamondCutBehavior, IDiamond } from "./DiamondCutBehavior.sol";
 import { Facet } from "src/facets/BaseFacet.sol";
+import { DiamondCutBehavior, IDiamond } from "./DiamondCutBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 
-abstract contract DiamondCut is IDiamondCut, Facet {
+contract DiamondCutFacet is IDiamondCut, Facet {
     function __DiamondCut_init() internal onlyInitializing {
         IntrospectionBehavior.addInterface(type(IDiamondCut).interfaceId);
+    }
+
+    function initialize() external initializer {
+        __DiamondCut_init();
     }
 
     /// @inheritdoc IDiamondCut
@@ -19,5 +24,7 @@ abstract contract DiamondCut is IDiamondCut, Facet {
     }
 
     /// @dev Allows multiple possibilities for authorizing `diamondCut`.
-    function _authorizeDiamondCut() internal virtual;
+    function _authorizeDiamondCut() internal virtual {
+        OwnableBehavior.checkOwner(_msgSender());
+    }
 }

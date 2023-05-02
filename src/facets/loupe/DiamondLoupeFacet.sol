@@ -6,9 +6,13 @@ import { DiamondLoupeBehavior } from "./DiamondLoupeBehavior.sol";
 import { Facet } from "src/facets/BaseFacet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
-abstract contract DiamondLoupe is IDiamondLoupe, Facet {
+contract DiamondLoupeFacet is IDiamondLoupe, Facet {
     function __DiamondLoupe_init() internal onlyInitializing {
         IntrospectionBehavior.addInterface(type(IDiamondLoupe).interfaceId);
+    }
+
+    function initialize() external initializer {
+        __DiamondLoupe_init();
     }
 
     /// @inheritdoc IDiamondLoupe

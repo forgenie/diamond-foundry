@@ -13,8 +13,6 @@ abstract contract DiamondContext is BaseTest {
     IERC165 public introspection;
 
     function setUp() public virtual override {
-        // note: here we don't call super
-
         diamondLoupe = IDiamondLoupe(diamond);
         introspection = IERC165(diamond);
     }
