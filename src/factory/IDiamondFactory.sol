@@ -4,6 +4,16 @@ pragma solidity 0.8.19;
 import { IDiamond } from "src/IDiamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
+struct BaseFacetInfo {
+    bytes32 facetId;
+    bytes initData; // contains just args for the initializer
+}
+
+struct FacetInit {
+    address facet;
+    bytes data; // encoded initializer + args
+}
+
 /**
  * @title IDiamondFactory
  * @notice Interface of the Diamond Factory contract.
@@ -12,14 +22,14 @@ interface IDiamondFactory {
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
-    event DiamondCreated(address indexed diamond, address indexed deployer, bytes32 baseFacetId);
+    event DiamondCreated(address indexed diamond, address indexed deployer, BaseFacetInfo[] baseFacets);
 
     /**
      * @notice Creates a diamond with the given base Facets
-     * @param baseFacetId The Id of the base facet to be added to the diamond.
+     * @param baseFacets The base facets info which will be added to the diamond.
      * @return diamond The address of the diamond.
      */
-    function createDiamond(bytes32 baseFacetId) external returns (address diamond);
+    function createDiamond(BaseFacetInfo[] calldata baseFacets) external returns (address diamond);
 
     /**
      * @notice Creates a diamond with the given base Facets and salt.
@@ -41,6 +51,13 @@ interface IDiamondFactory {
         external
         view
         returns (IDiamond.FacetCut memory facetCut);
+
+    /**
+     * @dev To be called only via delegatecall.
+     * @notice Executes a delegatecall to initialize the diamond.
+     * @param diamondInitData The FacetInit data to be used in the delegatecall.
+     */
+    function multiDelegateCall(FacetInit[] memory diamondInitData) external;
 
     /**
      * @notice Returns the address of the `FacetRegistry`.
