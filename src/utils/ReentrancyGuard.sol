@@ -5,15 +5,11 @@ error ReentrancyGuard_nonReentrant_ReentrantCall();
 
 abstract contract ReentrancyGuard {
     bytes32 private constant _REENTRANCY_GUARD_SLOT = keccak256("utils.reentrancy.guard");
-    uint256 private constant _NOT_ENTERED = 1;
-    uint256 private constant _ENTERED = 2;
+    uint256 private constant _NOT_ENTERED = 0;
+    uint256 private constant _ENTERED = 1;
 
     struct Storage {
         uint256 status;
-    }
-
-    constructor() {
-        layout().status = _NOT_ENTERED;
     }
 
     modifier nonReentrant() {
