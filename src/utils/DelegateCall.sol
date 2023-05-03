@@ -5,11 +5,7 @@ error DelegateCall_noDelegateCall_DelegateNotAllowed();
 error DelegateCall_onlyDelegateCall_OnlyDelegate();
 
 abstract contract DelegateCall {
-    address private immutable _this;
-
-    constructor() {
-        _this = address(this);
-    }
+    address private immutable _this = address(this);
 
     modifier onlyDelegateCall() {
         if (address(this) == _this) revert DelegateCall_onlyDelegateCall_OnlyDelegate();

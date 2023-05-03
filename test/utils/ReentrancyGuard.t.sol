@@ -13,7 +13,7 @@ contract ReentrancyGuardTest is BaseTest {
         target = new MockReentrancy();
     }
 
-    function test_Reentrancy() public {
+    function test_RevertsWhen_DetectsReentrancy() public {
         vm.expectRevert(ReentrancyGuard_nonReentrant_ReentrantCall.selector);
 
         target.increment();
