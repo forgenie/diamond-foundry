@@ -64,7 +64,7 @@ abstract contract Initializable {
         }
     }
 
-    function layout() internal pure returns (Storage storage s) {
+    function layout() private pure returns (Storage storage s) {
         bytes32 position = _INITIALIZABLE_SLOT;
 
         // solhint-disable-next-line no-inline-assembly
