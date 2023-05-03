@@ -2,9 +2,9 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { PRBTest } from "@prb/test/PRBTest.sol";
-import { StdCheats } from "forge-std/Test.sol";
+import { StdCheats, StdUtils } from "forge-std/Test.sol";
 
-abstract contract BaseTest is PRBTest, StdCheats {
+abstract contract BaseTest is PRBTest, StdCheats, StdUtils {
     struct Users {
         address payable owner;
         address payable stranger;
