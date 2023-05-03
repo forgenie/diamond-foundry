@@ -10,11 +10,9 @@ abstract contract DiamondContext is BaseTest {
     address public diamond;
     FacetHelper[] public facets;
     IDiamondLoupe public diamondLoupe;
-    IERC165 public introspection;
 
     function setUp() public virtual override {
         diamondLoupe = IDiamondLoupe(diamond);
-        introspection = IERC165(diamond);
     }
 
     function test_facetAddresses() public {
@@ -81,7 +79,7 @@ abstract contract DiamondContext is BaseTest {
             bytes4[] memory supportedInterfaces = facets[i].supportedInterfaces();
 
             for (uint256 j = 0; j < supportedInterfaces.length; j++) {
-                assertEq(introspection.supportsInterface(supportedInterfaces[j]), true);
+                assertEq(IERC165(diamond).supportsInterface(supportedInterfaces[j]), true);
             }
         }
     }
