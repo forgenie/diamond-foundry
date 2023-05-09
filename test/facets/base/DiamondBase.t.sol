@@ -10,7 +10,6 @@ import { IERC173 } from "src/facets/ownable/IERC173.sol";
 import { IDiamondIncremental } from "src/facets/incremental/IDiamondIncremental.sol";
 import { Ownable_checkOwner_NotOwner } from "src/facets/ownable/OwnableBehavior.sol";
 
-import { BaseFacetTest } from "test/facets/Facet.t.sol";
 import { FacetHelper } from "test/facets/Helpers.t.sol";
 
 // abstract contract DiamondBaseFacetTest is BaseFacetTest {

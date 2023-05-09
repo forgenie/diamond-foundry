@@ -9,14 +9,9 @@ import { IERC165 } from "src/facets/introspection/IERC165.sol";
 abstract contract DiamondContext is BaseTest {
     address public diamond;
     FacetHelper[] public facets;
-    IDiamondLoupe public diamondLoupe;
-
-    function setUp() public virtual override {
-        diamondLoupe = IDiamondLoupe(diamond);
-    }
 
     function test_facetAddresses() public {
-        address[] memory facetAddresses = diamondLoupe.facetAddresses();
+        address[] memory facetAddresses = IDiamondLoupe(diamond).facetAddresses();
         assertEq(facetAddresses.length, facets.length);
 
         for (uint256 i = 0; i < facetAddresses.length; i++) {
@@ -27,25 +22,25 @@ abstract contract DiamondContext is BaseTest {
     }
 
     function test_facetAddress() public {
-        address[] memory facetAddresses = diamondLoupe.facetAddresses();
+        address[] memory facetAddresses = IDiamondLoupe(diamond).facetAddresses();
         assertEq(facetAddresses.length, facets.length);
 
         for (uint256 i = 0; i < facetAddresses.length; i++) {
             bytes4[] memory selectors = facets[i].selectors();
 
             for (uint256 j = 0; j < selectors.length; j++) {
-                assertEq(diamondLoupe.facetAddress(selectors[j]), facets[i].facet());
+                assertEq(IDiamondLoupe(diamond).facetAddress(selectors[j]), facets[i].facet());
             }
         }
     }
 
     function test_facetFunctionSelectors() public {
-        address[] memory facetAddresses = diamondLoupe.facetAddresses();
+        address[] memory facetAddresses = IDiamondLoupe(diamond).facetAddresses();
         assertEq(facetAddresses.length, facets.length);
 
         for (uint256 i = 0; i < facetAddresses.length; i++) {
             bytes4[] memory expectedSelectors = facets[i].selectors();
-            bytes4[] memory selectors = diamondLoupe.facetFunctionSelectors(facets[i].facet());
+            bytes4[] memory selectors = IDiamondLoupe(diamond).facetFunctionSelectors(facets[i].facet());
 
             assertEq(expectedSelectors.length, selectors.length);
             for (uint256 j = 0; j < selectors.length; j++) {
@@ -55,10 +50,10 @@ abstract contract DiamondContext is BaseTest {
     }
 
     function test_facets() public {
-        address[] memory facetAddresses = diamondLoupe.facetAddresses();
+        address[] memory facetAddresses = IDiamondLoupe(diamond).facetAddresses();
         assertEq(facetAddresses.length, facets.length);
 
-        IDiamondLoupe.Facet[] memory expectedFacets = diamondLoupe.facets();
+        IDiamondLoupe.Facet[] memory expectedFacets = IDiamondLoupe(diamond).facets();
 
         assertEq(expectedFacets.length, facets.length);
         for (uint256 i = 0; i < expectedFacets.length; i++) {

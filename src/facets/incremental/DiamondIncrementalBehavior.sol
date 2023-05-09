@@ -8,14 +8,12 @@ import { DiamondIncrementalStorage } from "./DiamondIncrementalStorage.sol";
 error DiamondIncremental_turnImmutable_AlreadyImmutable(bytes4 selector);
 
 library DiamondIncrementalBehavior {
-    event SelectorTurnedImmutable(bytes4 indexed selector);
-
     function isImmutable(bytes4 selector) internal view returns (bool) {
         // if `diamondCut` method was removed all functions are immutable
         if (!IntrospectionBehavior.supportsInterface(type(IDiamondCut).interfaceId)) {
             return true;
         }
-        return DiamondIncrementalStorage.layout().immutableFunctions[selector];
+        return DiamondIncrementalStorage.isImmutable(selector);
     }
 
     function turnImmutable(bytes4 selector) internal {
@@ -23,8 +21,6 @@ library DiamondIncrementalBehavior {
             revert DiamondIncremental_turnImmutable_AlreadyImmutable(selector);
         }
 
-        DiamondIncrementalStorage.layout().immutableFunctions[selector] = true;
-
-        emit SelectorTurnedImmutable(selector);
+        DiamondIncrementalStorage.turnImmutable(selector);
     }
 }

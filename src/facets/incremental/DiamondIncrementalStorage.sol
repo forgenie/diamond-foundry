@@ -8,6 +8,14 @@ library DiamondIncrementalStorage {
         mapping(bytes4 selector => bool isImmutable) immutableFunctions;
     }
 
+    function isImmutable(bytes4 selector) internal view returns (bool) {
+        return layout().immutableFunctions[selector];
+    }
+
+    function turnImmutable(bytes4 selector) internal {
+        layout().immutableFunctions[selector] = true;
+    }
+
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = DIAMOND_INCREMENTAL_STORAGE_POSITION;
 

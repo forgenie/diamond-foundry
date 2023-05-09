@@ -4,9 +4,9 @@ pragma solidity 0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Diamond } from "../Diamond.sol";
 import { IDiamondFactory, IFacetRegistry, IDiamond, BaseFacetInfo, FacetInit } from "./IDiamondFactory.sol";
-import { console } from "forge-std/console.sol";
+import { DelegateCall } from "src/utils/DelegateCall.sol";
 
-contract DiamondFactory is IDiamondFactory {
+contract DiamondFactory is IDiamondFactory, DelegateCall {
     IFacetRegistry private immutable _facetRegistry;
 
     constructor(IFacetRegistry registry) {
@@ -43,8 +43,8 @@ contract DiamondFactory is IDiamondFactory {
         facetCut.selectors = _facetRegistry.getFacetSelectors(facetId);
     }
 
-    // onlyDelegateCalls();
-    function multiDelegateCall(FacetInit[] memory diamondInitData) external {
+    /// @inheritdoc IDiamondFactory
+    function multiDelegateCall(FacetInit[] memory diamondInitData) external onlyDelegateCall {
         for (uint256 i = 0; i < diamondInitData.length; i++) {
             FacetInit memory facetInit = diamondInitData[i];
             if (facetInit.data.length == 0) continue;
@@ -82,27 +82,5 @@ contract DiamondFactory is IDiamondFactory {
         });
 
         diamond = address(new Diamond(initParams));
-    }
-
-    function _deployDiamondBase(bytes32 baseFacetId, address owner) private returns (address) {
-        IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](1);
-        facetCuts[0] = makeFacetCut(IDiamond.FacetCutAction.Add, baseFacetId);
-
-        bytes4 initializer = _facetRegistry.getInitializer(baseFacetId);
-
-        address init;
-        bytes memory initData;
-        if (initializer == bytes4(0)) {
-            init = address(0);
-            initData = bytes("");
-        } else {
-            init = _facetRegistry.getFacetAddress(baseFacetId);
-            initData = abi.encodeWithSelector(initializer, owner);
-        }
-
-        Diamond.InitParams memory initParams =
-            Diamond.InitParams({ baseFacets: facetCuts, init: init, initData: initData });
-
-        return address(new Diamond(initParams));
     }
 }
