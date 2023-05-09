@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { IDiamondIncremental } from "./IDiamondIncremental.sol";
 import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
-import { Facet } from "src/facets/BaseFacet.sol";
+import { Facet } from "src/facets/Facet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 

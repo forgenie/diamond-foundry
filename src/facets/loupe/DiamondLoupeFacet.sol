@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { IDiamondLoupe } from "./IDiamondLoupe.sol";
 import { DiamondLoupeBehavior } from "./DiamondLoupeBehavior.sol";
-import { Facet } from "src/facets/BaseFacet.sol";
+import { Facet } from "src/facets/Facet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 contract DiamondLoupeFacet is IDiamondLoupe, Facet {

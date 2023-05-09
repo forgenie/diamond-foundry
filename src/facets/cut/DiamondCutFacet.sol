@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { IDiamondCut } from "./IDiamondCut.sol";
-import { Facet } from "src/facets/BaseFacet.sol";
+import { Facet } from "src/facets/Facet.sol";
 import { DiamondCutBehavior, IDiamond } from "./DiamondCutBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";

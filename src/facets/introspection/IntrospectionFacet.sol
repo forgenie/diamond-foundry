@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { IERC165 } from "./IERC165.sol";
 import { IntrospectionBehavior } from "./IntrospectionBehavior.sol";
-import { Facet } from "src/facets/BaseFacet.sol";
+import { Facet } from "src/facets/Facet.sol";
 
 contract IntrospectionFacet is IERC165, Facet {
     function __Introspection_init() internal onlyInitializing {

@@ -5,11 +5,9 @@ import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable
 import { Context } from "@openzeppelin/contracts/utils/Context.sol";
 import { DelegateCall } from "src/utils/DelegateCall.sol";
 
-// solhint-disable-next-line no-empty-blocks
+// todo: delete context
 abstract contract Facet is Initializable, Context, DelegateCall {
     constructor() {
         _disableInitializers();
     }
 }
-
-abstract contract BaseFacet is Facet { }

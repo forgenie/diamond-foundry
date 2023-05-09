@@ -35,23 +35,6 @@ library DiamondCutBehavior {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
-    function getFacetAddresses() internal view returns (address[] memory facets) {
-        return DiamondCutStorage.layout().facets.values();
-    }
-
-    function getFacetFromSelector(bytes4 selector) internal view returns (address facet) {
-        return DiamondCutStorage.layout().selectorToFacet[selector];
-    }
-
-    function getFacetSelectors(address facet) internal view returns (bytes4[] memory selectors) {
-        EnumerableSet.Bytes32Set storage facetSelectors = DiamondCutStorage.layout().facetSelectors[facet];
-        uint256 selectorCount = facetSelectors.length();
-        selectors = new bytes4[](selectorCount);
-        for (uint256 i = 0; i < selectorCount; i++) {
-            selectors[i] = bytes4(facetSelectors.at(i));
-        }
-    }
-
     function addFacet(address facet, bytes4[] memory selectors) internal {
         DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
 
@@ -191,7 +174,6 @@ library DiamondCutBehavior {
             revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
         }
 
-        // is this necessary ?? delegate call should revert anyway
         // slither-disable-next-line low-level-calls
         (bool success, bytes memory error) = init.delegatecall(initData);
         if (!success) {

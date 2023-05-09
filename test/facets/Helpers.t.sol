@@ -6,17 +6,17 @@ import { IDiamond } from "src/Diamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
 abstract contract FacetHelper {
-    function facet() public virtual returns (address);
+    function facet() public view virtual returns (address);
 
     function selectors() public view virtual returns (bytes4[] memory);
 
-    function initializer() public pure virtual returns (bytes4);
+    function initializer() public view virtual returns (bytes4);
 
-    function name() public pure virtual returns (string memory);
+    function name() public view virtual returns (string memory);
 
-    function supportedInterfaces() public pure virtual returns (bytes4[] memory);
+    function supportedInterfaces() public view virtual returns (bytes4[] memory);
 
-    function facetInfo() public returns (IFacetRegistry.FacetInfo memory info) {
+    function facetInfo() public view returns (IFacetRegistry.FacetInfo memory info) {
         info = IFacetRegistry.FacetInfo({
             name: name(),
             addr: facet(),
@@ -25,7 +25,7 @@ abstract contract FacetHelper {
         });
     }
 
-    function makeFacetCut(IDiamond.FacetCutAction action) public returns (IDiamond.FacetCut memory) {
+    function makeFacetCut(IDiamond.FacetCutAction action) public view returns (IDiamond.FacetCut memory) {
         return IDiamond.FacetCut({ action: action, facet: facet(), selectors: selectors() });
     }
 }

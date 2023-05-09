@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { IERC173 } from "./IERC173.sol";
 import { OwnableBehavior } from "./OwnableBehavior.sol";
-import { Facet } from "src/facets/BaseFacet.sol";
+import { Facet } from "src/facets/Facet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 contract OwnableFacet is IERC173, Facet {
