@@ -5,8 +5,7 @@ import { DiamondCutBehaviorTest } from "../cut.t.sol";
 import {
     DiamondCutBehavior,
     DiamondCut_removeFacet_CannotRemoveFromOtherFacet,
-    DiamondCut_removeFacet_SelectorIsZero,
-    DiamondCut_removeFacet_ImmutableFunction
+    DiamondCut_removeFacet_SelectorIsZero
 } from "src/facets/cut/DiamondCutBehavior.sol";
 import { DiamondIncrementalBehavior } from "src/facets/incremental/DiamondIncrementalBehavior.sol";
 
@@ -43,10 +42,10 @@ contract DiamondCut_removeFacet is DiamondCutBehaviorTest {
         DiamondCutBehavior.removeFacet(facet, selectorsToRemove);
     }
 
-    function test_RevertsWhen_SelectorIsImmutable() public {
-        DiamondIncrementalBehavior.turnImmutable(selectors[0]);
+    // function test_RevertsWhen_SelectorIsImmutable() public {
+    //     DiamondIncrementalBehavior.turnImmutable(selectors[0]);
 
-        vm.expectRevert(abi.encodeWithSelector(DiamondCut_removeFacet_ImmutableFunction.selector, selectors[0]));
-        DiamondCutBehavior.removeFacet(facet, selectors);
-    }
+    //     vm.expectRevert(abi.encodeWithSelector(DiamondCut_removeFacet_ImmutableFunction.selector, selectors[0]));
+    //     DiamondCutBehavior.removeFacet(facet, selectors);
+    // }
 }

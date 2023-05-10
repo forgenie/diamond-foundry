@@ -26,12 +26,4 @@ interface IDiamond {
         FacetCutAction action;
         bytes4[] selectors;
     }
-
-    /**
-     * @dev Emitted when a facet is added, replaced or removed.
-     * @param facetCuts The Facet actions that were performed.
-     * @param init The address where the initialization was delegated to.
-     * @param initData The data that was passed to the initialization function.
-     */
-    event DiamondCut(FacetCut[] facetCuts, address init, bytes initData);
 }

@@ -16,6 +16,7 @@ abstract contract Initializable {
         bool initializing;
     }
 
+    // todo: add address of the facet that is initialized
     event Initialized(uint8 version);
 
     modifier initializer() {

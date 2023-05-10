@@ -4,12 +4,12 @@ pragma solidity 0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { IDiamondFactory } from "./factory/IDiamondFactory.sol";
 import { IDiamond } from "./IDiamond.sol";
-import { DiamondCutBehavior } from "./facets/cut/DiamondCutBehavior.sol";
+import { DiamondCutBase } from "./facets/cut/DiamondCutBase.sol";
 import { DiamondLoupeBehavior } from "./facets/loupe/DiamondLoupeBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
-contract Diamond is IDiamond {
+contract Diamond is IDiamond, DiamondCutBase {
     struct InitParams {
         FacetCut[] baseFacets;
         address init;
@@ -19,7 +19,7 @@ contract Diamond is IDiamond {
     constructor(InitParams memory params) {
         // Initializer on `init` will set up the state
         // NOTE: If `diamondCut` facet is not provided, the diamond will be immutable
-        DiamondCutBehavior.diamondCut(params.baseFacets, params.init, params.initData);
+        _diamondCut(params.baseFacets, params.init, params.initData);
     }
 
     fallback() external {
@@ -48,4 +48,7 @@ contract Diamond is IDiamond {
             return(0, returndatasize())
         }
     }
+
+    // solhint-disable-next-line no-empty-blocks
+    function _authorizeDiamondCut() internal override { }
 }

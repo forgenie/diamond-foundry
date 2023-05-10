@@ -3,14 +3,14 @@ pragma solidity 0.8.19;
 
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { BaseTest } from "test/Base.t.sol";
-import { IDiamond, IDiamondCut, DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
+import { IDiamondCutEvents, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
+import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { IDiamond } from "src/Diamond.sol";
 import { FacetHelper } from "test/facets/Helpers.t.sol";
 
-abstract contract DiamondCutBehaviorTest is BaseTest {
+abstract contract DiamondCutBehaviorTest is BaseTest, IDiamondCutEvents {
     MockFacetHelper public mockFacetHelper;
-
-    event DiamondCut(IDiamond.FacetCut[] facetCuts, address init, bytes initData);
 
     function setUp() public virtual override {
         super.setUp();

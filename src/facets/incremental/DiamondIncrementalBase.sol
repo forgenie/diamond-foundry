@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import { IDiamondIncremental } from "./IDiamondIncremental.sol";
-import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
+import { Initializable } from "src/utils/Initializable.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
+import { IDiamondIncremental, IDiamondIncrementalEvents } from "./IDiamondIncremental.sol";
+import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
 
-abstract contract DiamondIncrementalBase is Initializable {
-    event SelectorTurnedImmutable(bytes4 indexed selector);
-
+abstract contract DiamondIncrementalBase is IDiamondIncrementalEvents, Initializable {
     function __DiamondIncremental_init() internal onlyInitializing {
         IntrospectionBehavior.addInterface(type(IDiamondIncremental).interfaceId);
     }

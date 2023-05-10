@@ -4,7 +4,6 @@ pragma solidity 0.8.19;
 import { DiamondCutBehaviorTest } from "../cut.t.sol";
 import {
     DiamondCutBehavior,
-    DiamondCut_initializeDiamondCut_InitializationReverted,
     DiamondCut_initializeDiamondCut_InitIsNotContract
 } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamond } from "src/IDiamond.sol";

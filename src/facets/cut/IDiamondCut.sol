@@ -3,11 +3,21 @@ pragma solidity 0.8.19;
 
 import { IDiamond } from "src/IDiamond.sol";
 
+interface IDiamondCutEvents {
+    /**
+     * @dev Emitted when a facet is added, replaced or removed.
+     * @param facetCuts The Facet actions that were performed.
+     * @param init The address where the initialization was delegated to.
+     * @param initData The data that was passed to the initialization function.
+     */
+    event DiamondCut(IDiamond.FacetCut[] facetCuts, address init, bytes initData);
+}
+
 /**
  * @title IDiamondCut
  * @notice Interface of the DiamondCut facet. See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamondCut {
+interface IDiamondCut is IDiamondCutEvents {
     /**
      * @notice Add/replace/remove any number of functions and optionally execute
      *         a function with delegatecall.

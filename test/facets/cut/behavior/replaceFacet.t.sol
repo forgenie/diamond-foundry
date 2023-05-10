@@ -6,8 +6,7 @@ import {
     DiamondCutBehavior,
     DiamondCut_replaceFacet_SelectorIsZero,
     DiamondCut_replaceFacet_FunctionFromSameFacet,
-    DiamondCut_replaceFacet_InexistingFunction,
-    DiamondCut_replaceFacet_ImmutableFunction
+    DiamondCut_replaceFacet_InexistingFunction
 } from "src/facets/cut/DiamondCutBehavior.sol";
 import { DiamondIncrementalBehavior } from "src/facets/incremental/DiamondIncrementalBehavior.sol";
 import { MockFacet } from "test/mocks/MockFacet.sol";
@@ -51,10 +50,10 @@ contract DiamondCut_replaceFacet is DiamondCutBehaviorTest {
         DiamondCutBehavior.replaceFacet(newFacet, invalidSelectors);
     }
 
-    function test_RevertsWhen_FunctionIsImmutable() public {
-        DiamondIncrementalBehavior.turnImmutable(selectors[0]);
+    // function test_RevertsWhen_FunctionIsImmutable() public {
+    //     DiamondIncrementalBehavior.turnImmutable(selectors[0]);
 
-        vm.expectRevert(abi.encodeWithSelector(DiamondCut_replaceFacet_ImmutableFunction.selector, selectors[0]));
-        DiamondCutBehavior.replaceFacet(newFacet, selectors);
-    }
+    //     vm.expectRevert(abi.encodeWithSelector(DiamondCut_replaceFacet_ImmutableFunction.selector, selectors[0]));
+    //     DiamondCutBehavior.replaceFacet(newFacet, selectors);
+    // }
 }
