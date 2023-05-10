@@ -6,13 +6,12 @@ import { FacetTest } from "test/facets/Facet.t.sol";
 import { FacetInit } from "src/factory/IDiamondFactory.sol";
 import { FacetHelper } from "test/facets/Helpers.t.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.sol";
-import { IDiamondIncremental, DiamondIncrementalFacet } from "src/facets/incremental/DiamondIncrementalFacet.sol";
+import { IDiamondIncremental, IDiamondIncrementalEvents } from "src/facets/incremental/IDiamondIncremental.sol";
+import { DiamondIncrementalFacet } from "src/facets/incremental/DiamondIncrementalFacet.sol";
 import { DiamondCutFacetHelper } from "test/facets/cut/cut.t.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
-abstract contract DiamondIncrementalFacetTest is FacetTest {
-    event SelectorTurnedImmutable(bytes4 indexed selector);
-
+abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalEvents, FacetTest {
     IDiamondIncremental public diamondIncremental;
     MockFacetHelper public mockFacet;
 

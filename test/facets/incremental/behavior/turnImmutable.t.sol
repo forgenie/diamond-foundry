@@ -29,7 +29,7 @@ contract DiamondIncremental_turnImmutable is DiamondIncrementalFacetTest {
     function test_TurnsImmutable() public {
         bytes4 selector = mockFacet.selectors()[0];
 
-        expectEmit();
+        vm.expectEmit(diamond);
         emit SelectorTurnedImmutable(selector);
 
         diamondIncremental.turnImmutable(selector);

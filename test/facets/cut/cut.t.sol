@@ -1,22 +1,47 @@
 // SDPX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
+import { IDiamond, Diamond } from "src/Diamond.sol";
+import { FacetInit } from "src/factory/IDiamondFactory.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
-import { BaseTest } from "test/Base.t.sol";
 import { IDiamondCutEvents, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
-import { IDiamond } from "src/Diamond.sol";
 import { FacetHelper } from "test/facets/Helpers.t.sol";
+import { FacetTest } from "test/facets/Facet.t.sol";
+import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
-abstract contract DiamondCutBehaviorTest is BaseTest, IDiamondCutEvents {
+abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {
+    /// @dev helper to avoid boilerplate
+    FacetCut[] public facetCuts;
+
     MockFacetHelper public mockFacetHelper;
+    IDiamondCut public diamondCut;
 
     function setUp() public virtual override {
         super.setUp();
 
+        diamondCut = IDiamondCut(diamond);
         mockFacetHelper = new MockFacetHelper();
-        IntrospectionBehavior.addInterface(type(IDiamondCut).interfaceId);
+    }
+
+    function diamondInitParams() internal override returns (Diamond.InitParams memory) {
+        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
+        OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
+
+        FacetCut[] memory baseFacets = new FacetCut[](2);
+        baseFacets[0] = diamondCutHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[1] = ownableHelper.makeFacetCut(FacetCutAction.Add);
+
+        FacetInit[] memory diamondInitData = new FacetInit[](2);
+        diamondInitData[0] = diamondCutHelper.makeInitData("");
+        diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
+
+        return Diamond.InitParams({
+            baseFacets: baseFacets,
+            init: address(diamondCutHelper),
+            initData: abi.encodeWithSelector(diamondCutHelper.multiDelegateCall.selector, diamondInitData)
+        });
     }
 }
 

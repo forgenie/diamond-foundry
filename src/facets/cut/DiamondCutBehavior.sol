@@ -29,85 +29,48 @@ library DiamondCutBehavior {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
-    function addFacetSelector(address facet, bytes4 selector) internal {
-        DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
-
-        if (selector == bytes4(0)) {
-            revert DiamondCut_addFacet_SelectorIsZero();
-        }
-        if (ds.selectorToFacet[selector] != address(0)) {
-            revert DiamondCut_addFacet_FunctionAlreadyExists(selector);
-        }
-
-        ds.selectorToFacet[selector] = facet;
-        // slither-disable-next-line unused-return
-        ds.facetSelectors[facet].add(selector);
-    }
-
-    function removeFacetSelector(address facet, bytes4 selector) internal {
-        DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
-
-        // also reverts if left side returns zero address
-        if (selector == bytes4(0)) {
-            revert DiamondCut_removeFacet_SelectorIsZero();
-        }
-        if (ds.selectorToFacet[selector] != facet) {
-            revert DiamondCut_removeFacet_CannotRemoveFromOtherFacet(facet, selector);
-        }
-
-        delete ds.selectorToFacet[selector];
-        // slither-disable-next-line unused-return
-        ds.facetSelectors[facet].remove(selector);
-        // if no more selectors in facet, remove facet address
-        if (ds.facetSelectors[facet].length() == 0) {
-            // slither-disable-next-line unused-return
-            ds.facets.remove(facet);
-        }
-    }
-
-    function replaceFacetSelector(address facet, bytes4 selector) internal {
-        DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
-
-        address oldFacet = ds.selectorToFacet[selector];
-        if (selector == bytes4(0)) {
-            revert DiamondCut_replaceFacet_SelectorIsZero();
-        }
-        if (oldFacet == facet) {
-            revert DiamondCut_replaceFacet_FunctionFromSameFacet(selector);
-        }
-        if (oldFacet == address(0)) {
-            revert DiamondCut_replaceFacet_InexistingFunction(selector);
-        }
-
-        // overwrite selector to new facet
-        ds.selectorToFacet[selector] = facet;
-
-        // slither-disable-next-line unused-return
-        ds.facetSelectors[facet].add(selector);
-
-        // slither-disable-next-line unused-return
-        ds.facetSelectors[oldFacet].remove(selector);
-
-        // if no more selectors, remove old facet address
-        if (ds.facetSelectors[oldFacet].length() == 0) {
-            // slither-disable-next-line unused-return
-            ds.facets.remove(oldFacet);
-        }
-    }
-
     function addFacet(address facet, bytes4[] memory selectors) internal {
         DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
 
         // slither-disable-next-line unused-return
         ds.facets.add(facet);
         for (uint256 i = 0; i < selectors.length; i++) {
-            addFacetSelector(facet, selectors[i]);
+            bytes4 selector = selectors[i];
+
+            if (selector == bytes4(0)) {
+                revert DiamondCut_addFacet_SelectorIsZero();
+            }
+            if (ds.selectorToFacet[selector] != address(0)) {
+                revert DiamondCut_addFacet_FunctionAlreadyExists(selector);
+            }
+
+            ds.selectorToFacet[selector] = facet;
+            // slither-disable-next-line unused-return
+            ds.facetSelectors[facet].add(selector);
         }
     }
 
     function removeFacet(address facet, bytes4[] memory selectors) internal {
+        DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
+
         for (uint256 i = 0; i < selectors.length; i++) {
-            removeFacetSelector(facet, selectors[i]);
+            bytes4 selector = selectors[i];
+            // also reverts if left side returns zero address
+            if (selector == bytes4(0)) {
+                revert DiamondCut_removeFacet_SelectorIsZero();
+            }
+            if (ds.selectorToFacet[selector] != facet) {
+                revert DiamondCut_removeFacet_CannotRemoveFromOtherFacet(facet, selector);
+            }
+
+            delete ds.selectorToFacet[selector];
+            // slither-disable-next-line unused-return
+            ds.facetSelectors[facet].remove(selector);
+            // if no more selectors in facet, remove facet address
+            if (ds.facetSelectors[facet].length() == 0) {
+                // slither-disable-next-line unused-return
+                ds.facets.remove(facet);
+            }
         }
     }
 
@@ -117,7 +80,33 @@ library DiamondCutBehavior {
         // slither-disable-next-line unused-return
         ds.facets.add(facet);
         for (uint256 i = 0; i < selectors.length; i++) {
-            replaceFacetSelector(facet, selectors[i]);
+            bytes4 selector = selectors[i];
+            address oldFacet = ds.selectorToFacet[selector];
+
+            if (selector == bytes4(0)) {
+                revert DiamondCut_replaceFacet_SelectorIsZero();
+            }
+            if (oldFacet == facet) {
+                revert DiamondCut_replaceFacet_FunctionFromSameFacet(selector);
+            }
+            if (oldFacet == address(0)) {
+                revert DiamondCut_replaceFacet_InexistingFunction(selector);
+            }
+
+            // overwrite selector to new facet
+            ds.selectorToFacet[selector] = facet;
+
+            // slither-disable-next-line unused-return
+            ds.facetSelectors[facet].add(selector);
+
+            // slither-disable-next-line unused-return
+            ds.facetSelectors[oldFacet].remove(selector);
+
+            // if no more selectors, remove old facet address
+            if (ds.facetSelectors[oldFacet].length() == 0) {
+                // slither-disable-next-line unused-return
+                ds.facets.remove(oldFacet);
+            }
         }
     }
 

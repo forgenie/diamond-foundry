@@ -40,7 +40,7 @@ abstract contract DiamondCutBase is IDiamondCutEvents, Initializable {
     }
 
     /// @dev Allows multiple possibilities making a facet immutable.
-    ///      By default check that facet address equals diamond.
+    ///      By default check that facet address not equals diamond.
     function _checkImmutable(address facet, bytes4[] memory selectors) internal view virtual {
         DiamondCutBehavior.checkImmutable(facet, selectors);
     }
