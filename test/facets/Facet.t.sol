@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
+import { IDiamondFactoryStructs } from "src/factory/IDiamondFactory.sol";
 import { IDiamond, Diamond } from "src/Diamond.sol";
 import { BaseTest } from "../Base.t.sol";
-import { DiamondContext } from "./Diamond.t.sol";
 
-abstract contract FacetTest is BaseTest, IDiamond {
+abstract contract FacetTest is BaseTest, IDiamond, IDiamondFactoryStructs {
     /// @dev Attach facet interface to diamond for testing
     address public diamond;
 

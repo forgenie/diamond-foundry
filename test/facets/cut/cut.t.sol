@@ -2,7 +2,6 @@
 pragma solidity 0.8.19;
 
 import { IDiamond, Diamond } from "src/Diamond.sol";
-import { FacetInit } from "src/factory/IDiamondFactory.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondCutEvents, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";

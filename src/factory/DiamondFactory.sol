@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Diamond } from "../Diamond.sol";
-import { IDiamondFactory, IFacetRegistry, IDiamond, BaseFacetInfo, FacetInit } from "./IDiamondFactory.sol";
+import { IDiamondFactory, IFacetRegistry, IDiamond } from "./IDiamondFactory.sol";
 import { DelegateCall } from "src/utils/DelegateCall.sol";
 
 contract DiamondFactory is IDiamondFactory, DelegateCall {
@@ -14,15 +14,12 @@ contract DiamondFactory is IDiamondFactory, DelegateCall {
     }
 
     /// @inheritdoc IDiamondFactory
-    function createDiamond(BaseFacetInfo[] calldata baseFacets) external returns (address diamond) {
+    function createDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond) {
         diamond = _deployDiamond(baseFacets);
 
         // slither-disable-next-line reentrancy-events
         emit DiamondCreated(diamond, msg.sender, baseFacets);
     }
-
-    /// @inheritdoc IDiamondFactory
-    // function createDiamond(bytes32[] calldata baseFacetIds, uint256 salt) external returns (address) { }
 
     /// @inheritdoc IDiamondFactory
     function facetRegistry() external view returns (IFacetRegistry) {
@@ -53,12 +50,13 @@ contract DiamondFactory is IDiamondFactory, DelegateCall {
         }
     }
 
-    function _deployDiamond(BaseFacetInfo[] calldata baseFacets) internal returns (address diamond) {
+    function _deployDiamond(BaseFacet[] calldata baseFacets) internal returns (address diamond) {
+        // todo: revise
         IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](baseFacets.length);
         FacetInit[] memory diamondInitData = new FacetInit[](baseFacets.length);
 
         for (uint256 i = 0; i < baseFacets.length; i++) {
-            BaseFacetInfo memory facet = baseFacets[i];
+            BaseFacet memory facet = baseFacets[i];
 
             address facetAddr = _facetRegistry.getFacetAddress(facet.facetId);
             facetCuts[i] = IDiamond.FacetCut({
@@ -71,7 +69,7 @@ contract DiamondFactory is IDiamondFactory, DelegateCall {
 
             if (initializer != bytes4(0)) {
                 diamondInitData[i] =
-                    FacetInit({ facet: facetAddr, data: abi.encodeWithSelector(initializer, facet.initData) });
+                    FacetInit({ facet: facetAddr, data: abi.encodeWithSelector(initializer, facet.initArgs) });
             }
         }
 

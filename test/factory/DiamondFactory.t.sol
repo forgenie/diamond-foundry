@@ -3,24 +3,17 @@ pragma solidity 0.8.19;
 
 import { BaseTest } from "../Base.t.sol";
 import { IFacetRegistry, FacetRegistry } from "src/registry/FacetRegistry.sol";
+import { IDiamondFactoryStructs } from "src/factory/IDiamondFactory.sol";
 import { DiamondFactory } from "src/factory/DiamondFactory.sol";
 
-abstract contract DiamondFactoryTest is BaseTest {
+abstract contract DiamondFactoryTest is IDiamondFactoryStructs, BaseTest {
     DiamondFactory public diamondFactory;
     FacetRegistry public facetRegistry;
-    // DiamondBaseFacetHelper public diamondBase;
-
-    bytes32 public baseFacetId;
 
     function setUp() public virtual override {
         super.setUp();
 
         facetRegistry = new FacetRegistry();
-        // diamondBase = new DiamondBaseFacetHelper();
-        // baseFacetId = facetRegistry.computeFacetId(diamondBase.name());
-
-        // facetRegistry.registerFacet(diamondBase.facetInfo());
-
         diamondFactory = new DiamondFactory(facetRegistry);
     }
 }

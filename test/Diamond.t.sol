@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { BaseTest } from "test/Base.t.sol";
-import { FacetHelper } from "./Helpers.t.sol";
+import { PRBTest } from "@prb/test/PRBTest.sol";
+import { FacetHelper } from "test/facets/Helpers.t.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 import { IERC165 } from "src/facets/introspection/IERC165.sol";
 
-abstract contract DiamondContext is BaseTest {
+abstract contract DiamondContext is PRBTest {
     address public diamond;
     FacetHelper[] public facets;
 

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { FacetInit } from "src/factory/IDiamondFactory.sol";
 import { BaseTest } from "test/Base.t.sol";
 import { Diamond, IDiamond } from "src/Diamond.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";

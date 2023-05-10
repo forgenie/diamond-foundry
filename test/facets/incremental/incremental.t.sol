@@ -2,7 +2,6 @@
 pragma solidity 0.8.19;
 
 import { Diamond } from "src/Diamond.sol";
-import { FacetInit } from "src/factory/IDiamondFactory.sol";
 import { IDiamondIncremental, IDiamondIncrementalEvents } from "src/facets/incremental/IDiamondIncremental.sol";
 import { DiamondIncrementalFacet } from "src/facets/incremental/DiamondIncrementalFacet.sol";
 import { FacetTest } from "test/facets/Facet.t.sol";

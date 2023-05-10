@@ -3,10 +3,10 @@ pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { IDiamond } from "src/Diamond.sol";
-import { FacetInit } from "src/factory/IDiamondFactory.sol";
+import { IDiamondFactoryStructs } from "src/factory/IDiamondFactory.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
-abstract contract FacetHelper {
+abstract contract FacetHelper is IDiamondFactoryStructs {
     function facet() public view virtual returns (address);
 
     function selectors() public view virtual returns (bytes4[] memory);
