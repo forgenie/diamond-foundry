@@ -2,10 +2,10 @@
 pragma solidity 0.8.19;
 
 import { Initializable } from "src/utils/Initializable.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
-import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 import { IDiamondIncremental, IDiamondIncrementalEvents } from "./IDiamondIncremental.sol";
 import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
+import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 
 abstract contract DiamondIncrementalBase is IDiamondIncrementalEvents, Initializable {
     function __DiamondIncremental_init() internal onlyInitializing {

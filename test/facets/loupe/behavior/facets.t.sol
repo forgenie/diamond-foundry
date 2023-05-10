@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { DiamondLoupeBehaviorTest } from "../loupe.t.sol";
+import { DiamondLoupeBaseTest } from "../loupe.t.sol";
 import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
-import { DiamondLoupeBehavior } from "src/facets/loupe/DiamondLoupeBehavior.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.sol";
-import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 
-contract DiamondLoupe_facets is DiamondLoupeBehaviorTest {
+contract DiamondLoupeBase_facets is DiamondLoupeBaseTest {
     function test_OnAdd_ReturnsCorrectly() public appendFacets(mockFacet()) {
         for (uint256 i = 0; i < facets.length; i++) {
             facet = facets[i];
@@ -15,16 +13,16 @@ contract DiamondLoupe_facets is DiamondLoupeBehaviorTest {
             DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
         }
 
-        IDiamondLoupe.Facet[] memory loupeFacets = DiamondLoupeBehavior.facets();
+        Facet[] memory loupeFacets = _facets();
 
         assertEq(loupeFacets.length, facets.length);
         for (uint256 i = 0; i < facets.length; i++) {
             address expectedFacet = facets[i].facet();
             bytes4[] memory expectedSelectors = facets[i].selectors();
 
-            assertEq(loupeFacets[i].facetAddress, expectedFacet);
+            assertEq(loupeFacets[i].facet, expectedFacet);
             for (uint256 j = 0; j < expectedSelectors.length; j++) {
-                assertEq(loupeFacets[i].functionSelectors[j], expectedSelectors[j]);
+                assertEq(loupeFacets[i].selectors[j], expectedSelectors[j]);
             }
         }
     }
@@ -37,7 +35,7 @@ contract DiamondLoupe_facets is DiamondLoupeBehaviorTest {
             DiamondCutBehavior.removeFacet(facet.facet(), facet.selectors());
         }
 
-        IDiamondLoupe.Facet[] memory loupeFacets = DiamondLoupeBehavior.facets();
+        Facet[] memory loupeFacets = _facets();
 
         assertEq(loupeFacets.length, 0);
     }
@@ -51,16 +49,16 @@ contract DiamondLoupe_facets is DiamondLoupeBehaviorTest {
             DiamondCutBehavior.replaceFacet(newFacet.facet(), newFacet.selectors());
         }
 
-        IDiamondLoupe.Facet[] memory loupeFacets = DiamondLoupeBehavior.facets();
+        Facet[] memory loupeFacets = _facets();
 
         assertEq(loupeFacets.length, facets.length);
         for (uint256 i = 0; i < facets.length; i++) {
             address expectedFacet = newFacet.facet();
             bytes4[] memory expectedSelectors = newFacet.selectors();
 
-            assertEq(loupeFacets[i].facetAddress, expectedFacet);
+            assertEq(loupeFacets[i].facet, expectedFacet);
             for (uint256 j = 0; j < expectedSelectors.length; j++) {
-                assertEq(loupeFacets[i].functionSelectors[j], expectedSelectors[j]);
+                assertEq(loupeFacets[i].selectors[j], expectedSelectors[j]);
             }
         }
     }

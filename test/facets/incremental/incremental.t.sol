@@ -23,24 +23,24 @@ abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalEvents, Face
     }
 
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
-        DiamondIncrementalFacetHelper diamondIncrementalFacetHelper = new DiamondIncrementalFacetHelper();
-        DiamondCutFacetHelper diamondCutFacetHelper = new DiamondCutFacetHelper();
-        OwnableFacetHelper ownableFacetHelper = new OwnableFacetHelper();
+        DiamondIncrementalFacetHelper diamondIncrementalHelper = new DiamondIncrementalFacetHelper();
+        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
+        OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
 
         FacetCut[] memory baseFacets = new FacetCut[](3);
-        baseFacets[0] = diamondIncrementalFacetHelper.makeFacetCut(FacetCutAction.Add);
-        baseFacets[1] = diamondCutFacetHelper.makeFacetCut(FacetCutAction.Add);
-        baseFacets[2] = ownableFacetHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[0] = diamondIncrementalHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[1] = diamondCutHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[2] = ownableHelper.makeFacetCut(FacetCutAction.Add);
 
         FacetInit[] memory diamondInitData = new FacetInit[](3);
-        diamondInitData[0] = diamondIncrementalFacetHelper.makeInitData("");
-        diamondInitData[1] = diamondCutFacetHelper.makeInitData("");
-        diamondInitData[2] = ownableFacetHelper.makeInitData(abi.encode(users.owner));
+        diamondInitData[0] = diamondIncrementalHelper.makeInitData("");
+        diamondInitData[1] = diamondCutHelper.makeInitData("");
+        diamondInitData[2] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(diamondIncrementalFacetHelper),
-            initData: abi.encodeWithSelector(diamondIncrementalFacetHelper.multiDelegateCall.selector, diamondInitData)
+            init: address(diamondIncrementalHelper),
+            initData: abi.encodeWithSelector(diamondIncrementalHelper.multiDelegateCall.selector, diamondInitData)
         });
     }
 }

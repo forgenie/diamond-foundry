@@ -25,19 +25,4 @@ library DiamondLoupeBehavior {
     function facetAddress(bytes4 selector) internal view returns (address) {
         return DiamondCutStorage.layout().selectorToFacet[selector];
     }
-
-    function facets() internal view returns (IDiamondLoupe.Facet[] memory facetInfo) {
-        address[] memory facetAddrs = facetAddresses();
-        facetInfo = new IDiamondLoupe.Facet[](facetAddrs.length);
-
-        // build up facetInfo
-        for (uint256 i = 0; i < facetAddrs.length; i++) {
-            // get facet address
-            address facet = facetAddrs[i];
-            bytes4[] memory selectors = facetSelectors(facet);
-
-            // set facet Info for this facet
-            facetInfo[i] = IDiamondLoupe.Facet({ facetAddress: facet, functionSelectors: selectors });
-        }
-    }
 }

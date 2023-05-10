@@ -5,6 +5,7 @@ import { Facet } from "src/facets/Facet.sol";
 import { IDiamondIncremental } from "./IDiamondIncremental.sol";
 import { DiamondIncrementalBase } from "./DiamondIncrementalBase.sol";
 
+// todo: inherit diamondCutBase
 contract DiamondIncrementalFacet is IDiamondIncremental, DiamondIncrementalBase, Facet {
     function initialize() external initializer {
         __DiamondIncremental_init();

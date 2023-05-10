@@ -1,37 +1,40 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { IDiamondLoupe } from "./IDiamondLoupe.sol";
-import { DiamondLoupeBehavior } from "./DiamondLoupeBehavior.sol";
 import { Facet } from "src/facets/Facet.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { IDiamondLoupe } from "./IDiamondLoupe.sol";
+import { DiamondLoupeBase } from "./DiamondLoupeBase.sol";
+import { IERC165 } from "src/facets/introspection/IERC165.sol";
+import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
 
-contract DiamondLoupeFacet is IDiamondLoupe, Facet {
-    function __DiamondLoupe_init() internal onlyInitializing {
-        IntrospectionBehavior.addInterface(type(IDiamondLoupe).interfaceId);
-    }
-
+contract DiamondLoupeFacet is IDiamondLoupe, IERC165, DiamondLoupeBase, IntrospectionBase, Facet {
     function initialize() external initializer {
         __DiamondLoupe_init();
+        __Introspection_init();
     }
 
     /// @inheritdoc IDiamondLoupe
-    function facets() public view returns (Facet[] memory) {
-        return DiamondLoupeBehavior.facets();
+    function facets() external view returns (Facet[] memory) {
+        return _facets();
     }
 
     /// @inheritdoc IDiamondLoupe
-    function facetFunctionSelectors(address facet) public view returns (bytes4[] memory) {
-        return DiamondLoupeBehavior.facetSelectors(facet);
+    function facetFunctionSelectors(address facet) external view returns (bytes4[] memory) {
+        return _facetSelectors(facet);
     }
 
     /// @inheritdoc IDiamondLoupe
-    function facetAddresses() public view returns (address[] memory) {
-        return DiamondLoupeBehavior.facetAddresses();
+    function facetAddresses() external view returns (address[] memory) {
+        return _facetAddresses();
     }
 
     /// @inheritdoc IDiamondLoupe
-    function facetAddress(bytes4 selector) public view returns (address) {
-        return DiamondLoupeBehavior.facetAddress(selector);
+    function facetAddress(bytes4 selector) external view returns (address) {
+        return _facetAddress(selector);
+    }
+
+    /// @inheritdoc IERC165
+    function supportsInterface(bytes4 interfaceId) external view returns (bool) {
+        return _supportsInterface(interfaceId);
     }
 }

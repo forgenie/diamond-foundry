@@ -53,14 +53,14 @@ abstract contract DiamondContext is BaseTest {
         address[] memory facetAddresses = IDiamondLoupe(diamond).facetAddresses();
         assertEq(facetAddresses.length, facets.length);
 
-        IDiamondLoupe.Facet[] memory expectedFacets = IDiamondLoupe(diamond).facets();
+        IDiamondLoupe.Facet[] memory expectedAddresses = IDiamondLoupe(diamond).facets();
 
-        assertEq(expectedFacets.length, facets.length);
-        for (uint256 i = 0; i < expectedFacets.length; i++) {
-            assertEq(expectedFacets[i].facetAddress, facets[i].facet());
+        assertEq(expectedAddresses.length, facets.length);
+        for (uint256 i = 0; i < expectedAddresses.length; i++) {
+            assertEq(expectedAddresses[i].facet, facets[i].facet());
 
             bytes4[] memory selectors = facets[i].selectors();
-            bytes4[] memory expectedSelectors = expectedFacets[i].functionSelectors;
+            bytes4[] memory expectedSelectors = expectedAddresses[i].selectors;
 
             assertEq(expectedSelectors.length, selectors.length);
             for (uint256 j = 0; j < selectors.length; j++) {
