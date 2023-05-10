@@ -5,29 +5,20 @@ import { IERC173 } from "./IERC173.sol";
 import { OwnableBehavior } from "./OwnableBehavior.sol";
 import { Facet } from "src/facets/Facet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { OwnableBase } from "./OwnableBase.sol";
 
-contract OwnableFacet is IERC173, Facet {
-    modifier onlyOwner() {
-        OwnableBehavior.checkOwner(_msgSender());
-        _;
-    }
-
-    function __Ownable_init(address owner_) internal onlyInitializing {
-        OwnableBehavior.transferOwnership(owner_);
-        IntrospectionBehavior.addInterface(type(IERC173).interfaceId);
-    }
-
+contract OwnableFacet is IERC173, OwnableBase, Facet {
     function initialize(address owner_) external initializer {
         __Ownable_init(owner_);
     }
 
     /// @inheritdoc IERC173
-    function owner() public view returns (address) {
-        return OwnableBehavior.owner();
+    function owner() external view returns (address) {
+        return _owner();
     }
 
     /// @inheritdoc IERC173
-    function transferOwnership(address newOwner) public onlyOwner {
-        OwnableBehavior.transferOwnership(newOwner);
+    function transferOwnership(address newOwner) external onlyOwner {
+        _transferOwnership(newOwner);
     }
 }

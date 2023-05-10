@@ -2,12 +2,12 @@
 pragma solidity 0.8.19;
 
 import { Diamond } from "src/Diamond.sol";
-import { FacetTest } from "test/facets/Facet.t.sol";
 import { FacetInit } from "src/factory/IDiamondFactory.sol";
-import { FacetHelper } from "test/facets/Helpers.t.sol";
-import { MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondIncremental, IDiamondIncrementalEvents } from "src/facets/incremental/IDiamondIncremental.sol";
 import { DiamondIncrementalFacet } from "src/facets/incremental/DiamondIncrementalFacet.sol";
+import { FacetTest } from "test/facets/Facet.t.sol";
+import { FacetHelper } from "test/facets/Helpers.t.sol";
+import { MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { DiamondCutFacetHelper } from "test/facets/cut/cut.t.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
