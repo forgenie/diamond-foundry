@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
+import { BaseTest } from "test/Base.t.sol";
 import { FacetHelper } from "test/facets/Helpers.t.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.sol";
-import { BaseTest } from "test/Base.t.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
-import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
+import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 
-abstract contract DiamondLoupeBehaviorTest is BaseTest {
-    FacetHelper[] public facets;
+abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, BaseTest {
+    /// @dev shortcut for multiFacetTest
     FacetHelper public facet;
+    FacetHelper[] public facets;
 
     modifier multiFacetTest(FacetHelper[] memory testFacets) {
         for (uint256 i = 0; i < testFacets.length; i++) {
@@ -26,10 +26,10 @@ abstract contract DiamondLoupeBehaviorTest is BaseTest {
         _;
     }
 
-    function setUp() public virtual override {
+    function setUp() public virtual override initializer {
         super.setUp();
 
-        IntrospectionBehavior.addInterface(type(IDiamondCut).interfaceId);
+        __DiamondLoupe_init();
     }
 
     function mockFacet() internal returns (FacetHelper[] memory) {

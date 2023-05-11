@@ -1,18 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { Diamond } from "src/Diamond.sol";
+import { IDiamondFactoryStructs } from "src/factory/IDiamondFactory.sol";
+import { IDiamond, Diamond } from "src/Diamond.sol";
 import { BaseTest } from "../Base.t.sol";
-import { DiamondContext } from "./Diamond.t.sol";
 
-abstract contract BaseFacetTest is BaseTest, DiamondContext {
-    function setUp() public virtual override(BaseTest, DiamondContext) {
-        BaseTest.setUp();
+abstract contract FacetTest is BaseTest, IDiamond, IDiamondFactoryStructs {
+    /// @dev Attach facet interface to diamond for testing
+    address public diamond;
+
+    function setUp() public virtual override {
+        super.setUp();
 
         diamond = address(new Diamond(diamondInitParams()));
-
-        DiamondContext.setUp();
     }
 
+    /// @dev Add facet as init param for diamond
     function diamondInitParams() internal virtual returns (Diamond.InitParams memory);
 }

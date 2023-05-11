@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+interface IDiamondLoupeStructs {
+    struct Facet {
+        address facet;
+        bytes4[] selectors;
+    }
+}
+
 /**
  * @title IDiamondLoupe
  * @notice A loupe is a small magnifying glass used to look at diamonds.
  *         See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamondLoupe {
-    struct Facet {
-        address facetAddress;
-        bytes4[] functionSelectors;
-    }
-
+interface IDiamondLoupe is IDiamondLoupeStructs {
     /**
      * @notice Gets all facet addresses and the selectors of supported functions.
      * @return facetInfo An array of Facet structs.

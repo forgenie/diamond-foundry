@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+interface IOwnableEvents {
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+}
+
 /**
  * @title IERC173
  * @notice Interface of the ERC173 contract. See [EIP-173](https://eips.ethereum.org/EIPS/eip-173).
  */
-interface IERC173 {
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-
+interface IERC173 is IOwnableEvents {
     /**
      * @notice Returns the owner of the contract.
      */

@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { IDiamondFactory } from "./factory/IDiamondFactory.sol";
 import { IDiamond } from "./IDiamond.sol";
-import { DiamondCutBehavior } from "./facets/cut/DiamondCutBehavior.sol";
+import { DiamondCutBase } from "./facets/cut/DiamondCutBase.sol";
+import { DiamondLoupeBehavior } from "./facets/loupe/DiamondLoupeBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
-contract Diamond is IDiamond {
+contract Diamond is IDiamond, DiamondCutBase {
     struct InitParams {
         FacetCut[] baseFacets;
         address init;
@@ -17,7 +19,7 @@ contract Diamond is IDiamond {
     constructor(InitParams memory params) {
         // Initializer on `init` will set up the state
         // NOTE: If `diamondCut` facet is not provided, the diamond will be immutable
-        DiamondCutBehavior.diamondCut(params.baseFacets, params.init, params.initData);
+        _diamondCut(params.baseFacets, params.init, params.initData);
     }
 
     fallback() external {
@@ -32,23 +34,22 @@ contract Diamond is IDiamond {
     ///       This would allow different customization possibilities,
     ///       such as delegate directly the `FacetRegistry` where Facets can be upgraded
     function _fallback() internal {
-        address facet = DiamondCutBehavior.getFacetFromSelector(msg.sig);
+        address facet = DiamondLoupeBehavior.facetAddress(msg.sig);
 
         if (facet == address(0)) revert Diamond_Fallback_UnsupportedFunction();
 
-        // Execute external function from facet using delegatecall and return any value.
+        // slither-disable-next-line unused-return
+        Address.functionDelegateCall(facet, msg.data);
+
         // solhint-disable-next-line no-inline-assembly
         assembly {
-            // copy function selector and any arguments
-            calldatacopy(0, 0, calldatasize())
-            // execute function call using the facet
-            let result := delegatecall(gas(), facet, 0, calldatasize(), 0, 0)
-            // get any return value
+            // get return value
             returndatacopy(0, 0, returndatasize())
-            // return any return value or error back to the caller
-            switch result
-            case 0 { revert(0, returndatasize()) }
-            default { return(0, returndatasize()) }
+            // return return value or error back to the caller
+            return(0, returndatasize())
         }
     }
+
+    // solhint-disable-next-line no-empty-blocks
+    function _authorizeDiamondCut() internal override { }
 }

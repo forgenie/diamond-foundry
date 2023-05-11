@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { DiamondLoupeBehaviorTest } from "../loupe.t.sol";
+import { DiamondLoupeBaseTest } from "../loupe.t.sol";
 import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { DiamondLoupeBehavior } from "src/facets/loupe/DiamondLoupeBehavior.sol";
 import { MockFacet } from "test/mocks/MockFacet.sol";
 
-contract DiamondLoupe_facetAddress is DiamondLoupeBehaviorTest {
+contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
     function test_OnAdd_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
         bytes4[] memory expectedSelectors = facet.selectors();
         address expectedFacetAddress = facet.facet();

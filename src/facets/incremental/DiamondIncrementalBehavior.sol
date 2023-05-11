@@ -6,9 +6,14 @@ import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBeh
 import { DiamondIncrementalStorage } from "./DiamondIncrementalStorage.sol";
 
 error DiamondIncremental_turnImmutable_AlreadyImmutable(bytes4 selector);
+error DiamondIncremental_checkImmutable_ImmutableFunction(bytes4 selector);
 
 library DiamondIncrementalBehavior {
-    event SelectorTurnedImmutable(bytes4 indexed selector);
+    function checkImmutable(bytes4 selector) internal view {
+        if (isImmutable(selector)) {
+            revert DiamondIncremental_checkImmutable_ImmutableFunction(selector);
+        }
+    }
 
     function isImmutable(bytes4 selector) internal view returns (bool) {
         // if `diamondCut` method was removed all functions are immutable
@@ -24,7 +29,5 @@ library DiamondIncrementalBehavior {
         }
 
         DiamondIncrementalStorage.layout().immutableFunctions[selector] = true;
-
-        emit SelectorTurnedImmutable(selector);
     }
 }

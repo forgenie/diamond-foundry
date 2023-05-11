@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IERC165 } from "src/facets/introspection/IERC165.sol";
 import { BaseTest } from "test/Base.t.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { IIntrospectionEvents } from "src/facets/introspection/IERC165.sol";
+import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
 
-abstract contract IntrospectionBehaviorTest is BaseTest {
-    function setUp() public virtual override {
+abstract contract IntrospectionBaseTest is IIntrospectionEvents, IntrospectionBase, BaseTest {
+    function setUp() public virtual override initializer {
         super.setUp();
 
-        IntrospectionBehavior.addInterface(type(IERC165).interfaceId);
+        __Introspection_init();
     }
 }

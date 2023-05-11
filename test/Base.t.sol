@@ -14,6 +14,9 @@ abstract contract BaseTest is PRBTest, StdCheats, StdUtils {
 
     function setUp() public virtual {
         users = Users(createUser("owner"), createUser("stranger"));
+
+        // Prank owner by default
+        vm.startPrank(users.owner);
     }
 
     /// @dev Creates a new account and funds it with 100 ETH.
