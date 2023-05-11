@@ -27,7 +27,7 @@ abstract contract DiamondLoupeBase is IDiamondLoupeStructs, Initializable {
     function _facets() internal view returns (Facet[] memory facets) {
         address[] memory facetAddresses = _facetAddresses();
         uint256 facetCount = facetAddresses.length;
-        facets = new IDiamondLoupe.Facet[](facetCount);
+        facets = new Facet[](facetCount);
 
         // build up facets
         for (uint256 i = 0; i < facetCount; i++) {

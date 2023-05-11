@@ -38,6 +38,7 @@ contract Diamond is IDiamond, DiamondCutBase {
 
         if (facet == address(0)) revert Diamond_Fallback_UnsupportedFunction();
 
+        // slither-disable-next-line unused-return
         Address.functionDelegateCall(facet, msg.data);
 
         // solhint-disable-next-line no-inline-assembly

@@ -136,6 +136,7 @@ library DiamondCutBehavior {
             revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
         }
 
+        // slither-disable-next-line unused-return
         Address.functionDelegateCall(init, initData);
     }
 }

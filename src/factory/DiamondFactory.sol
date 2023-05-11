@@ -46,6 +46,7 @@ contract DiamondFactory is IDiamondFactory, DelegateCall {
             FacetInit memory facetInit = diamondInitData[i];
             if (facetInit.data.length == 0) continue;
 
+            // slither-disable-next-line unused-return
             Address.functionDelegateCall(facetInit.facet, facetInit.data);
         }
     }
