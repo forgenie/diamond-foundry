@@ -15,12 +15,14 @@ library Ownable2StepBehavior {
         return Ownable2StepStorage.layout().pendingOwner;
     }
 
-    function transferOwnership(address pendingOwner, address newOwner) internal {
+    function setPendingOwner(address newOwner) internal {
         Ownable2StepStorage.layout().pendingOwner = newOwner;
     }
 
-    function acceptOwnership() internal {
-        OwnableBehavior.transferOwnership(pendingOwner());
+    function acceptOwnership() internal returns (address newOwner) {
+        newOwner = pendingOwner();
+
+        OwnableBehavior.transferOwnership(newOwner);
 
         delete Ownable2StepStorage.layout().pendingOwner;
     }

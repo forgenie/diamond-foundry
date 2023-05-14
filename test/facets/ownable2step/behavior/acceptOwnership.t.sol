@@ -10,17 +10,17 @@ contract Ownable2StepBehavior_acceptOwnership is Ownable2StepBehaviorTest {
         expectEmit();
         emit OwnershipTransferred(users.owner, pendingOwner);
 
-        Ownable2StepBehavior.acceptOwnership(pendingOwner);
+        Ownable2StepBehavior.acceptOwnership();
     }
 
     function test_SetsOwner() public {
-        Ownable2StepBehavior.acceptOwnership(pendingOwner);
+        Ownable2StepBehavior.acceptOwnership();
 
         assertEq(OwnableBehavior.owner(), pendingOwner);
     }
 
     function test_SetsPendingOwnerToZero() public {
-        Ownable2StepBehavior.acceptOwnership(pendingOwner);
+        Ownable2StepBehavior.acceptOwnership();
 
         assertEq(Ownable2StepBehavior.pendingOwner(), address(0));
     }

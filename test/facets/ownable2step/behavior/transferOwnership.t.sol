@@ -9,11 +9,11 @@ contract Ownable2Step_transferOwnership is Ownable2StepBehaviorTest {
         expectEmit();
         emit OwnershipTransferStarted(users.owner, pendingOwner);
 
-        Ownable2StepBehavior.transferOwnership(users.owner, pendingOwner);
+        Ownable2StepBehavior.setPendingOwner(pendingOwner);
     }
 
     function test_SetsPendingOwner() public {
-        Ownable2StepBehavior.transferOwnership(users.owner, pendingOwner);
+        Ownable2StepBehavior.setPendingOwner(pendingOwner);
 
         assertEq(Ownable2StepBehavior.pendingOwner(), pendingOwner);
     }
