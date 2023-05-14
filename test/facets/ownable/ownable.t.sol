@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { BaseTest } from "test/Base.t.sol";
+import { FacetTest, FacetHelper } from "../Facet.t.sol";
 import { Diamond, IDiamond } from "src/Diamond.sol";
-import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 import { IOwnableEvents, IERC173 } from "src/facets/ownable/IERC173.sol";
 import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
-import { FacetTest } from "../Facet.t.sol";
-import { FacetHelper } from "../Helpers.t.sol";
 
 abstract contract OwnableFacetTest is IOwnableEvents, FacetTest {
     IERC173 public ownable;
@@ -21,8 +18,8 @@ abstract contract OwnableFacetTest is IOwnableEvents, FacetTest {
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
 
-        FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
-        baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        FacetCut[] memory baseFacets = new FacetCut[](1);
+        baseFacets[0] = ownableHelper.makeFacetCut(FacetCutAction.Add);
 
         FacetInit[] memory diamondInitData = new FacetInit[](1);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));

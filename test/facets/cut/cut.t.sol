@@ -1,13 +1,12 @@
 // SDPX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
+import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
 import { IDiamond, Diamond } from "src/Diamond.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondCutEvents, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
-import { FacetHelper } from "test/facets/Helpers.t.sol";
-import { FacetTest } from "test/facets/Facet.t.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {

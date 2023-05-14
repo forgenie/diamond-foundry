@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
-import { FacetRegistryTest } from "../FacetRegistry.t.sol";
-import { IMockFacet } from "test/mocks/MockFacet.sol";
-
 import {
+    IFacetRegistry,
     FacetRegistry_validateFacetInfo_FacetAddressZero,
     FacetRegistry_validateFacetInfo_FacetMustHaveSelectors,
     FacetRegistry_validateFacetInfo_FacetNameEmpty,
     FacetRegistry_registerFacet_FacetAlreadyRegistered
-} from "src/registry/Errors.sol";
+} from "src/registry/FacetRegistry.sol";
+import { FacetRegistryTest } from "../FacetRegistry.t.sol";
+import { IMockFacet } from "test/mocks/MockFacet.sol";
 
 // solhint-disable-next-line contract-name-camelcase
 contract FacetRegistry_registerFacet is FacetRegistryTest {
@@ -77,7 +76,7 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
 
         bytes32 facetId = facetRegistry.computeFacetId(facetName);
 
-        expectEmit(address(facetRegistry));
+        vm.expectEmit(address(facetRegistry));
         emit FacetImplementationSet(facetId, address(mockFacet));
 
         facetRegistry.registerFacet(facetInfo);

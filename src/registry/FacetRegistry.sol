@@ -5,13 +5,11 @@ import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableS
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 import { FacetRegistryStorage } from "./FacetRegistryStorage.sol";
 
-import {
-    FacetRegistry_registerFacet_FacetAlreadyRegistered,
-    FacetRegistry_validateFacetInfo_FacetAddressZero,
-    FacetRegistry_validateFacetInfo_FacetMustHaveSelectors,
-    FacetRegistry_validateFacetInfo_FacetNameEmpty,
-    FacetRegistry_removeFacet_FacetNotRegistered
-} from "./Errors.sol";
+error FacetRegistry_registerFacet_FacetAlreadyRegistered();
+error FacetRegistry_validateFacetInfo_FacetAddressZero();
+error FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
+error FacetRegistry_validateFacetInfo_FacetNameEmpty();
+error FacetRegistry_removeFacet_FacetNotRegistered();
 
 contract FacetRegistry is IFacetRegistry {
     using EnumerableSet for EnumerableSet.Bytes32Set;

@@ -24,14 +24,4 @@ abstract contract BaseTest is PRBTest, StdCheats, StdUtils {
         addr = payable(makeAddr(name));
         vm.deal(addr, 100 ether);
     }
-
-    /// @dev Expects an event to be emitted.
-    function expectEmit() public {
-        vm.expectEmit(true, true, true, true);
-    }
-
-    /// @dev Expects an event to be emitted with the given emitter.
-    function expectEmit(address emitter) public {
-        vm.expectEmit(true, true, true, true, emitter);
-    }
 }
