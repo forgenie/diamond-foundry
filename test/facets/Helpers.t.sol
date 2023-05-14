@@ -6,7 +6,7 @@ import { IDiamond } from "src/Diamond.sol";
 import { IDiamondFactoryStructs } from "src/factory/IDiamondFactory.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
-abstract contract FacetHelper is IDiamondFactoryStructs {
+abstract contract FacetHelper is IDiamond, IDiamondFactoryStructs {
     function facet() public view virtual returns (address);
 
     function selectors() public view virtual returns (bytes4[] memory);
@@ -26,8 +26,8 @@ abstract contract FacetHelper is IDiamondFactoryStructs {
         });
     }
 
-    function makeFacetCut(IDiamond.FacetCutAction action) public view returns (IDiamond.FacetCut memory) {
-        return IDiamond.FacetCut({ action: action, facet: facet(), selectors: selectors() });
+    function makeFacetCut(FacetCutAction action) public view returns (FacetCut memory) {
+        return FacetCut({ action: action, facet: facet(), selectors: selectors() });
     }
 
     function makeInitData(bytes memory) public view virtual returns (FacetInit memory) {

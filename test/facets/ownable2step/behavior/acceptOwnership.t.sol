@@ -1,27 +1,42 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { Ownable2StepBehaviorTest } from "../ownable2step.t.sol";
-import { Ownable2StepBehavior } from "src/facets/ownable2step/Ownable2StepBehavior.sol";
-import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
+import { Ownable2StepFacetTest } from "../ownable2step.t.sol";
+import { Ownable2Step_checkPendingOwner_NotPendingOwner } from "src/facets/ownable2step/Ownable2StepBehavior.sol";
 
-contract Ownable2StepBehavior_acceptOwnership is Ownable2StepBehaviorTest {
+contract Ownable2Step_acceptOwnership is Ownable2StepFacetTest {
+    function setUp() public override {
+        super.setUp();
+
+        ownable2Step.transferOwnership(pendingOwner);
+        changePrank(pendingOwner);
+    }
+
+    function test_RevertsWhen_CallerIsNotPendingOwner() public {
+        changePrank(users.stranger);
+
+        // solhint-disable-next-line max-line-length
+        vm.expectRevert(abi.encodeWithSelector(Ownable2Step_checkPendingOwner_NotPendingOwner.selector, users.stranger));
+
+        ownable2Step.acceptOwnership();
+    }
+
     function test_EmitsEvent() public {
         expectEmit();
         emit OwnershipTransferred(users.owner, pendingOwner);
 
-        Ownable2StepBehavior.acceptOwnership();
+        ownable2Step.acceptOwnership();
     }
 
     function test_SetsOwner() public {
-        Ownable2StepBehavior.acceptOwnership();
+        ownable2Step.acceptOwnership();
 
-        assertEq(OwnableBehavior.owner(), pendingOwner);
+        assertEq(ownable2Step.owner(), pendingOwner);
     }
 
     function test_SetsPendingOwnerToZero() public {
-        Ownable2StepBehavior.acceptOwnership();
+        ownable2Step.acceptOwnership();
 
-        assertEq(Ownable2StepBehavior.pendingOwner(), address(0));
+        assertEq(ownable2Step.pendingOwner(), address(0));
     }
 }
