@@ -76,7 +76,7 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
 
         bytes32 facetId = facetRegistry.computeFacetId(facetName);
 
-        expectEmit(address(facetRegistry));
+        vm.expectEmit(address(facetRegistry));
         emit FacetImplementationSet(facetId, address(mockFacet));
 
         facetRegistry.registerFacet(facetInfo);

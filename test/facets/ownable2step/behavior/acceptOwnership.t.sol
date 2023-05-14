@@ -22,7 +22,7 @@ contract Ownable2Step_acceptOwnership is Ownable2StepFacetTest {
     }
 
     function test_EmitsEvent() public {
-        expectEmit();
+        vm.expectEmit();
         emit OwnershipTransferred(users.owner, pendingOwner);
 
         ownable2Step.acceptOwnership();

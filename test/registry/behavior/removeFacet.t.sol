@@ -30,7 +30,7 @@ contract FacetRegistry_removeFacet is FacetRegistryTest {
 
         facetRegistry.registerFacet(facetInfo);
 
-        expectEmit(address(facetRegistry));
+        vm.expectEmit(address(facetRegistry));
         emit FacetImplementationSet(facetId, address(0));
 
         facetRegistry.removeFacet(facetId);

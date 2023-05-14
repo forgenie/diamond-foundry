@@ -14,7 +14,7 @@ contract Ownable2Step_transferOwnership is Ownable2StepFacetTest {
     }
 
     function test_EmitsEvent() public {
-        expectEmit();
+        vm.expectEmit();
         emit OwnershipTransferStarted(users.owner, pendingOwner);
 
         ownable2Step.transferOwnership(pendingOwner);

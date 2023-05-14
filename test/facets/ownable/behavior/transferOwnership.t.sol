@@ -25,7 +25,7 @@ contract Ownable_transferOwnership is OwnableFacetTest {
     }
 
     function test_EmitsEvent() public {
-        expectEmit();
+        vm.expectEmit();
         emit OwnershipTransferred(users.owner, users.stranger);
 
         ownable.transferOwnership(users.stranger);
