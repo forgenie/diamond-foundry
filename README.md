@@ -6,18 +6,19 @@ universal and reusable smart contracts by leveraging the
 
 This repository proposes an implementation of
 [Diamond Factory and Facet Registry](https://medium.com/@alexeluca.spataru/achieving-universal-and-reusable-smart-contracts-via-erc2535-diamond-proxy-standard-ba4c9f5ac5bc),
-designed to automate the creation of new Diamond proxies given an on-chain library of Facets containing implementation behavior, in order to provide code modularity, flexible upgradeability, and increased re-usability.
+designed to automate the creation of new Diamond proxies given an on-chain library of Facets containing implementation
+behavior, in order to provide code modularity, flexible upgradeability, and increased re-usability.
 
-Please note that this software is a work in progress and is provided "as is" without warranty of any kind, use at your own
-risk, not yet stable for production environments.
+Please note that this software is a work in progress and is provided "as is" without warranty of any kind, use at your
+own risk, not yet stable for production environments.
 
 ## Background
 
 Forgenie Protocol aims to address the challenges associated with smart contract development and deployment, such as
 complexity and the need for skilled engineers and auditors. By using the
 [Diamond Management System](https://medium.com/@alexeluca.spataru/transforming-web3-through-a-diamond-management-system-d2efa560ea7f),
-the project proposes a more accessible method for building and managing smart contracts across the web3
-landscape, by providing decentralized tools to incrementally grow your smart contract application without sacrificing immutability.
+the project proposes a more accessible method for building and managing smart contracts across the web3 landscape, by
+providing decentralized tools to incrementally grow your smart contract application without sacrificing immutability.
 
 ## Features
 
@@ -27,7 +28,7 @@ landscape, by providing decentralized tools to incrementally grow your smart con
 1. Facets contain built-in initializers.
 1. TBA Automatic ERC165 handling.
 1. TBA Customizable fallback.
-1. TBA Wide range of available and re-usable Facets. 
+1. TBA Wide range of available and re-usable Facets.
 1. TBA Compose a Facet which is a Diamond of other Facets.
 
 ## Installation
