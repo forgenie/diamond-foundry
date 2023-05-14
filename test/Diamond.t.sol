@@ -6,6 +6,7 @@ import { FacetHelper } from "test/facets/Facet.t.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 import { IERC165 } from "src/facets/introspection/IERC165.sol";
 
+// todo: refactor into invariant test
 abstract contract DiamondContext is PRBTest {
     address public diamond;
     FacetHelper[] public facets;
