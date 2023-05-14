@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { FacetTest } from "test/facets/Facet.t.sol";
-import { FacetHelper } from "../Helpers.t.sol";
+import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
 import { Diamond } from "src/Diamond.sol";
 import { IOwnable2Step, Ownable2StepFacet } from "src/facets/ownable2step/Ownable2StepFacet.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";

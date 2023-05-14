@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { FacetHelper } from "test/facets/Helpers.t.sol";
+import { FacetHelper } from "test/facets/Facet.t.sol";
 
 interface IMockFacet {
     function mockFunction() external pure returns (uint256);

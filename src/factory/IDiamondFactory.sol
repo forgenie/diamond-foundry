@@ -42,8 +42,6 @@ interface IDiamondFactory is IDiamondFactoryStructs {
      */
     function createDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond);
 
-    // function createDiaond(bytes32[] calldata baseFacetIds) external returns (address diamond);
-
     /**
      * @notice Creates a diamond with the given base Facets and salt.
      * @param baseFacetIds The facetIds of the base facets to be added to the diamond.
