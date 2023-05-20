@@ -36,8 +36,8 @@ contract DiamondFactory is IDiamondFactory, DelegateCall {
         returns (IDiamond.FacetCut memory facetCut)
     {
         facetCut.action = action;
-        facetCut.facet = _facetRegistry.getFacetAddress(facetId);
-        facetCut.selectors = _facetRegistry.getFacetSelectors(facetId);
+        facetCut.facet = _facetRegistry.facetAddress(facetId);
+        facetCut.selectors = _facetRegistry.facetSelectors(facetId);
     }
 
     /// @inheritdoc IDiamondFactory
@@ -52,22 +52,20 @@ contract DiamondFactory is IDiamondFactory, DelegateCall {
     }
 
     function _deployDiamond(BaseFacet[] calldata baseFacets) internal returns (address diamond) {
-        // todo: revise
-        IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](baseFacets.length);
-        FacetInit[] memory diamondInitData = new FacetInit[](baseFacets.length);
-
-        for (uint256 i = 0; i < baseFacets.length; i++) {
+        uint256 facetCount = baseFacets.length; // gas savings
+        IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](facetCount);
+        FacetInit[] memory diamondInitData = new FacetInit[](facetCount);
+        for (uint256 i = 0; i < facetCount; i++) {
             BaseFacet memory facet = baseFacets[i];
 
-            address facetAddr = _facetRegistry.getFacetAddress(facet.facetId);
+            address facetAddr = _facetRegistry.facetAddress(facet.facetId);
             facetCuts[i] = IDiamond.FacetCut({
                 action: IDiamond.FacetCutAction.Add,
                 facet: facetAddr,
-                selectors: _facetRegistry.getFacetSelectors(facet.facetId)
+                selectors: _facetRegistry.facetSelectors(facet.facetId)
             });
 
-            bytes4 initializer = _facetRegistry.getInitializer(facet.facetId);
-
+            bytes4 initializer = _facetRegistry.initializer(facet.facetId);
             if (initializer != bytes4(0)) {
                 diamondInitData[i] =
                     FacetInit({ facet: facetAddr, data: abi.encodeWithSelector(initializer, facet.initArgs) });

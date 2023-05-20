@@ -36,12 +36,7 @@ abstract contract FacetHelper is IDiamond, IDiamondFactoryStructs {
     function supportedInterfaces() public pure virtual returns (bytes4[] memory);
 
     function facetInfo() public view returns (IFacetRegistry.FacetInfo memory info) {
-        info = IFacetRegistry.FacetInfo({
-            name: name(),
-            addr: facet(),
-            initializer: initializer(),
-            selectors: selectors()
-        });
+        info = IFacetRegistry.FacetInfo({ addr: facet(), initializer: initializer(), selectors: selectors() });
     }
 
     function makeFacetCut(FacetCutAction action) public view returns (FacetCut memory) {
