@@ -49,9 +49,8 @@ interface IFacetRegistry {
     /**
      * @notice Returns the initializer function selector of a given facetId.
      * @param facetId The facetId of the facet.
-     * @return initializer
      */
-    function initializer(bytes32 facetId) external view returns (bytes4 initializer);
+    function initializer(bytes32 facetId) external view returns (bytes4 selector);
 
     /**
      * @notice Returns the interfaceId of a given facet.
