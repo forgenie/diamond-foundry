@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 import { FacetRegistryStorage } from "./FacetRegistryStorage.sol";
@@ -8,9 +9,7 @@ import { FacetRegistryStorage } from "./FacetRegistryStorage.sol";
 error FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
 error FacetRegistry_validateFacetInfo_FacetAddressZero();
 error FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
-// todo: replace with codesize
-error FacetRegistry_validateFacetInfo_FacetNameEmpty();
-error FacetRegistry_removeFacet_FacetNotRegistered();
+error FacetRegistry_validateFacetInfo_FacetNotContract();
 
 contract FacetRegistry is IFacetRegistry {
     using EnumerableSet for EnumerableSet.Bytes32Set;
@@ -67,5 +66,6 @@ contract FacetRegistry is IFacetRegistry {
         if (facetAddress(computeFacetId(facetInfo.addr)) != address(0)) {
             revert FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
         }
+        if (!Address.isContract(facetInfo.addr)) revert FacetRegistry_validateFacetInfo_FacetNotContract();
     }
 }

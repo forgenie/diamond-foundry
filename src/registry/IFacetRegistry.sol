@@ -11,11 +11,11 @@ interface IFacetRegistry {
      * @notice FacetInfo struct containing facet name, address, selectors, and initializer.
      * @param addr The address of the facet.
      * @param selectors The function selectors of the facet.
-     * @param initializer The selector of the initializer function.
+     * @param initializer The selector of the initializer function, 0x0 if stateless.
      */
     struct FacetInfo {
         address addr;
-        bytes4 initializer; // selector of initializer function, 0x0 if stateless
+        bytes4 initializer;
         bytes4[] selectors;
     }
 

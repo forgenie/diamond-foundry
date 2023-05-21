@@ -5,7 +5,7 @@ import {
     IFacetRegistry,
     FacetRegistry_validateFacetInfo_FacetAddressZero,
     FacetRegistry_validateFacetInfo_FacetMustHaveSelectors,
-    FacetRegistry_validateFacetInfo_FacetNameEmpty,
+    FacetRegistry_validateFacetInfo_FacetNotContract,
     FacetRegistry_validateFacetInfo_FacetAlreadyRegistered
 } from "src/registry/FacetRegistry.sol";
 import { FacetRegistryTest } from "../FacetRegistry.t.sol";
@@ -23,24 +23,23 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
 
     function test_RevertsWhen_SelectorArrayEmpty() public {
         IFacetRegistry.FacetInfo memory facetInfo =
-            IFacetRegistry.FacetInfo({ addr: address(0x1), initializer: bytes4(0), selectors: new bytes4[](0) });
+            IFacetRegistry.FacetInfo({ addr: address(mockFacet), initializer: bytes4(0), selectors: new bytes4[](0) });
 
         vm.expectRevert(FacetRegistry_validateFacetInfo_FacetMustHaveSelectors.selector);
         facetRegistry.registerFacet(facetInfo);
     }
 
-    // todo: replace with error checking that facet address is contract
-    function test_RevertsWhen_FacetNameEmpty() public {
+    function test_RevertsWhen_FacetIsNotContract() public {
         IFacetRegistry.FacetInfo memory facetInfo =
             IFacetRegistry.FacetInfo({ addr: address(0x1), initializer: bytes4(0), selectors: new bytes4[](1) });
 
-        vm.expectRevert(FacetRegistry_validateFacetInfo_FacetNameEmpty.selector);
+        vm.expectRevert(FacetRegistry_validateFacetInfo_FacetNotContract.selector);
         facetRegistry.registerFacet(facetInfo);
     }
 
     function test_RevertsWhen_FacetAlreadyRegistered() public {
         IFacetRegistry.FacetInfo memory facetInfo =
-            IFacetRegistry.FacetInfo({ addr: address(0x1), initializer: bytes4(0), selectors: new bytes4[](1) });
+            IFacetRegistry.FacetInfo({ addr: address(mockFacet), initializer: bytes4(0), selectors: new bytes4[](1) });
 
         facetRegistry.registerFacet(facetInfo);
         vm.expectRevert(FacetRegistry_validateFacetInfo_FacetAlreadyRegistered.selector);
