@@ -17,7 +17,7 @@ abstract contract Initializable is SelfReferenced {
         bool initializing;
     }
 
-    event Initialized(bytes32 codehash, uint8 version);
+    event Initialized(bytes32 indexed codehash, uint8 version);
 
     modifier initializer() {
         Storage storage s = layout();

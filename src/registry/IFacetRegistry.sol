@@ -32,6 +32,12 @@ interface IFacetRegistry {
     function registerFacet(FacetInfo calldata facetInfo) external;
 
     /**
+     * @notice Removes a facet from the registry.
+     * @param facetId The id of the facet.
+     */
+    function removeFacet(bytes32 facetId) external;
+
+    /**
      * @notice Returns the facetId of a given facet address.
      * @param facet Address of the facet.
      * @return facetId The id of the facet.

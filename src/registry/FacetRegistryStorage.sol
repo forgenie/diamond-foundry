@@ -40,6 +40,20 @@ library FacetRegistryStorage {
         self.facets[facetId].interfaceId = interfaceId;
     }
 
+    function removeFacet(Layout storage self, bytes32 facetId) internal {
+        delete self.facets[facetId].addr;
+        delete self.facets[facetId].initializer;
+        delete self.facets[facetId].interfaceId;
+
+        uint256 selectorCount = self.facets[facetId].selectors.length();
+        for (uint256 i = 0; i < selectorCount; i++) {
+            bytes4 selector = bytes4(self.facets[facetId].selectors.at(i));
+
+            // slither-disable-next-line unused-return
+            self.facets[facetId].selectors.remove(selector);
+        }
+    }
+
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = FACET_REGISTRY_STORAGE_POSITION;
 

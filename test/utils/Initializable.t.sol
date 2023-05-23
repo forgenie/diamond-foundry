@@ -11,7 +11,7 @@ import {
 } from "src/utils/Initializable.sol";
 
 contract InitializableTest is BaseTest {
-    event Initialized(bytes32 codehash, uint8 version);
+    event Initialized(bytes32 indexed codehash, uint8 version);
 
     MockInitializable public mock;
 

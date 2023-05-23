@@ -10,6 +10,7 @@ error FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
 error FacetRegistry_validateFacetInfo_FacetAddressZero();
 error FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
 error FacetRegistry_validateFacetInfo_FacetNotContract();
+error FacetRegistry_removeFacet_FacetNotRegistered();
 
 contract FacetRegistry is IFacetRegistry {
     using EnumerableSet for EnumerableSet.Bytes32Set;
@@ -27,6 +28,17 @@ contract FacetRegistry is IFacetRegistry {
         FacetRegistryStorage.layout().addFacet(facetInfo, facetId);
 
         emit FacetImplementationSet(facetId, facetInfo.addr);
+    }
+
+    /// @inheritdoc IFacetRegistry
+    function removeFacet(bytes32 facetId) external {
+        address facet = FacetRegistryStorage.layout().facets[facetId].addr;
+
+        if (facet == address(0)) revert FacetRegistry_removeFacet_FacetNotRegistered();
+
+        FacetRegistryStorage.layout().removeFacet(facetId);
+
+        emit FacetImplementationSet(facetId, address(0));
     }
 
     /// @inheritdoc IFacetRegistry

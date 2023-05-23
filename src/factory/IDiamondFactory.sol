@@ -4,7 +4,6 @@ pragma solidity 0.8.19;
 import { IDiamond } from "src/IDiamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
-// todo: improve docs
 interface IDiamondFactoryStructs {
     /**
      * @notice Contains the information for a base facet.
