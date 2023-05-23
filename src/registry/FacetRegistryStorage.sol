@@ -13,17 +13,15 @@ library FacetRegistryStorage {
         address addr;
         bytes4 initializer;
         bytes4 interfaceId;
-        // bytes4 version;
         EnumerableSet.Bytes32Set selectors;
     }
 
     struct Layout {
-        mapping(address facet => bytes32 facetId) facetIds;
         mapping(bytes32 facetId => FacetData facetData) facets;
     }
 
+    // todo: move these methods into FacetRegistryBehavior
     function addFacet(Layout storage self, IFacetRegistry.FacetInfo memory facetInfo, bytes32 facetId) internal {
-        self.facetIds[facetInfo.addr] = facetId;
         self.facets[facetId].addr = facetInfo.addr;
         self.facets[facetId].initializer = facetInfo.initializer;
 
@@ -43,9 +41,6 @@ library FacetRegistryStorage {
     }
 
     function removeFacet(Layout storage self, bytes32 facetId) internal {
-        address facet = self.facets[facetId].addr;
-
-        delete self.facetIds[facet];
         delete self.facets[facetId].addr;
         delete self.facets[facetId].initializer;
         delete self.facets[facetId].interfaceId;

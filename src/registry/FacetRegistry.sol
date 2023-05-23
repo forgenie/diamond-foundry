@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
+import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 import { FacetRegistryStorage } from "./FacetRegistryStorage.sol";
 
-error FacetRegistry_registerFacet_FacetAlreadyRegistered();
+error FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
 error FacetRegistry_validateFacetInfo_FacetAddressZero();
 error FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
-error FacetRegistry_validateFacetInfo_FacetNameEmpty();
+error FacetRegistry_validateFacetInfo_FacetNotContract();
 error FacetRegistry_removeFacet_FacetNotRegistered();
 
 contract FacetRegistry is IFacetRegistry {
@@ -22,8 +23,7 @@ contract FacetRegistry is IFacetRegistry {
     function registerFacet(FacetInfo calldata facetInfo) external {
         _validateFacetInfo(facetInfo);
 
-        bytes32 facetId = computeFacetId(facetInfo.name);
-        if (getFacetAddress(facetId) != address(0)) revert FacetRegistry_registerFacet_FacetAlreadyRegistered();
+        bytes32 facetId = computeFacetId(facetInfo.addr);
 
         FacetRegistryStorage.layout().addFacet(facetInfo, facetId);
 
@@ -42,32 +42,27 @@ contract FacetRegistry is IFacetRegistry {
     }
 
     /// @inheritdoc IFacetRegistry
-    function computeFacetId(string calldata name) public view returns (bytes32) {
-        return keccak256(abi.encodePacked(block.chainid, address(this), name));
+    function computeFacetId(address facet) public view returns (bytes32) {
+        return facet.codehash;
     }
 
     /// @inheritdoc IFacetRegistry
-    function getFacetId(address facet) public view returns (bytes32) {
-        return FacetRegistryStorage.layout().facetIds[facet];
-    }
-
-    /// @inheritdoc IFacetRegistry
-    function getFacetAddress(bytes32 facetId) public view returns (address) {
+    function facetAddress(bytes32 facetId) public view returns (address) {
         return FacetRegistryStorage.layout().facets[facetId].addr;
     }
 
     /// @inheritdoc IFacetRegistry
-    function getInitializer(bytes32 facetId) public view override returns (bytes4) {
+    function initializer(bytes32 facetId) public view override returns (bytes4) {
         return FacetRegistryStorage.layout().facets[facetId].initializer;
     }
 
     /// @inheritdoc IFacetRegistry
-    function getFacetInterface(bytes32 facetId) public view override returns (bytes4) {
+    function facetInterface(bytes32 facetId) public view override returns (bytes4) {
         return FacetRegistryStorage.layout().facets[facetId].interfaceId;
     }
 
     /// @inheritdoc IFacetRegistry
-    function getFacetSelectors(bytes32 facetId) public view override returns (bytes4[] memory selectors) {
+    function facetSelectors(bytes32 facetId) public view override returns (bytes4[] memory selectors) {
         bytes32[] memory selectorBytes = FacetRegistryStorage.layout().facets[facetId].selectors.values();
 
         selectors = new bytes4[](selectorBytes.length);
@@ -77,9 +72,12 @@ contract FacetRegistry is IFacetRegistry {
         }
     }
 
-    function _validateFacetInfo(FacetInfo calldata facetInfo) internal pure {
+    function _validateFacetInfo(FacetInfo calldata facetInfo) internal view {
         if (facetInfo.addr == address(0)) revert FacetRegistry_validateFacetInfo_FacetAddressZero();
         if (facetInfo.selectors.length == 0) revert FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
-        if (bytes(facetInfo.name).length == 0) revert FacetRegistry_validateFacetInfo_FacetNameEmpty();
+        if (!Address.isContract(facetInfo.addr)) revert FacetRegistry_validateFacetInfo_FacetNotContract();
+        if (facetAddress(computeFacetId(facetInfo.addr)) != address(0)) {
+            revert FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
+        }
     }
 }

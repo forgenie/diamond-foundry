@@ -11,7 +11,7 @@ import {
 } from "src/utils/Initializable.sol";
 
 contract InitializableTest is BaseTest {
-    event Initialized(uint8 version);
+    event Initialized(bytes32 indexed codehash, uint8 version);
 
     MockInitializable public mock;
 
@@ -74,7 +74,7 @@ contract InitializableTest is BaseTest {
 
     function test_InitializesContract() public {
         vm.expectEmit();
-        emit Initialized(1);
+        emit Initialized(address(mock).codehash, 1);
 
         mock.initialize();
     }
@@ -85,7 +85,7 @@ contract InitializableTest is BaseTest {
         mock.initialize();
 
         vm.expectEmit();
-        emit Initialized(version);
+        emit Initialized(address(mock).codehash, version);
 
         mock.reinitialize(version);
     }

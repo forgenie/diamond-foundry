@@ -2,13 +2,14 @@
 pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
+import { SelfReferenced } from "./SelfReferenced.sol";
 
 error Initializable_initializer_AlreadyInitialized();
 error Initializable_reinitializer_AlreadyInitialized(uint8 version);
 error Initializable_onlyInitializing_NotInInitializingState();
 error Initializable_disableInitializers_InInitializingState();
 
-abstract contract Initializable {
+abstract contract Initializable is SelfReferenced {
     bytes32 internal constant _INITIALIZABLE_SLOT = keccak256("utils.initializable");
 
     struct Storage {
@@ -16,8 +17,7 @@ abstract contract Initializable {
         bool initializing;
     }
 
-    // todo: add address/codehash of the facet that is initialized
-    event Initialized(uint8 version);
+    event Initialized(bytes32 indexed codehash, uint8 version);
 
     modifier initializer() {
         Storage storage s = layout();
@@ -33,7 +33,7 @@ abstract contract Initializable {
         _;
         if (isTopLevelCall) {
             s.initializing = false;
-            emit Initialized(1);
+            emit Initialized(_self.codehash, 1);
         }
     }
 
@@ -47,7 +47,7 @@ abstract contract Initializable {
         s.initializing = true;
         _;
         s.initializing = false;
-        emit Initialized(version);
+        emit Initialized(_self.codehash, version);
     }
 
     modifier onlyInitializing() {
@@ -61,7 +61,7 @@ abstract contract Initializable {
 
         if (s.initialized < type(uint8).max) {
             s.initialized = type(uint8).max;
-            emit Initialized(type(uint8).max);
+            emit Initialized(_self.codehash, type(uint8).max);
         }
     }
 

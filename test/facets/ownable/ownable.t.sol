@@ -58,10 +58,6 @@ contract OwnableFacetHelper is FacetHelper {
         return OwnableFacet.initialize.selector;
     }
 
-    function name() public pure override returns (string memory) {
-        return "Ownable";
-    }
-
     // NOTE: This is a hack to give the initializer the owner address
     function makeInitData(bytes memory args) public view override returns (FacetInit memory) {
         return FacetInit({ facet: facet(), data: abi.encodeWithSelector(initializer(), abi.decode(args, (address))) });

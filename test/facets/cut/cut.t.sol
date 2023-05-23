@@ -63,10 +63,6 @@ contract DiamondCutFacetHelper is FacetHelper {
         return diamondCut.initialize.selector;
     }
 
-    function name() public pure override returns (string memory) {
-        return "DiamondCut";
-    }
-
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
         interfaces = new bytes4[](1);
         interfaces[0] = type(IDiamondCut).interfaceId;

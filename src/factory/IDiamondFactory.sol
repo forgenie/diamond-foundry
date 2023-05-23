@@ -18,6 +18,7 @@ interface IDiamondFactoryStructs {
 
     /**
      * @notice Represents data used in multiDelegateCall.
+     * @dev Initializer is fetched from registry.
      */
     struct FacetInit {
         address facet;
