@@ -64,10 +64,6 @@ contract DiamondIncrementalFacetHelper is FacetHelper {
         return diamondIncremental.initialize.selector;
     }
 
-    function name() public pure override returns (string memory) {
-        return "DiamondIncremental";
-    }
-
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
         interfaces = new bytes4[](1);
         interfaces[0] = type(IDiamondIncremental).interfaceId;

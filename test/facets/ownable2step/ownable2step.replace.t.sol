@@ -62,10 +62,6 @@ contract OwnableReplaceHelper is FacetHelper {
         return ownable2Step.initialize_Replace_Ownable.selector;
     }
 
-    function name() public pure override returns (string memory) {
-        return "Ownable2StepFacet";
-    }
-
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
         interfaces = new bytes4[](1);
         interfaces[0] = type(IOwnable2Step).interfaceId;

@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-// todo: improve docs
 /**
  * @title IFacetRegistry
- * @notice Interface of the Facet Registry contract.
+ * @notice Interface of the FacetRegistry contract.
  */
 interface IFacetRegistry {
     /**
-     * @notice FacetInfo struct containing facet name, address, selectors, and initializer.
+     * @notice FacetInfo struct containing address, selectors, and initializer.
      * @param addr The address of the facet.
      * @param selectors The function selectors of the facet.
      * @param initializer The selector of the initializer function, 0x0 if stateless.
@@ -27,15 +26,15 @@ interface IFacetRegistry {
     event FacetImplementationSet(bytes32 indexed facetId, address indexed facet);
 
     /**
-     * @notice Registers a new facet for use in the diamond.
-     * @param facetInfo FacetInfo struct containing facet name, address, selectors, and initializer.
+     * @notice Registers a new facet.
+     * @param facetInfo FacetInfo struct containing facet address, selectors, and initializer.
      */
     function registerFacet(FacetInfo calldata facetInfo) external;
 
     /**
      * @notice Returns the facetId of a given facet address.
      * @param facet Address of the facet.
-     * @return facetId The facetId of the facet.
+     * @return facetId The id of the facet.
      */
     function computeFacetId(address facet) external view returns (bytes32 facetId);
 

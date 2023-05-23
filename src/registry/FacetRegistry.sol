@@ -63,9 +63,9 @@ contract FacetRegistry is IFacetRegistry {
     function _validateFacetInfo(FacetInfo calldata facetInfo) internal view {
         if (facetInfo.addr == address(0)) revert FacetRegistry_validateFacetInfo_FacetAddressZero();
         if (facetInfo.selectors.length == 0) revert FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
+        if (!Address.isContract(facetInfo.addr)) revert FacetRegistry_validateFacetInfo_FacetNotContract();
         if (facetAddress(computeFacetId(facetInfo.addr)) != address(0)) {
             revert FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
         }
-        if (!Address.isContract(facetInfo.addr)) revert FacetRegistry_validateFacetInfo_FacetNotContract();
     }
 }
