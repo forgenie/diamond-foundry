@@ -30,7 +30,7 @@ abstract contract FacetHelper is IDiamond, IDiamondFactoryStructs {
 
     function initializer() public view virtual returns (bytes4);
 
-    function facetId() public pure virtual returns (bytes32) {
+    function facetId() public view virtual returns (bytes32) {
         return facet().codehash;
     }
 
