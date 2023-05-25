@@ -3,48 +3,35 @@ pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
+import { IBeacon } from "@openzeppelin/contracts/proxy/beacon/IBeacon.sol";
+import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 import { ERC721A } from "@erc721a/ERC721A.sol";
 
 import { DelegateCall } from "src/utils/DelegateCall.sol";
 import { IDiamondFoundry, IFacetRegistry, IDiamond } from "./IDiamondFoundry.sol";
 import { Diamond } from "../Diamond.sol";
 
-contract DiamondFoundry is IDiamondFoundry, ERC721A, DelegateCall {
+contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
     IFacetRegistry private immutable _facetRegistry;
 
     address private _diamondImplementation;
 
+    event DiamondImplementationChanged(address indexed previousDiamond, address indexed newDiamond);
+
     constructor(IFacetRegistry registry, address diamondImplementation) ERC721A("Diamond Foundry", "FOUNDRY") {
         _facetRegistry = registry;
-
         _diamondImplementation = diamondImplementation;
+
+        emit DiamondImplementationChanged(address(0), diamondImplementation);
     }
 
     /// @inheritdoc IDiamondFoundry
     function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond) {
-        diamond = _deployDiamond(baseFacets);
+        Create2.deploy(0, bytes32(_nextTokenId()), type(BeaconProxy).creationCode);
 
-        // slither-disable-next-line reentrancy-events
-        emit DiamondCreated(diamond, msg.sender, baseFacets);
-    }
+        _mint(msg.sender, 1);
 
-    /// @inheritdoc IDiamondFoundry
-    function facetRegistry() external view returns (IFacetRegistry) {
-        return _facetRegistry;
-    }
-
-    /// @inheritdoc IDiamondFoundry
-    function makeFacetCut(
-        IDiamond.FacetCutAction action,
-        bytes32 facetId
-    )
-        public
-        view
-        returns (IDiamond.FacetCut memory facetCut)
-    {
-        facetCut.action = action;
-        facetCut.facet = _facetRegistry.facetAddress(facetId);
-        facetCut.selectors = _facetRegistry.facetSelectors(facetId);
+        emit DiamondMinted(diamond, msg.sender, baseFacets);
     }
 
     /// @inheritdoc IDiamondFoundry
@@ -56,6 +43,16 @@ contract DiamondFoundry is IDiamondFoundry, ERC721A, DelegateCall {
             // slither-disable-next-line unused-return
             Address.functionDelegateCall(facetInit.facet, facetInit.data);
         }
+    }
+
+    /// @inheritdoc IDiamondFoundry
+    function facetRegistry() external view returns (IFacetRegistry) {
+        return _facetRegistry;
+    }
+
+    /// @inheritdoc IBeacon
+    function implementation() external view override returns (address) {
+        return _diamondImplementation;
     }
 
     function _deployDiamond(BaseFacet[] calldata baseFacets) internal returns (address diamond) {

@@ -34,7 +34,7 @@ interface IDiamondFoundry is IDiamondFoundryStructs {
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
-    event DiamondCreated(address indexed diamond, address indexed deployer, BaseFacet[] baseFacets);
+    event DiamondMinted(address indexed diamond, address indexed deployer, BaseFacet[] baseFacets);
 
     /**
      * @notice Creates a diamond with the given base Facets
@@ -42,19 +42,6 @@ interface IDiamondFoundry is IDiamondFoundryStructs {
      * @return diamond The address of the diamond.
      */
     function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond);
-
-    /**
-     * @notice Builds a FacetCut struct from a given facetId.
-     * @param action The action to be performed.
-     * @param facetId The facetId of the facet.
-     */
-    function makeFacetCut(
-        IDiamond.FacetCutAction action,
-        bytes32 facetId
-    )
-        external
-        view
-        returns (IDiamond.FacetCut memory facetCut);
 
     /**
      * @dev To be called only via delegatecall.

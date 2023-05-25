@@ -31,8 +31,8 @@ contract Diamond is IDiamond, DiamondCutBase {
     }
 
     /// IDEA: Allow fallback function to be implemented/overriden by a base facet.
-    ///       This would allow different customization possibilities,
-    ///       such as delegate directly the `FacetRegistry` where Facets can be upgraded
+    /// This would allow different customization possibilities,
+    /// such as delegate directly the `FacetRegistry` where Facets can be upgraded
     function _fallback() internal {
         address facet = DiamondLoupeBehavior.facetAddress(msg.sig);
 
