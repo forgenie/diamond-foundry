@@ -43,10 +43,19 @@ interface IDiamondFoundry is IDiamondFoundryStructs {
      */
     function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond);
 
+    function diamondAddress(uint256 tokenId) external view returns (address);
+
+    /**
+     * @notice Returns the tokenId of a diamond.
+     * @param diamond The address of the diamond.
+     */
+    function tokenIdOf(address diamond) external view returns (uint256);
+
     /**
      * @dev To be called only via delegatecall.
      * @notice Executes a delegatecall to initialize the diamond.
      * @param diamondInitData The FacetInit data to be used in the delegatecall.
+     * // todo: move into Diamond
      */
     function multiDelegateCall(FacetInit[] memory diamondInitData) external;
 

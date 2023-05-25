@@ -16,6 +16,8 @@ contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
 
     address private _diamondImplementation;
 
+    mapping(uint256 tokenId => address proxy) private _diamonds;
+
     event DiamondImplementationChanged(address indexed previousDiamond, address indexed newDiamond);
 
     constructor(IFacetRegistry registry, address diamondImplementation) ERC721A("Diamond Foundry", "FOUNDRY") {
@@ -27,12 +29,17 @@ contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
 
     /// @inheritdoc IDiamondFoundry
     function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond) {
+        // todo: add args
         Create2.deploy(0, bytes32(_nextTokenId()), type(BeaconProxy).creationCode);
 
         _mint(msg.sender, 1);
 
         emit DiamondMinted(diamond, msg.sender, baseFacets);
     }
+
+    function diamondAddress(uint256 tokenId) external view override returns (address) { }
+
+    function tokenIdOf(address diamond) external view override returns (uint256) { }
 
     /// @inheritdoc IDiamondFoundry
     function multiDelegateCall(FacetInit[] memory diamondInitData) external onlyDelegateCall {
