@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 import { IDiamond } from "src/IDiamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
-interface IDiamondFactoryStructs {
+interface IDiamondFoundryStructs {
     /**
      * @notice Contains the information for a base facet.
      * @dev Initializer is fetched from registry.
@@ -27,10 +27,10 @@ interface IDiamondFactoryStructs {
 }
 
 /**
- * @title IDiamondFactory
+ * @title IDiamondFoundry
  * @notice Interface of the Diamond Factory contract.
  */
-interface IDiamondFactory is IDiamondFactoryStructs {
+interface IDiamondFoundry is IDiamondFoundryStructs {
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
@@ -41,15 +41,7 @@ interface IDiamondFactory is IDiamondFactoryStructs {
      * @param baseFacets The base facets info which will be added to the diamond.
      * @return diamond The address of the diamond.
      */
-    function createDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond);
-
-    /**
-     * @notice Creates a diamond with the given base Facets and salt.
-     * @param baseFacetIds The facetIds of the base facets to be added to the diamond.
-     * @param salt The salt to be used in the diamond address computation.
-     * @return diamond The address of the diamond.
-     */
-    // TODO: function createDiamond(bytes32[] calldata baseFacetIds, uint256 salt) external returns (address diamond);
+    function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond);
 
     /**
      * @notice Builds a FacetCut struct from a given facetId.

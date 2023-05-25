@@ -2,31 +2,38 @@
 pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { Diamond } from "../Diamond.sol";
-import { IDiamondFactory, IFacetRegistry, IDiamond } from "./IDiamondFactory.sol";
-import { DelegateCall } from "src/utils/DelegateCall.sol";
+import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
+import { ERC721A } from "@erc721a/ERC721A.sol";
 
-contract DiamondFactory is IDiamondFactory, DelegateCall {
+import { DelegateCall } from "src/utils/DelegateCall.sol";
+import { IDiamondFoundry, IFacetRegistry, IDiamond } from "./IDiamondFoundry.sol";
+import { Diamond } from "../Diamond.sol";
+
+contract DiamondFoundry is IDiamondFoundry, ERC721A, DelegateCall {
     IFacetRegistry private immutable _facetRegistry;
 
-    constructor(IFacetRegistry registry) {
+    address private _diamondImplementation;
+
+    constructor(IFacetRegistry registry, address diamondImplementation) ERC721A("Diamond Foundry", "FOUNDRY") {
         _facetRegistry = registry;
+
+        _diamondImplementation = diamondImplementation;
     }
 
-    /// @inheritdoc IDiamondFactory
-    function createDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond) {
+    /// @inheritdoc IDiamondFoundry
+    function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond) {
         diamond = _deployDiamond(baseFacets);
 
         // slither-disable-next-line reentrancy-events
         emit DiamondCreated(diamond, msg.sender, baseFacets);
     }
 
-    /// @inheritdoc IDiamondFactory
+    /// @inheritdoc IDiamondFoundry
     function facetRegistry() external view returns (IFacetRegistry) {
         return _facetRegistry;
     }
 
-    /// @inheritdoc IDiamondFactory
+    /// @inheritdoc IDiamondFoundry
     function makeFacetCut(
         IDiamond.FacetCutAction action,
         bytes32 facetId
@@ -40,7 +47,7 @@ contract DiamondFactory is IDiamondFactory, DelegateCall {
         facetCut.selectors = _facetRegistry.facetSelectors(facetId);
     }
 
-    /// @inheritdoc IDiamondFactory
+    /// @inheritdoc IDiamondFoundry
     function multiDelegateCall(FacetInit[] memory diamondInitData) external onlyDelegateCall {
         for (uint256 i = 0; i < diamondInitData.length; i++) {
             FacetInit memory facetInit = diamondInitData[i];

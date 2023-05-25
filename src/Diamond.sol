@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { IDiamondFactory } from "./factory/IDiamondFactory.sol";
+import { IDiamondFoundry } from "./factory/IDiamondFoundry.sol";
 import { IDiamond } from "./IDiamond.sol";
 import { DiamondCutBase } from "./facets/cut/DiamondCutBase.sol";
 import { DiamondLoupeBehavior } from "./facets/loupe/DiamondLoupeBehavior.sol";
