@@ -3,6 +3,7 @@ pragma solidity 0.8.19;
 
 import { IDiamond } from "src/IDiamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
+import { IERC721A } from "@erc721a/IERC721A.sol";
 
 interface IDiamondFoundryStructs {
     /**
@@ -22,7 +23,7 @@ interface IDiamondFoundryStructs {
      */
     struct FacetInit {
         address facet;
-        bytes data; // encoded initializer + args
+        bytes data;
     }
 }
 
@@ -30,19 +31,21 @@ interface IDiamondFoundryStructs {
  * @title IDiamondFoundry
  * @notice Interface of the Diamond Factory contract.
  */
-interface IDiamondFoundry is IDiamondFoundryStructs {
+interface IDiamondFoundry is IDiamondFoundryStructs, IERC721A {
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
-    event DiamondMinted(address indexed diamond, address indexed deployer, BaseFacet[] baseFacets);
+    event DiamondMinted(uint256 indexed tokenId, address indexed diamond);
 
     /**
      * @notice Creates a diamond with the given base Facets
-     * @param baseFacets The base facets info which will be added to the diamond.
      * @return diamond The address of the diamond.
      */
-    function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond);
+    function mintDiamond() external returns (address diamond);
 
+    /**
+     * @notice Returns the address of a diamond.
+     */
     function diamondAddress(uint256 tokenId) external view returns (address);
 
     /**

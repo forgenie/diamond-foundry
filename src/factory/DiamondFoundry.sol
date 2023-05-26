@@ -13,10 +13,9 @@ import { Diamond } from "../Diamond.sol";
 
 contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
     IFacetRegistry private immutable _facetRegistry;
-
-    address private _diamondImplementation;
-
+    address private immutable _diamondImplementation;
     mapping(uint256 tokenId => address proxy) private _diamonds;
+    mapping(address proxy => uint256 tokenId) private _tokenIds;
 
     event DiamondImplementationChanged(address indexed previousDiamond, address indexed newDiamond);
 
@@ -24,23 +23,34 @@ contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
         _facetRegistry = registry;
         _diamondImplementation = diamondImplementation;
 
+        // zero'th token is used as a sentinel value
+        _mint(address(this), 1);
+
         emit DiamondImplementationChanged(address(0), diamondImplementation);
     }
 
     /// @inheritdoc IDiamondFoundry
-    function mintDiamond(BaseFacet[] calldata baseFacets) external returns (address diamond) {
-        // todo: add args
-        Create2.deploy(0, bytes32(_nextTokenId()), type(BeaconProxy).creationCode);
+    function mintDiamond() external returns (address diamond) {
+        uint256 tokenId = _nextTokenId();
+        bytes32 salt = keccak256(abi.encode(tokenId, msg.sender));
+
+        diamond = address(new BeaconProxy{ salt: salt }(address(this), ""));
+
+        _diamonds[tokenId] = diamond;
+        _tokenIds[diamond] = tokenId;
 
         _mint(msg.sender, 1);
 
-        emit DiamondMinted(diamond, msg.sender, baseFacets);
+        emit DiamondMinted(tokenId, diamond);
     }
 
     function diamondAddress(uint256 tokenId) external view override returns (address) { }
 
-    function tokenIdOf(address diamond) external view override returns (uint256) { }
+    function tokenIdOf(address diamond) external view override returns (uint256) {
+        return _tokenIds[diamond];
+    }
 
+    // todo: move this into diamond
     /// @inheritdoc IDiamondFoundry
     function multiDelegateCall(FacetInit[] memory diamondInitData) external onlyDelegateCall {
         for (uint256 i = 0; i < diamondInitData.length; i++) {
