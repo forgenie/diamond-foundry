@@ -3,17 +3,18 @@ pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
-import { IBeacon } from "@openzeppelin/contracts/proxy/beacon/IBeacon.sol";
 import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 import { ERC721A } from "@erc721a/ERC721A.sol";
-
+import { DiamondBase } from "../DiamondBase.sol";
+import { DiamondBeaconProxy } from "../DiamondBeaconProxy.sol";
 import { DelegateCall } from "src/utils/DelegateCall.sol";
-import { IDiamondFoundry, IFacetRegistry, IDiamond } from "./IDiamondFoundry.sol";
+import { IDiamondFoundry, IFacetRegistry, IBeacon, IDiamond } from "./IDiamondFoundry.sol";
 import { Diamond } from "../Diamond.sol";
 
-contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
+contract DiamondFoundry is IDiamondFoundry, ERC721A, DelegateCall {
     IFacetRegistry private immutable _facetRegistry;
     address private immutable _diamondImplementation;
+
     mapping(uint256 tokenId => address proxy) private _diamonds;
     mapping(address proxy => uint256 tokenId) private _tokenIds;
 
@@ -34,7 +35,8 @@ contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
         uint256 tokenId = _nextTokenId();
         bytes32 salt = keccak256(abi.encode(tokenId, msg.sender));
 
-        diamond = address(new BeaconProxy{ salt: salt }(address(this), ""));
+        bytes memory initData = abi.encodeWithSelector(DiamondBase.initialize.selector, msg.sender);
+        diamond = address(new DiamondBeaconProxy{ salt: salt }(initData));
 
         _diamonds[tokenId] = diamond;
         _tokenIds[diamond] = tokenId;
@@ -44,9 +46,11 @@ contract DiamondFoundry is IDiamondFoundry, IBeacon, ERC721A, DelegateCall {
         emit DiamondMinted(tokenId, diamond);
     }
 
-    function diamondAddress(uint256 tokenId) external view override returns (address) { }
+    function diamondAddress(uint256 tokenId) external view returns (address) {
+        return _diamonds[tokenId];
+    }
 
-    function tokenIdOf(address diamond) external view override returns (uint256) {
+    function tokenIdOf(address diamond) external view returns (uint256) {
         return _tokenIds[diamond];
     }
 

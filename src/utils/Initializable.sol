@@ -9,7 +9,7 @@ error Initializable_reinitializer_AlreadyInitialized(uint8 version);
 error Initializable_onlyInitializing_NotInInitializingState();
 error Initializable_disableInitializers_InInitializingState();
 
-abstract contract Initializable is SelfReferenced {
+abstract contract Initializable {
     bytes32 internal constant _INITIALIZABLE_SLOT = keccak256("utils.initializable");
 
     struct Storage {
@@ -17,7 +17,7 @@ abstract contract Initializable is SelfReferenced {
         bool initializing;
     }
 
-    event Initialized(bytes32 indexed codehash, uint8 version);
+    event Initialized(uint8 version);
 
     modifier initializer() {
         Storage storage s = layout();
@@ -33,7 +33,7 @@ abstract contract Initializable is SelfReferenced {
         _;
         if (isTopLevelCall) {
             s.initializing = false;
-            emit Initialized(_self.codehash, 1);
+            emit Initialized(1);
         }
     }
 
@@ -47,7 +47,7 @@ abstract contract Initializable is SelfReferenced {
         s.initializing = true;
         _;
         s.initializing = false;
-        emit Initialized(_self.codehash, version);
+        emit Initialized(version);
     }
 
     modifier onlyInitializing() {
@@ -61,7 +61,7 @@ abstract contract Initializable is SelfReferenced {
 
         if (s.initialized < type(uint8).max) {
             s.initialized = type(uint8).max;
-            emit Initialized(_self.codehash, type(uint8).max);
+            emit Initialized(type(uint8).max);
         }
     }
 

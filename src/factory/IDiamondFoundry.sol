@@ -4,6 +4,7 @@ pragma solidity 0.8.19;
 import { IDiamond } from "src/IDiamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 import { IERC721A } from "@erc721a/IERC721A.sol";
+import { IBeacon } from "@openzeppelin/contracts/proxy/beacon/IBeacon.sol";
 
 interface IDiamondFoundryStructs {
     /**
@@ -31,7 +32,7 @@ interface IDiamondFoundryStructs {
  * @title IDiamondFoundry
  * @notice Interface of the Diamond Factory contract.
  */
-interface IDiamondFoundry is IDiamondFoundryStructs, IERC721A {
+interface IDiamondFoundry is IDiamondFoundryStructs, IERC721A, IBeacon {
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
