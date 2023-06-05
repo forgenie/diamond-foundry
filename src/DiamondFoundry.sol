@@ -6,11 +6,10 @@ import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 import { ERC721A } from "@erc721a/ERC721A.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { DiamondBase } from "../DiamondBase.sol";
-import { DiamondBeaconProxy } from "../DiamondBeaconProxy.sol";
+import { DiamondBase } from "src/diamond/DiamondBase.sol";
+import { DiamondBeaconProxy } from "src/diamond/DiamondBeaconProxy.sol";
 import { IDiamondFoundry, IFacetRegistry, IBeacon, IDiamond } from "./IDiamondFoundry.sol";
-import { Diamond } from "../Diamond.sol";
-import { DiamondBase } from "../DiamondBase.sol";
+import { DiamondBase } from "src/diamond/DiamondBase.sol";
 
 contract DiamondFoundry is IDiamondFoundry, ERC721A, Ownable {
     IFacetRegistry private immutable _facetRegistry;

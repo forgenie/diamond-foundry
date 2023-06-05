@@ -2,13 +2,14 @@
 pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { IDiamondFoundry } from "./factory/IDiamondFoundry.sol";
+import { IDiamondFoundry } from "./IDiamondFoundry.sol";
 import { IDiamond } from "./IDiamond.sol";
 import { DiamondCutBase } from "./facets/cut/DiamondCutBase.sol";
 import { DiamondLoupeBehavior } from "./facets/loupe/DiamondLoupeBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
+// DEPRECATED
 contract Diamond is IDiamond, DiamondCutBase {
     struct InitParams {
         FacetCut[] baseFacets;

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { IDiamond } from "src/IDiamond.sol";
-import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 import { IERC721A } from "@erc721a/IERC721A.sol";
 import { IBeacon } from "@openzeppelin/contracts/proxy/beacon/IBeacon.sol";
+import { IDiamond } from "src/IDiamond.sol";
+import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
 interface IDiamondFoundryStructs {
     /**

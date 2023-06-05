@@ -3,15 +3,14 @@ pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Proxy } from "@openzeppelin/contracts/proxy/Proxy.sol";
-import { IDiamondFoundry } from "src/factory/IDiamondFoundry.sol";
-import { DelegateCall } from "src/utils/DelegateCall.sol";
+import { IDiamondFoundry } from "src/IDiamondFoundry.sol";
 import { Initializable } from "src/utils/Initializable.sol";
 import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
 import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
 import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
+import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamondBase } from "./IDiamondBase.sol";
-import { DiamondCutBehavior } from "./facets/cut/DiamondCutBehavior.sol";
 
 error DiamondBase_Fallback_UnsupportedFunction();
 error DiamondBase_Fallback_CallerIsNotDiamond();

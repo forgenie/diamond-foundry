@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 
 import { BaseTest } from "../Base.t.sol";
-import { IDiamondFoundryStructs } from "src/factory/IDiamondFoundry.sol";
+import { IDiamondFoundryStructs } from "src/IDiamondFoundry.sol";
 import { IDiamond, Diamond } from "src/Diamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 

@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
-import { DelegateCall } from "./utils/DelegateCall.sol";
+import { DelegateCall } from "src/utils/DelegateCall.sol";
 
 /**
  * @notice This proxy will implement DiamondBase functionality.
