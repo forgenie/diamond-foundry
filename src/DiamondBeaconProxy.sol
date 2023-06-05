@@ -9,8 +9,12 @@ import { DelegateCall } from "./utils/DelegateCall.sol";
  */
 contract DiamondBeaconProxy is BeaconProxy, DelegateCall {
     /// @dev msg.sender is the factory address.
-    constructor(bytes memory data) BeaconProxy(msg.sender, data) { }
+    constructor(bytes memory data) BeaconProxy(msg.sender, data) {
+        // solhint-disable-previous-line no-empty-blocks
+    }
 
     /// @dev Protecting from other contracts replicating the diamond fallback.
-    function _beforeFallback() internal override noDelegateCall { }
+    function _beforeFallback() internal override noDelegateCall {
+        // solhint-disable-previous-line no-empty-blocks
+    }
 }

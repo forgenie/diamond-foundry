@@ -56,14 +56,6 @@ interface IDiamondFoundry is IDiamondFoundryStructs, IERC721A, IBeacon {
     function tokenIdOf(address diamond) external view returns (uint256);
 
     /**
-     * @dev To be called only via delegatecall.
-     * @notice Executes a delegatecall to initialize the diamond.
-     * @param diamondInitData The FacetInit data to be used in the delegatecall.
-     * // todo: move into Diamond
-     */
-    function multiDelegateCall(FacetInit[] memory diamondInitData) external;
-
-    /**
      * @notice Returns the address of the `FacetRegistry`.
      */
     function facetRegistry() external view returns (IFacetRegistry);

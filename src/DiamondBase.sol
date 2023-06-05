@@ -4,7 +4,6 @@ pragma solidity 0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Proxy } from "@openzeppelin/contracts/proxy/Proxy.sol";
 import { IDiamondFoundry } from "src/factory/IDiamondFoundry.sol";
-
 import { DelegateCall } from "src/utils/DelegateCall.sol";
 import { Initializable } from "src/utils/Initializable.sol";
 import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
@@ -12,6 +11,7 @@ import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
 import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
 import { IDiamondBase } from "./IDiamondBase.sol";
+import { DiamondCutBehavior } from "./facets/cut/DiamondCutBehavior.sol";
 
 error DiamondBase_Fallback_UnsupportedFunction();
 error DiamondBase_Fallback_CallerIsNotDiamond();
@@ -29,7 +29,13 @@ contract DiamondBase is
 
     constructor(IDiamondFoundry foundry) {
         diamondFoundry = foundry;
+
         _disableInitializers();
+    }
+
+    modifier tokenBound() {
+        if (diamondFoundry.tokenIdOf(address(this)) == 0) revert DiamondBase_Fallback_CallerIsNotDiamond();
+        _;
     }
 
     function initialize(address diamondOwner) external initializer {
@@ -48,36 +54,34 @@ contract DiamondBase is
         selectors[6] = this.supportsInterface.selector;
         selectors[7] = this.owner.selector;
 
-        FacetCut[] memory cuts = new FacetCut[](1);
-        cuts[0] = FacetCut({ facet: address(this), action: FacetCutAction.Add, selectors: selectors });
-        _diamondCut(cuts, address(0), "");
+        DiamondCutBehavior.addFacet(address(this), selectors);
     }
 
-    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external onlyOwner {
+    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external tokenBound onlyOwner {
         _diamondCut(cuts, init, data);
     }
 
-    function facets() external view returns (Facet[] memory) {
+    function facets() external view tokenBound returns (Facet[] memory) {
         return _facets();
     }
 
-    function facetAddresses() external view returns (address[] memory) {
+    function facetAddresses() external view tokenBound returns (address[] memory) {
         return _facetAddresses();
     }
 
-    function facetFunctionSelectors(address facet) external view returns (bytes4[] memory) {
+    function facetFunctionSelectors(address facet) external view tokenBound returns (bytes4[] memory) {
         return _facetSelectors(facet);
     }
 
-    function facetAddress(bytes4 selector) external view returns (address) {
+    function facetAddress(bytes4 selector) external view tokenBound returns (address) {
         return _facetAddress(selector);
     }
 
-    function supportsInterface(bytes4 interfaceId) external view returns (bool) {
+    function supportsInterface(bytes4 interfaceId) external view tokenBound returns (bool) {
         return _supportsInterface(interfaceId);
     }
 
-    function owner() external view returns (address) {
+    function owner() external view tokenBound returns (address) {
         return _owner();
     }
 
@@ -98,13 +102,7 @@ contract DiamondBase is
         }
     }
 
-    function _beforeFallback() internal override {
-        // In a delegate call, address(this) is the diamond.
-        if (diamondFoundry.tokenIdOf(address(this)) == 0) revert DiamondBase_Fallback_CallerIsNotDiamond();
-    }
-
-    function _fallback() internal override {
-        _beforeFallback();
+    function _fallback() internal override tokenBound {
         _diamondDelegate(msg.sig, msg.data);
     }
 

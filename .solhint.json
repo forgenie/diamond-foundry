@@ -12,5 +12,5 @@
     "not-rely-on-time": "off",
     "use-forbidden-name": "off",
     "payable-fallback": "off"
-  }
+   }
 }

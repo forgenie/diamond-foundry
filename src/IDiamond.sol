@@ -14,6 +14,7 @@ interface IDiamond {
         Replace,
         Remove
     }
+    // Immute
 
     /**
      * @dev Describes a facet to be added, replaced or removed.
