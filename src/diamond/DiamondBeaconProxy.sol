@@ -13,7 +13,7 @@ contract DiamondBeaconProxy is BeaconProxy, DelegateCall {
         // solhint-disable-previous-line no-empty-blocks
     }
 
-    /// @dev Protecting from other contracts replicating the diamond fallback.
+    /// @dev Protecting from other contracts replicating the implementation.
     function _beforeFallback() internal override noDelegateCall {
         // solhint-disable-previous-line no-empty-blocks
     }

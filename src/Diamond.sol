@@ -9,7 +9,7 @@ import { DiamondLoupeBehavior } from "./facets/loupe/DiamondLoupeBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
-// DEPRECATED
+// todo: DEPRECATE this in favor of DiamondBase
 contract Diamond is IDiamond, DiamondCutBase {
     struct InitParams {
         FacetCut[] baseFacets;

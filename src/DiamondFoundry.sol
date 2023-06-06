@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 import { ERC721A } from "@erc721a/ERC721A.sol";
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { DiamondBase } from "src/diamond/DiamondBase.sol";
 import { DiamondBeaconProxy } from "src/diamond/DiamondBeaconProxy.sol";
 import { IDiamondFoundry, IFacetRegistry, IBeacon, IDiamond } from "./IDiamondFoundry.sol";
-import { DiamondBase } from "src/diamond/DiamondBase.sol";
 
-contract DiamondFoundry is IDiamondFoundry, ERC721A, Ownable {
+contract DiamondFoundry is IDiamondFoundry, ERC721A {
     IFacetRegistry private immutable _facetRegistry;
     address private immutable _diamondImplementation;
 
@@ -30,13 +26,15 @@ contract DiamondFoundry is IDiamondFoundry, ERC721A, Ownable {
     function mintDiamond() external returns (address diamond) {
         uint256 tokenId = _nextTokenId();
 
-        bytes memory initData = abi.encodeWithSelector(DiamondBase.initialize.selector, msg.sender);
-        diamond = address(new DiamondBeaconProxy{ salt: bytes32(tokenId) }(initData));
+        bytes memory initData = abi.encodeWithSelector(DiamondBase.initialize.selector);
+        bytes32 salt = keccak256(abi.encode(tokenId, address(this), msg.sender));
+        diamond = address(new DiamondBeaconProxy{ salt: salt }(initData));
 
+        // slither-disable-start reentrancy-benign,reentrancy-events
         _diamonds[tokenId] = diamond;
         _tokenIds[diamond] = tokenId;
-
         emit DiamondMinted(tokenId, diamond);
+        // slither-disable-end reentrancy-benign,reentrancy-events
 
         _safeMint(msg.sender, 1, "");
     }

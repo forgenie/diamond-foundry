@@ -1,4 +1,4 @@
-// SDPX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
@@ -37,8 +37,7 @@ contract DiamondBase is
         _;
     }
 
-    function initialize(address diamondOwner) external initializer {
-        __Ownable_init(diamondOwner);
+    function initialize() external initializer {
         __DiamondLoupe_init();
         __Introspection_init();
         __DiamondCut_init();
@@ -81,7 +80,7 @@ contract DiamondBase is
     }
 
     function owner() external view tokenBound returns (address) {
-        return _owner();
+        return diamondFoundry.ownerOf(diamondFoundry.tokenIdOf(address(this)));
     }
 
     function _diamondDelegate(bytes4 selector, bytes calldata data) internal {
