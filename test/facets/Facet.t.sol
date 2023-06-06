@@ -4,11 +4,11 @@ pragma solidity 0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 
 import { BaseTest } from "../Base.t.sol";
-import { IDiamondFactoryStructs } from "src/factory/IDiamondFactory.sol";
+import { IDiamondFoundryStructs } from "src/IDiamondFoundry.sol";
 import { IDiamond, Diamond } from "src/Diamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
-abstract contract FacetTest is BaseTest, IDiamond, IDiamondFactoryStructs {
+abstract contract FacetTest is BaseTest, IDiamond, IDiamondFoundryStructs {
     /// @dev Attach facet interface to diamond for testing
     address public diamond;
 
@@ -22,7 +22,7 @@ abstract contract FacetTest is BaseTest, IDiamond, IDiamondFactoryStructs {
     function diamondInitParams() internal virtual returns (Diamond.InitParams memory);
 }
 
-abstract contract FacetHelper is IDiamond, IDiamondFactoryStructs {
+abstract contract FacetHelper is IDiamond, IDiamondFoundryStructs {
     /// @dev Deploy facet contract in ctor and return address for testing.
     function facet() public view virtual returns (address);
 

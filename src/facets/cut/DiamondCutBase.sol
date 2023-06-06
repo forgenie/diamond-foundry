@@ -8,14 +8,12 @@ import { DiamondCutBehavior } from "./DiamondCutBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 
-abstract contract DiamondCutBase is IDiamondCutEvents, Initializable {
+abstract contract DiamondCutBase is IDiamond, IDiamondCutEvents, Initializable {
     function __DiamondCut_init() internal onlyInitializing {
         IntrospectionBehavior.addInterface(type(IDiamondCut).interfaceId);
     }
 
     function _diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) internal {
-        _authorizeDiamondCut();
-
         for (uint256 i = 0; i < facetCuts.length; i++) {
             IDiamond.FacetCut memory facetCut = facetCuts[i];
 

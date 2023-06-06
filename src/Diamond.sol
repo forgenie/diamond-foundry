@@ -2,13 +2,14 @@
 pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { IDiamondFactory } from "./factory/IDiamondFactory.sol";
+import { IDiamondFoundry } from "./IDiamondFoundry.sol";
 import { IDiamond } from "./IDiamond.sol";
 import { DiamondCutBase } from "./facets/cut/DiamondCutBase.sol";
 import { DiamondLoupeBehavior } from "./facets/loupe/DiamondLoupeBehavior.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
+// todo: DEPRECATE this in favor of DiamondBase
 contract Diamond is IDiamond, DiamondCutBase {
     struct InitParams {
         FacetCut[] baseFacets;
@@ -31,8 +32,8 @@ contract Diamond is IDiamond, DiamondCutBase {
     }
 
     /// IDEA: Allow fallback function to be implemented/overriden by a base facet.
-    ///       This would allow different customization possibilities,
-    ///       such as delegate directly the `FacetRegistry` where Facets can be upgraded
+    /// This would allow different customization possibilities,
+    /// such as delegate directly the `FacetRegistry` where Facets can be upgraded
     function _fallback() internal {
         address facet = DiamondLoupeBehavior.facetAddress(msg.sig);
 
