@@ -7,7 +7,7 @@ import { IFacetRegistry, FacetRegistry } from "src/registry/FacetRegistry.sol";
 import { IDiamondFactory } from "src/factory/IDiamondFactory.sol";
 import { DiamondFoundry } from "src/DiamondFoundry.sol";
 import { Diamond } from "src/diamond/Diamond.sol";
-import { DiamondBase } from "src/diamond/DiamondBase.sol";
+import { Diamond } from "src/diamond/Diamond.sol";
 
 abstract contract DiamondFoundryTest is IDiamondFactory, BaseTest {
     DiamondFoundry public diamondFoundry;
@@ -16,7 +16,7 @@ abstract contract DiamondFoundryTest is IDiamondFactory, BaseTest {
     function setUp() public virtual override {
         super.setUp();
 
-        DiamondBase diamondBase = new DiamondBase();
+        Diamond diamondBase = new Diamond();
         facetRegistry = new FacetRegistry();
         diamondFoundry = new DiamondFoundry(facetRegistry, address(diamondBase));
     }

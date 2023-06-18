@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { DiamondFoundryTest } from "../DiamondFoundry.t.sol";
-import { IDiamondBase, DiamondBase } from "src/diamond/DiamondBase.sol";
+import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 
 contract DiamondFoundry_mintDiamond is DiamondFoundryTest {
     function test_ZeroTokenIdIsMinted() public {

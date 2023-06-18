@@ -1,11 +1,15 @@
-// SPDX-License-Identifier: MIT License
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
+
+import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
+import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
+import { IERC165 } from "src/facets/introspection/IERC165.sol";
 
 /**
  * @title IDiamond
  * @notice Interface of the Diamond Proxy contract. See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamond {
+interface IDiamond is IDiamondCut, IDiamondLoupe, IERC165 {
     /**
      * @notice Expresses the action of adding, replacing, or removing a facet.
      */
@@ -25,5 +29,14 @@ interface IDiamond {
         address facet;
         FacetCutAction action;
         bytes4[] selectors;
+    }
+
+    /**
+     * @notice Represents data used in multiDelegateCall.
+     * @param data Includes encoded initializer + arguments.
+     */
+    struct FacetInit {
+        address facet;
+        bytes data;
     }
 }

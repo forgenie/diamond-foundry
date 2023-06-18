@@ -11,7 +11,7 @@ import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {
     /// @dev helper to avoid boilerplate
-    FacetCut[] public facetCuts;
+    IDiamond.FacetCut[] public facetCuts;
 
     MockFacetHelper public mockFacetHelper;
     IDiamondCut public diamondCut;
@@ -27,11 +27,11 @@ abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {
         DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
 
-        FacetCut[] memory baseFacets = new FacetCut[](2);
-        baseFacets[0] = diamondCutHelper.makeFacetCut(FacetCutAction.Add);
-        baseFacets[1] = ownableHelper.makeFacetCut(FacetCutAction.Add);
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](2);
+        baseFacets[0] = diamondCutHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        baseFacets[1] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        FacetInit[] memory diamondInitData = new FacetInit[](2);
+        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](2);
         diamondInitData[0] = diamondCutHelper.makeInitData("");
         diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
 

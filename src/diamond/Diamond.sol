@@ -1,45 +1,80 @@
-// SPDX-License-Identifier: MIT License
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { IDiamond } from "src/diamond/IDiamond.sol";
-import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
-import { DiamondLoupeBehavior } from "src/facets/loupe/DiamondLoupeBehavior.sol";
+import { Proxy } from "@openzeppelin/contracts/proxy/Proxy.sol";
+import { DiamondBase } from "./DiamondBase.sol";
+import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
+import { IDiamond, IDiamondCut, IDiamondLoupe, IERC165 } from "./IDiamond.sol";
 
 error Diamond_Fallback_UnsupportedFunction();
 
-// todo: DEPRECATE this in favor of DiamondBase
-contract Diamond is IDiamond, DiamondCutBase {
+contract Diamond is IDiamond, Proxy, DiamondBase {
     struct InitParams {
         FacetCut[] baseFacets;
         address init;
         bytes initData;
     }
 
-    constructor(InitParams memory params) {
-        // Initializer on `init` will set up the state
-        // NOTE: If `diamondCut` facet is not provided, the diamond will be immutable
-        _diamondCut(params.baseFacets, params.init, params.initData);
+    constructor() {
+        _disableInitializers();
     }
 
-    fallback() external {
-        _fallback();
+    function initialize(InitParams calldata initDiamondCut) external initializer {
+        __DiamondLoupe_init();
+        __Introspection_init();
+        __DiamondCut_init();
+
+        // Register immutable functiions.
+        bytes4[] memory selectors = new bytes4[](6);
+        selectors[0] = this.diamondCut.selector;
+        selectors[1] = this.facets.selector;
+        selectors[2] = this.facetAddresses.selector;
+        selectors[3] = this.facetFunctionSelectors.selector;
+        selectors[4] = this.facetAddress.selector;
+        selectors[5] = this.supportsInterface.selector;
+        DiamondCutBehavior.addFacet(address(this), selectors);
+
+        _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
     }
 
-    receive() external payable {
-        _fallback();
+    /// @inheritdoc IDiamondCut
+    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external {
+        _diamondCut(cuts, init, data);
     }
 
-    /// IDEA: Allow fallback function to be implemented/overriden by a base facet.
-    /// This would allow different customization possibilities,
-    /// such as delegate directly the `FacetRegistry` where Facets can be upgraded
-    function _fallback() internal {
-        address facet = DiamondLoupeBehavior.facetAddress(msg.sig);
+    /// @inheritdoc IDiamondLoupe
+    function facets() external view returns (Facet[] memory) {
+        return _facets();
+    }
+
+    /// @inheritdoc IDiamondLoupe
+    function facetAddresses() external view returns (address[] memory) {
+        return _facetAddresses();
+    }
+
+    /// @inheritdoc IDiamondLoupe
+    function facetFunctionSelectors(address facet) external view returns (bytes4[] memory) {
+        return _facetSelectors(facet);
+    }
+
+    /// @inheritdoc IDiamondLoupe
+    function facetAddress(bytes4 selector) external view returns (address) {
+        return _facetAddress(selector);
+    }
+
+    /// @inheritdoc IERC165
+    function supportsInterface(bytes4 interfaceId) external view returns (bool) {
+        return _supportsInterface(interfaceId);
+    }
+
+    function _diamondDelegate(bytes4 selector, bytes calldata data) internal {
+        address facet = _facetAddress(selector);
 
         if (facet == address(0)) revert Diamond_Fallback_UnsupportedFunction();
 
         // slither-disable-next-line unused-return
-        Address.functionDelegateCall(facet, msg.data);
+        Address.functionDelegateCall(facet, data);
 
         // solhint-disable-next-line no-inline-assembly
         assembly {
@@ -50,6 +85,10 @@ contract Diamond is IDiamond, DiamondCutBase {
         }
     }
 
+    function _fallback() internal override {
+        _diamondDelegate(msg.sig, msg.data);
+    }
+
     // solhint-disable-next-line no-empty-blocks
-    function _authorizeDiamondCut() internal override { }
+    function _implementation() internal view override returns (address) { }
 }
