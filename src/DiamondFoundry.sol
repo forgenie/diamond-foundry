@@ -4,9 +4,9 @@ pragma solidity 0.8.19;
 import { ERC721A } from "@erc721a/ERC721A.sol";
 import { DiamondBase } from "src/diamond/DiamondBase.sol";
 import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
-import { DiamondBeaconFactory } from "src/factory/DiamondBeaconFactory.sol";
+import { DiamondFactory } from "src/factory/DiamondFactory.sol";
 
-contract DiamondFoundry is IDiamondFoundry, DiamondBeaconFactory, ERC721A {
+contract DiamondFoundry is IDiamondFoundry, DiamondFactory, ERC721A {
     IFacetRegistry private immutable _facetRegistry;
 
     mapping(uint256 tokenId => address proxy) private _diamonds;
@@ -17,7 +17,7 @@ contract DiamondFoundry is IDiamondFoundry, DiamondBeaconFactory, ERC721A {
         address diamondImplementation
     )
         ERC721A("Diamond Foundry", "FOUNDRY")
-        DiamondBeaconFactory(address(diamondImplementation))
+        DiamondFactory(address(diamondImplementation))
     {
         _facetRegistry = registry;
 
