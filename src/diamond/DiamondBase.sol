@@ -8,79 +8,69 @@ import { Initializable } from "src/utils/Initializable.sol";
 import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
 import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
-import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
 import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
-import { IDiamondBase } from "./IDiamondBase.sol";
+import { IDiamondBase, IDiamondCut, IDiamondLoupe, IERC165 } from "./IDiamondBase.sol";
 
 error DiamondBase_Fallback_UnsupportedFunction();
-error DiamondBase_Fallback_CallerIsNotDiamond();
 
-contract DiamondBase is
-    IDiamondBase,
-    Proxy,
-    Initializable,
-    DiamondCutBase,
-    DiamondLoupeBase,
-    IntrospectionBase,
-    OwnableBase
-{
-    IDiamondFoundry public immutable diamondFoundry;
+contract DiamondBase is IDiamondBase, Proxy, Initializable, DiamondCutBase, DiamondLoupeBase, IntrospectionBase {
+    struct InitParams {
+        FacetCut[] baseFacets;
+        address init;
+        bytes initData;
+    }
 
-    constructor(IDiamondFoundry foundry) {
-        diamondFoundry = foundry;
-
+    constructor() {
         _disableInitializers();
     }
 
-    modifier tokenBound() {
-        if (diamondFoundry.tokenIdOf(address(this)) == 0) revert DiamondBase_Fallback_CallerIsNotDiamond();
-        _;
-    }
-
+    // todo: add InitParams
     function initialize() external initializer {
         __DiamondLoupe_init();
         __Introspection_init();
         __DiamondCut_init();
 
-        bytes4[] memory selectors = new bytes4[](8);
-        selectors[0] = this.diamondFoundry.selector;
-        selectors[1] = this.diamondCut.selector;
-        selectors[2] = this.facets.selector;
-        selectors[3] = this.facetAddresses.selector;
-        selectors[4] = this.facetFunctionSelectors.selector;
-        selectors[5] = this.facetAddress.selector;
-        selectors[6] = this.supportsInterface.selector;
-        selectors[7] = this.owner.selector;
-
+        // Register immutable functiions.
+        bytes4[] memory selectors = new bytes4[](6);
+        selectors[0] = this.diamondCut.selector;
+        selectors[1] = this.facets.selector;
+        selectors[2] = this.facetAddresses.selector;
+        selectors[3] = this.facetFunctionSelectors.selector;
+        selectors[4] = this.facetAddress.selector;
+        selectors[5] = this.supportsInterface.selector;
         DiamondCutBehavior.addFacet(address(this), selectors);
+
+        // _diamondCut(initParams.baseFacets, initParams.init, initParams.initData);
     }
 
-    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external tokenBound onlyOwner {
+    /// @inheritdoc IDiamondCut
+    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external {
         _diamondCut(cuts, init, data);
     }
 
-    function facets() external view tokenBound returns (Facet[] memory) {
+    /// @inheritdoc IDiamondLoupe
+    function facets() external view returns (Facet[] memory) {
         return _facets();
     }
 
-    function facetAddresses() external view tokenBound returns (address[] memory) {
+    /// @inheritdoc IDiamondLoupe
+    function facetAddresses() external view returns (address[] memory) {
         return _facetAddresses();
     }
 
-    function facetFunctionSelectors(address facet) external view tokenBound returns (bytes4[] memory) {
+    /// @inheritdoc IDiamondLoupe
+    function facetFunctionSelectors(address facet) external view returns (bytes4[] memory) {
         return _facetSelectors(facet);
     }
 
-    function facetAddress(bytes4 selector) external view tokenBound returns (address) {
+    /// @inheritdoc IDiamondLoupe
+    function facetAddress(bytes4 selector) external view returns (address) {
         return _facetAddress(selector);
     }
 
-    function supportsInterface(bytes4 interfaceId) external view tokenBound returns (bool) {
+    /// @inheritdoc IERC165
+    function supportsInterface(bytes4 interfaceId) external view returns (bool) {
         return _supportsInterface(interfaceId);
-    }
-
-    function owner() external view tokenBound returns (address) {
-        return diamondFoundry.ownerOf(diamondFoundry.tokenIdOf(address(this)));
     }
 
     function _diamondDelegate(bytes4 selector, bytes calldata data) internal {
@@ -100,7 +90,7 @@ contract DiamondBase is
         }
     }
 
-    function _fallback() internal override tokenBound {
+    function _fallback() internal override {
         _diamondDelegate(msg.sig, msg.data);
     }
 

@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 
-import { IDiamond } from "src/IDiamond.sol";
+import { IDiamond } from "src/diamond/IDiamond.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
 
 error DiamondCut_validateFacetCut_SelectorArrayEmpty(address facet);

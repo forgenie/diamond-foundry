@@ -5,7 +5,7 @@ import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
 import { IERC173, IOwnableEvents } from "src/facets/ownable/IERC173.sol";
 import { IOwnable2Step, IOwnable2StepEvents } from "src/facets/ownable2step/IOwnable2Step.sol";
 import { Ownable2StepFacet } from "src/facets/ownable2step/Ownable2StepFacet.sol";
-import { Diamond } from "src/Diamond.sol";
+import { Diamond } from "src/diamond/Diamond.sol";
 import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
 
 abstract contract Ownable2StepFacetTest is IOwnableEvents, IOwnable2StepEvents, FacetTest {

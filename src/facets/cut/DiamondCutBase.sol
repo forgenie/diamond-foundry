@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { Initializable } from "src/utils/Initializable.sol";
-import { IDiamond } from "src/IDiamond.sol";
+import { IDiamond } from "src/diamond/IDiamond.sol";
 import { IDiamondCut, IDiamondCutEvents } from "./IDiamondCut.sol";
 import { DiamondCutBehavior } from "./DiamondCutBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";

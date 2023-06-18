@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { FacetTest, FacetHelper } from "../Facet.t.sol";
-import { Diamond, IDiamond } from "src/Diamond.sol";
+import { Diamond, IDiamond } from "src/diamond/Diamond.sol";
 import { IOwnableEvents, IERC173 } from "src/facets/ownable/IERC173.sol";
 import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
 
