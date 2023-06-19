@@ -24,21 +24,18 @@ abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {
     }
 
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
-        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
 
-        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](2);
-        baseFacets[0] = diamondCutHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
-        baseFacets[1] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
+        baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](2);
-        diamondInitData[0] = diamondCutHelper.makeInitData("");
-        diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
+        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](1);
+        diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(diamondCutHelper),
-            initData: abi.encodeWithSelector(diamondCutHelper.multiDelegateCall.selector, diamondInitData)
+            init: address(ownableHelper),
+            initData: abi.encodeWithSelector(ownableHelper.multiDelegateCall.selector, diamondInitData)
         });
     }
 }

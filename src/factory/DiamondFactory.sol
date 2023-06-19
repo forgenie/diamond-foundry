@@ -34,7 +34,15 @@ abstract contract DiamondFactory is IDiamondFactory {
         diamond = _deployCloneAndCall(implementation, abi.encodeWithSelector(Diamond.initialize.selector, params));
     }
 
-    function _deployDiamondBeacon() internal returns (address diamond) {
-        // todo: deploy diamond beacon
+    function _deployDiamondBeacon(
+        address beacon,
+        bytes32 salt,
+        Diamond.InitParams memory initDiamondCut
+    )
+        internal
+        returns (address diamond)
+    {
+        bytes memory initData = abi.encodeWithSelector(Diamond.initialize.selector, initDiamondCut);
+        diamond = _deployBeaconProxy(beacon, initData, salt);
     }
 }

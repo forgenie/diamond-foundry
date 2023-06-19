@@ -16,7 +16,7 @@ abstract contract FacetTest is BaseTest, DiamondFactory {
 
         address implementation = address(new Diamond());
 
-        diamond = address(_deployDiamondClone(implementation, diamondInitParams()));
+        diamond = _deployDiamondClone(implementation, diamondInitParams());
     }
 
     /// @dev Add facet as init param for diamond

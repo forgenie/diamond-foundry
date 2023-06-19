@@ -3,6 +3,7 @@ pragma solidity 0.8.19;
 
 import { IERC721A } from "@erc721a/IERC721A.sol";
 import { IBeacon } from "@openzeppelin/contracts/proxy/beacon/IBeacon.sol";
+import { Diamond } from "src/diamond/Diamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 import { IDiamondFactory } from "src/factory/IDiamondFactory.sol";
 
@@ -20,7 +21,7 @@ interface IDiamondFoundry is IDiamondFactory, IERC721A, IBeacon {
      * @notice Creates a diamond with the given base Facets
      * @return diamond The address of the diamond.
      */
-    function mintDiamond() external returns (address diamond);
+    function mintDiamond(Diamond.InitParams calldata initParams) external returns (address diamond);
 
     /**
      * @notice Returns the address of a diamond.

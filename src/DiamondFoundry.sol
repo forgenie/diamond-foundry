@@ -27,13 +27,11 @@ contract DiamondFoundry is IDiamondFoundry, DiamondFactory, ERC721A, Upgradeable
     }
 
     /// @inheritdoc IDiamondFoundry
-    // todo: add InitParams
-    function mintDiamond() external returns (address diamond) {
+    function mintDiamond(Diamond.InitParams calldata initDiamondCut) external returns (address diamond) {
         uint256 tokenId = _nextTokenId();
 
-        bytes memory initData = abi.encodeWithSelector(Diamond.initialize.selector);
         bytes32 salt = keccak256(abi.encode(tokenId, address(this), msg.sender));
-        diamond = _deployBeaconProxy(address(this), initData, salt);
+        diamond = _deployDiamondBeacon(address(this), salt, initDiamondCut);
 
         // slither-disable-start reentrancy-benign,reentrancy-events
         _diamonds[tokenId] = diamond;
