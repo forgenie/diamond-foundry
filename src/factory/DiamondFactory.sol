@@ -1,48 +1,54 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { Clones } from "@openzeppelin/contracts/proxy/Clones.sol";
-import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
-import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
+import { DiamondFactoryBase } from "./DiamondFactoryBase.sol";
+import { IDiamondFactory } from "./IDiamondFactory.sol";
+import { Diamond } from "src/diamond/Diamond.sol";
 
-abstract contract DiamondFactory {
-    function _deployBeaconProxy(
-        address beacon,
-        bytes memory data,
-        bytes32 salt
-    )
-        private
-        returns (address beaconProxy)
-    {
-        beaconProxy = address(new BeaconProxy{ salt: salt }(beacon, data));
-    }
-
-    function _deployCloneAndCall(address implementation, bytes memory initData) private returns (address clone) {
-        clone = Clones.clone(implementation);
-        // slither-disable-next-line unused-return
-        Address.functionCall(clone, initData);
-    }
-
-    function _deployDiamondClone(
+contract DiamondFactory is IDiamondFactory, DiamondFactoryBase {
+    /// @inheritdoc IDiamondFactory
+    function deployDiamondClone(
         address implementation,
-        Diamond.InitParams memory params
+        Diamond.InitParams memory initDiamondCut
     )
-        internal
+        external
         returns (address diamond)
     {
-        diamond = _deployCloneAndCall(implementation, abi.encodeWithSelector(Diamond.initialize.selector, params));
+        diamond = _deployDiamondClone(implementation, initDiamondCut);
     }
 
-    function _deployDiamondBeacon(
+    /// @inheritdoc IDiamondFactory
+    function deployDiamondClone(
+        address implementation,
+        bytes32 salt,
+        Diamond.InitParams memory initDiamondCut
+    )
+        external
+        returns (address diamond)
+    {
+        diamond = _deployDiamondClone(implementation, salt, initDiamondCut);
+    }
+
+    /// @inheritdoc IDiamondFactory
+    function deployDiamondBeacon(
+        address beacon,
+        Diamond.InitParams memory initDiamondCut
+    )
+        external
+        returns (address diamond)
+    {
+        diamond = _deployDiamondBeacon(beacon, initDiamondCut);
+    }
+
+    /// @inheritdoc IDiamondFactory
+    function deployDiamondBeacon(
         address beacon,
         bytes32 salt,
         Diamond.InitParams memory initDiamondCut
     )
-        internal
+        external
         returns (address diamond)
     {
-        bytes memory initData = abi.encodeWithSelector(Diamond.initialize.selector, initDiamondCut);
-        diamond = _deployBeaconProxy(beacon, initData, salt);
+        diamond = _deployDiamondBeacon(beacon, salt, initDiamondCut);
     }
 }

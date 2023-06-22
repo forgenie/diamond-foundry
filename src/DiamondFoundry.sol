@@ -5,9 +5,9 @@ import { UpgradeableBeacon } from "@openzeppelin/contracts/proxy/beacon/Upgradea
 import { ERC721A } from "@erc721a/ERC721A.sol";
 import { Diamond } from "src/diamond/Diamond.sol";
 import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
-import { DiamondFactory } from "src/factory/DiamondFactory.sol";
+import { DiamondFactoryBase } from "src/factory/DiamondFactory.sol";
 
-contract DiamondFoundry is IDiamondFoundry, DiamondFactory, ERC721A, UpgradeableBeacon {
+contract DiamondFoundry is IDiamondFoundry, DiamondFactoryBase, ERC721A, UpgradeableBeacon {
     IFacetRegistry private immutable _facetRegistry;
 
     mapping(uint256 tokenId => address proxy) private _diamonds;
