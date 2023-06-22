@@ -7,53 +7,47 @@ import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.so
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 
 abstract contract DiamondFactoryBase {
-    function _deployDiamondClone(
-        address implementation,
-        Diamond.InitParams memory params
-    )
-        internal
-        returns (address diamond)
-    {
-        diamond = Clones.clone(implementation);
+    function _deployDiamondClone(address diamond, Diamond.InitParams memory params) internal returns (address clone) {
+        clone = Clones.clone(diamond);
 
         // slither-disable-next-line unused-return
-        Address.functionCall(diamond, abi.encodeWithSelector(Diamond.initialize.selector, params));
+        Address.functionCall(clone, abi.encodeWithSelector(Diamond.initialize.selector, params));
     }
 
     function _deployDiamondClone(
-        address implementation,
+        address diamond,
         bytes32 salt,
         Diamond.InitParams memory params
     )
         internal
-        returns (address diamond)
+        returns (address clone)
     {
-        diamond = Clones.cloneDeterministic(implementation, salt);
+        clone = Clones.cloneDeterministic(diamond, salt);
 
         // slither-disable-next-line unused-return
-        Address.functionCall(diamond, abi.encodeWithSelector(Diamond.initialize.selector, params));
+        Address.functionCall(clone, abi.encodeWithSelector(Diamond.initialize.selector, params));
     }
 
     function _deployDiamondBeacon(
-        address beacon,
+        address diamondBeacon,
         Diamond.InitParams memory initDiamondCut
     )
         internal
-        returns (address diamond)
+        returns (address beaconProxy)
     {
         bytes memory initData = abi.encodeWithSelector(Diamond.initialize.selector, initDiamondCut);
-        diamond = address(new BeaconProxy(beacon, initData));
+        beaconProxy = address(new BeaconProxy(diamondBeacon, initData));
     }
 
     function _deployDiamondBeacon(
-        address beacon,
+        address diamondBeacon,
         bytes32 salt,
         Diamond.InitParams memory initDiamondCut
     )
         internal
-        returns (address diamond)
+        returns (address beaconProxy)
     {
         bytes memory initData = abi.encodeWithSelector(Diamond.initialize.selector, initDiamondCut);
-        diamond = address(new BeaconProxy{ salt: salt }(beacon, initData));
+        beaconProxy = address(new BeaconProxy{ salt: salt }(diamondBeacon, initData));
     }
 }

@@ -7,48 +7,42 @@ import { Diamond } from "src/diamond/Diamond.sol";
 
 contract DiamondFactory is IDiamondFactory, DiamondFactoryBase {
     /// @inheritdoc IDiamondFactory
-    function deployDiamondClone(
-        address implementation,
-        Diamond.InitParams memory initDiamondCut
-    )
-        external
-        returns (address diamond)
-    {
-        diamond = _deployDiamondClone(implementation, initDiamondCut);
+    function deployDiamondClone(address diamond, Diamond.InitParams memory initDiamondCut) external returns (address) {
+        return _deployDiamondClone(diamond, initDiamondCut);
     }
 
     /// @inheritdoc IDiamondFactory
     function deployDiamondClone(
-        address implementation,
+        address diamond,
         bytes32 salt,
         Diamond.InitParams memory initDiamondCut
     )
         external
-        returns (address diamond)
+        returns (address)
     {
-        diamond = _deployDiamondClone(implementation, salt, initDiamondCut);
+        return _deployDiamondClone(diamond, salt, initDiamondCut);
     }
 
     /// @inheritdoc IDiamondFactory
     function deployDiamondBeacon(
-        address beacon,
+        address diamondBeacon,
         Diamond.InitParams memory initDiamondCut
     )
         external
-        returns (address diamond)
+        returns (address)
     {
-        diamond = _deployDiamondBeacon(beacon, initDiamondCut);
+        return _deployDiamondBeacon(diamondBeacon, initDiamondCut);
     }
 
     /// @inheritdoc IDiamondFactory
     function deployDiamondBeacon(
-        address beacon,
+        address diamondBeacon,
         bytes32 salt,
         Diamond.InitParams memory initDiamondCut
     )
         external
-        returns (address diamond)
+        returns (address)
     {
-        diamond = _deployDiamondBeacon(beacon, salt, initDiamondCut);
+        return _deployDiamondBeacon(diamondBeacon, salt, initDiamondCut);
     }
 }
