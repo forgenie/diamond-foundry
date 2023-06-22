@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 
-import { IDiamond } from "src/IDiamond.sol";
+import { IDiamond } from "src/diamond/IDiamond.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
 
 error DiamondCut_validateFacetCut_SelectorArrayEmpty(address facet);
@@ -131,12 +131,23 @@ library DiamondCutBehavior {
 
     function initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
         if (init == address(0)) return;
-
+        if (init == address(this)) {
+            multiDelegateCall(abi.decode(initData, (IDiamond.FacetInit[])));
+            return;
+        }
         if (!Address.isContract(init)) {
             revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
         }
 
         // slither-disable-next-line unused-return
         Address.functionDelegateCall(init, initData);
+    }
+
+    function multiDelegateCall(IDiamond.FacetInit[] memory initData) internal {
+        uint256 length = initData.length;
+        for (uint256 i = 0; i < length; i++) {
+            // slither-disable-next-line unused-return
+            Address.functionDelegateCall(initData[i].facet, initData[i].data);
+        }
     }
 }

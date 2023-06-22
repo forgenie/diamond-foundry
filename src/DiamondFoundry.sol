@@ -1,34 +1,37 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { BeaconProxy } from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
+import { UpgradeableBeacon } from "@openzeppelin/contracts/proxy/beacon/UpgradeableBeacon.sol";
 import { ERC721A } from "@erc721a/ERC721A.sol";
-import { DiamondBase } from "src/diamond/DiamondBase.sol";
-import { DiamondBeaconProxy } from "src/diamond/DiamondBeaconProxy.sol";
-import { IDiamondFoundry, IFacetRegistry, IBeacon, IDiamond } from "./IDiamondFoundry.sol";
+import { Diamond } from "src/diamond/Diamond.sol";
+import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
+import { DiamondFactoryBase } from "src/factory/DiamondFactory.sol";
 
-contract DiamondFoundry is IDiamondFoundry, ERC721A {
+contract DiamondFoundry is IDiamondFoundry, DiamondFactoryBase, ERC721A, UpgradeableBeacon {
     IFacetRegistry private immutable _facetRegistry;
-    address private immutable _diamondImplementation;
 
     mapping(uint256 tokenId => address proxy) private _diamonds;
     mapping(address proxy => uint256 tokenId) private _tokenIds;
 
-    constructor(IFacetRegistry registry) ERC721A("Diamond Foundry", "FOUNDRY") {
+    constructor(
+        IFacetRegistry registry,
+        address diamondImplementation
+    )
+        ERC721A("Diamond Foundry", "FOUNDRY")
+        UpgradeableBeacon(diamondImplementation)
+    {
         _facetRegistry = registry;
-        _diamondImplementation = address(new DiamondBase(this));
 
         // zero'th token is used as a sentinel value
         _mint(address(this), 1);
     }
 
     /// @inheritdoc IDiamondFoundry
-    function mintDiamond() external returns (address diamond) {
+    function mintDiamond(Diamond.InitParams calldata initDiamondCut) external returns (address diamond) {
         uint256 tokenId = _nextTokenId();
 
-        bytes memory initData = abi.encodeWithSelector(DiamondBase.initialize.selector);
         bytes32 salt = keccak256(abi.encode(tokenId, address(this), msg.sender));
-        diamond = address(new DiamondBeaconProxy{ salt: salt }(initData));
+        diamond = _deployDiamondBeacon(address(this), salt, initDiamondCut);
 
         // slither-disable-start reentrancy-benign,reentrancy-events
         _diamonds[tokenId] = diamond;
@@ -45,17 +48,12 @@ contract DiamondFoundry is IDiamondFoundry, ERC721A {
     }
 
     /// @inheritdoc IDiamondFoundry
-    function tokenIdOf(address diamond) external view returns (uint256) {
+    function diamondId(address diamond) external view returns (uint256) {
         return _tokenIds[diamond];
     }
 
     /// @inheritdoc IDiamondFoundry
     function facetRegistry() external view returns (IFacetRegistry) {
         return _facetRegistry;
-    }
-
-    /// @inheritdoc IBeacon
-    function implementation() external view override returns (address) {
-        return _diamondImplementation;
     }
 }

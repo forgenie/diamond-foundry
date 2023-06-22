@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
-import { Diamond } from "src/Diamond.sol";
+import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { IOwnable2Step, Ownable2StepFacet } from "src/facets/ownable2step/Ownable2StepFacet.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
@@ -25,11 +25,11 @@ abstract contract Ownable2StepFacetTest_ReplaceOwnable is FacetTest {
         // ownable() function does not need to be replaced
         replaceSelectors[0] = Ownable2StepFacet.transferOwnership.selector;
 
-        FacetCut[] memory baseFacets = new FacetCut[](3);
-        baseFacets[0] = ownableHelper.makeFacetCut(FacetCutAction.Replace);
-        baseFacets[1] = ownable2StepHelper.makeFacetCut(FacetCutAction.Add);
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](3);
+        baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Replace);
+        baseFacets[1] = ownable2StepHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        FacetInit[] memory diamondInitData = new FacetInit[](2);
+        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](2);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
         diamondInitData[1] = ownable2StepHelper.makeInitData("");
 

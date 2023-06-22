@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-import { IDiamond } from "src/IDiamond.sol";
+import { IDiamond } from "src/diamond/IDiamond.sol";
 
 interface IDiamondCutEvents {
     /**

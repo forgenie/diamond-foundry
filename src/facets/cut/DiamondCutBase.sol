@@ -2,13 +2,13 @@
 pragma solidity 0.8.19;
 
 import { Initializable } from "src/utils/Initializable.sol";
-import { IDiamond } from "src/IDiamond.sol";
+import { IDiamond } from "src/diamond/IDiamond.sol";
 import { IDiamondCut, IDiamondCutEvents } from "./IDiamondCut.sol";
 import { DiamondCutBehavior } from "./DiamondCutBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 
-abstract contract DiamondCutBase is IDiamond, IDiamondCutEvents, Initializable {
+abstract contract DiamondCutBase is IDiamondCutEvents, Initializable {
     function __DiamondCut_init() internal onlyInitializing {
         IntrospectionBehavior.addInterface(type(IDiamondCut).interfaceId);
     }

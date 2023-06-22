@@ -5,7 +5,7 @@ import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
 import { IERC173, IOwnableEvents } from "src/facets/ownable/IERC173.sol";
 import { IOwnable2Step, IOwnable2StepEvents } from "src/facets/ownable2step/IOwnable2Step.sol";
 import { Ownable2StepFacet } from "src/facets/ownable2step/Ownable2StepFacet.sol";
-import { Diamond } from "src/Diamond.sol";
+import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
 
 abstract contract Ownable2StepFacetTest is IOwnableEvents, IOwnable2StepEvents, FacetTest {
@@ -23,10 +23,10 @@ abstract contract Ownable2StepFacetTest is IOwnableEvents, IOwnable2StepEvents, 
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
         Ownable2StepFacetHelper ownable2StepHelper = new Ownable2StepFacetHelper();
 
-        FacetCut[] memory baseFacets = new FacetCut[](1);
-        baseFacets[0] = ownable2StepHelper.makeFacetCut(FacetCutAction.Add);
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
+        baseFacets[0] = ownable2StepHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        FacetInit[] memory diamondInitData = new FacetInit[](1);
+        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](1);
         diamondInitData[0] = ownable2StepHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
@@ -67,7 +67,10 @@ contract Ownable2StepFacetHelper is FacetHelper {
     }
 
     // NOTE: This is a hack to give the initializer the owner address
-    function makeInitData(bytes memory args) public view override returns (FacetInit memory) {
-        return FacetInit({ facet: facet(), data: abi.encodeWithSelector(initializer(), abi.decode(args, (address))) });
+    function makeInitData(bytes memory args) public view override returns (IDiamond.FacetInit memory) {
+        return IDiamond.FacetInit({
+            facet: facet(),
+            data: abi.encodeWithSelector(initializer(), abi.decode(args, (address)))
+        });
     }
 }

@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
-import { IDiamond, Diamond } from "src/Diamond.sol";
+import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondCutEvents, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
@@ -11,7 +11,7 @@ import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {
     /// @dev helper to avoid boilerplate
-    FacetCut[] public facetCuts;
+    IDiamond.FacetCut[] public facetCuts;
 
     MockFacetHelper public mockFacetHelper;
     IDiamondCut public diamondCut;
@@ -24,21 +24,18 @@ abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {
     }
 
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
-        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
 
-        FacetCut[] memory baseFacets = new FacetCut[](2);
-        baseFacets[0] = diamondCutHelper.makeFacetCut(FacetCutAction.Add);
-        baseFacets[1] = ownableHelper.makeFacetCut(FacetCutAction.Add);
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
+        baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        FacetInit[] memory diamondInitData = new FacetInit[](2);
-        diamondInitData[0] = diamondCutHelper.makeInitData("");
-        diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
+        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](1);
+        diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(diamondCutHelper),
-            initData: abi.encodeWithSelector(diamondCutHelper.multiDelegateCall.selector, diamondInitData)
+            init: address(ownableHelper),
+            initData: abi.encodeWithSelector(ownableHelper.multiDelegateCall.selector, diamondInitData)
         });
     }
 }

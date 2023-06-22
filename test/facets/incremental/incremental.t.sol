@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
-import { Diamond } from "src/Diamond.sol";
+import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { IDiamondIncremental, IDiamondIncrementalEvents } from "src/facets/incremental/IDiamondIncremental.sol";
 import { DiamondIncrementalFacet } from "src/facets/incremental/DiamondIncrementalFacet.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.sol";
@@ -22,18 +22,15 @@ abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalEvents, Face
 
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
         DiamondIncrementalFacetHelper diamondIncrementalHelper = new DiamondIncrementalFacetHelper();
-        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
 
-        FacetCut[] memory baseFacets = new FacetCut[](3);
-        baseFacets[0] = diamondIncrementalHelper.makeFacetCut(FacetCutAction.Add);
-        baseFacets[1] = diamondCutHelper.makeFacetCut(FacetCutAction.Add);
-        baseFacets[2] = ownableHelper.makeFacetCut(FacetCutAction.Add);
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](2);
+        baseFacets[0] = diamondIncrementalHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        baseFacets[1] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        FacetInit[] memory diamondInitData = new FacetInit[](3);
+        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](2);
         diamondInitData[0] = diamondIncrementalHelper.makeInitData("");
-        diamondInitData[1] = diamondCutHelper.makeInitData("");
-        diamondInitData[2] = ownableHelper.makeInitData(abi.encode(users.owner));
+        diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
