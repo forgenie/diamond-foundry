@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IFacetRegistry, FacetRegistry_removeFacet_FacetNotRegistered } from "src/registry/FacetRegistry.sol";
+import { IFacetRegistry, FacetRegistry_FacetNotRegistered } from "src/registry/FacetRegistry.sol";
 import { FacetRegistryTest } from "../FacetRegistry.t.sol";
 
 // solhint-disable-next-line contract-name-camelcase
@@ -9,7 +9,7 @@ contract FacetRegistry_removeFacet is FacetRegistryTest {
     function test_RevertsWhen_FacetNotRegistered() public {
         bytes32 facetId = facetRegistry.computeFacetId(address(mockFacet));
 
-        vm.expectRevert(FacetRegistry_removeFacet_FacetNotRegistered.selector);
+        vm.expectRevert(FacetRegistry_FacetNotRegistered.selector);
 
         facetRegistry.removeFacet(facetId);
     }

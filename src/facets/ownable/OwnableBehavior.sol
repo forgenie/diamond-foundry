@@ -3,8 +3,8 @@ pragma solidity 0.8.19;
 
 import { OwnableStorage } from "./OwnableStorage.sol";
 
-error Ownable_transferOwnership_ZeroAddress();
-error Ownable_checkOwner_NotOwner(address account);
+error Ownable_ZeroAddress();
+error Ownable_NotOwner(address account);
 
 library OwnableBehavior {
     function owner() internal view returns (address) {
@@ -12,11 +12,11 @@ library OwnableBehavior {
     }
 
     function checkOwner(address account) internal view {
-        if (account != owner()) revert Ownable_checkOwner_NotOwner(account);
+        if (account != owner()) revert Ownable_NotOwner(account);
     }
 
     function transferOwnership(address newOwner) internal {
-        if (newOwner == address(0)) revert Ownable_transferOwnership_ZeroAddress();
+        if (newOwner == address(0)) revert Ownable_ZeroAddress();
 
         OwnableStorage.layout().owner = newOwner;
     }

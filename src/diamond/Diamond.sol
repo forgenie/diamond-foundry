@@ -7,7 +7,7 @@ import { DiamondBase } from "./DiamondBase.sol";
 import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamond, IDiamondCut, IDiamondLoupe, IERC165 } from "./IDiamond.sol";
 
-error Diamond_Fallback_UnsupportedFunction();
+error Diamond_UnsupportedFunction();
 
 contract Diamond is IDiamond, Proxy, DiamondBase {
     struct InitParams {
@@ -71,7 +71,7 @@ contract Diamond is IDiamond, Proxy, DiamondBase {
     function _diamondDelegate(bytes4 selector, bytes calldata data) internal {
         address facet = _facetAddress(selector);
 
-        if (facet == address(0)) revert Diamond_Fallback_UnsupportedFunction();
+        if (facet == address(0)) revert Diamond_UnsupportedFunction();
 
         // slither-disable-next-line unused-return
         Address.functionDelegateCall(facet, data);

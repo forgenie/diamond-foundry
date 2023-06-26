@@ -6,11 +6,11 @@ import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableS
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 import { FacetRegistryStorage } from "./FacetRegistryStorage.sol";
 
-error FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
-error FacetRegistry_validateFacetInfo_FacetAddressZero();
-error FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
-error FacetRegistry_validateFacetInfo_FacetNotContract();
-error FacetRegistry_removeFacet_FacetNotRegistered();
+error FacetRegistry_FacetAlreadyRegistered();
+error FacetRegistry_FacetAddressZero();
+error FacetRegistry_FacetMustHaveSelectors();
+error FacetRegistry_FacetNotContract();
+error FacetRegistry_FacetNotRegistered();
 
 contract FacetRegistry is IFacetRegistry {
     using EnumerableSet for EnumerableSet.Bytes32Set;
@@ -34,7 +34,7 @@ contract FacetRegistry is IFacetRegistry {
     function removeFacet(bytes32 facetId) external {
         address facet = FacetRegistryStorage.layout().facets[facetId].addr;
 
-        if (facet == address(0)) revert FacetRegistry_removeFacet_FacetNotRegistered();
+        if (facet == address(0)) revert FacetRegistry_FacetNotRegistered();
 
         FacetRegistryStorage.layout().removeFacet(facetId);
 
@@ -73,11 +73,11 @@ contract FacetRegistry is IFacetRegistry {
     }
 
     function _validateFacetInfo(FacetInfo calldata facetInfo) internal view {
-        if (facetInfo.addr == address(0)) revert FacetRegistry_validateFacetInfo_FacetAddressZero();
-        if (facetInfo.selectors.length == 0) revert FacetRegistry_validateFacetInfo_FacetMustHaveSelectors();
-        if (!Address.isContract(facetInfo.addr)) revert FacetRegistry_validateFacetInfo_FacetNotContract();
+        if (facetInfo.addr == address(0)) revert FacetRegistry_FacetAddressZero();
+        if (facetInfo.selectors.length == 0) revert FacetRegistry_FacetMustHaveSelectors();
+        if (!Address.isContract(facetInfo.addr)) revert FacetRegistry_FacetNotContract();
         if (facetAddress(computeFacetId(facetInfo.addr)) != address(0)) {
-            revert FacetRegistry_validateFacetInfo_FacetAlreadyRegistered();
+            revert FacetRegistry_FacetAlreadyRegistered();
         }
     }
 }

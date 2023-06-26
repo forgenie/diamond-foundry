@@ -3,23 +3,20 @@ pragma solidity 0.8.19;
 
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-
 import { IDiamond } from "src/diamond/IDiamond.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
 
-error DiamondCut_validateFacetCut_SelectorArrayEmpty(address facet);
-error DiamondCut_validateFacetCut_FacetIsZeroAddress();
-error DiamondCut_validateFacetCut_FacetIsNotContract(address facet);
-error DiamondCut_validateFacetCut_IncorrectFacetCutAction();
-error DiamondCut_addFacet_SelectorIsZero();
-error DiamondCut_addFacet_FunctionAlreadyExists(bytes4 selector);
-error DiamondCut_removeFacet_CannotRemoveFromOtherFacet(address facet, bytes4 selector);
-error DiamondCut_removeFacet_SelectorIsZero();
-error DiamondCut_replaceFacet_SelectorIsZero();
-error DiamondCut_replaceFacet_FunctionFromSameFacet(bytes4 selector);
-error DiamondCut_replaceFacet_InexistingFunction(bytes4 selector);
-error DiamondCut_checkImmutable_ImmutableFacet();
-error DiamondCut_initializeDiamondCut_InitIsNotContract(address init);
+error DiamondCut_SelectorArrayEmpty(address facet);
+error DiamondCut_FacetIsZeroAddress();
+error DiamondCut_FacetIsNotContract(address facet);
+error DiamondCut_IncorrectFacetCutAction();
+error DiamondCut_SelectorIsZero();
+error DiamondCut_FunctionAlreadyExists(bytes4 selector);
+error DiamondCut_CannotRemoveFromOtherFacet(address facet, bytes4 selector);
+error DiamondCut_FunctionFromSameFacet(bytes4 selector);
+error DiamondCut_InexistingFunction(bytes4 selector);
+error DiamondCut_ImmutableFacet();
+error DiamondCut_InitIsNotContract(address init);
 
 library DiamondCutBehavior {
     /**
@@ -38,10 +35,10 @@ library DiamondCutBehavior {
             bytes4 selector = selectors[i];
 
             if (selector == bytes4(0)) {
-                revert DiamondCut_addFacet_SelectorIsZero();
+                revert DiamondCut_SelectorIsZero();
             }
             if (ds.selectorToFacet[selector] != address(0)) {
-                revert DiamondCut_addFacet_FunctionAlreadyExists(selector);
+                revert DiamondCut_FunctionAlreadyExists(selector);
             }
 
             ds.selectorToFacet[selector] = facet;
@@ -57,10 +54,10 @@ library DiamondCutBehavior {
             bytes4 selector = selectors[i];
             // also reverts if left side returns zero address
             if (selector == bytes4(0)) {
-                revert DiamondCut_removeFacet_SelectorIsZero();
+                revert DiamondCut_SelectorIsZero();
             }
             if (ds.selectorToFacet[selector] != facet) {
-                revert DiamondCut_removeFacet_CannotRemoveFromOtherFacet(facet, selector);
+                revert DiamondCut_CannotRemoveFromOtherFacet(facet, selector);
             }
 
             delete ds.selectorToFacet[selector];
@@ -84,13 +81,13 @@ library DiamondCutBehavior {
             address oldFacet = ds.selectorToFacet[selector];
 
             if (selector == bytes4(0)) {
-                revert DiamondCut_replaceFacet_SelectorIsZero();
+                revert DiamondCut_SelectorIsZero();
             }
             if (oldFacet == facet) {
-                revert DiamondCut_replaceFacet_FunctionFromSameFacet(selector);
+                revert DiamondCut_FunctionFromSameFacet(selector);
             }
             if (oldFacet == address(0)) {
-                revert DiamondCut_replaceFacet_InexistingFunction(selector);
+                revert DiamondCut_InexistingFunction(selector);
             }
 
             // overwrite selector to new facet
@@ -112,21 +109,21 @@ library DiamondCutBehavior {
 
     function validateFacetCut(IDiamond.FacetCut memory facetCut) internal view {
         if (uint256(facetCut.action) > 2) {
-            revert DiamondCut_validateFacetCut_IncorrectFacetCutAction();
+            revert DiamondCut_IncorrectFacetCutAction();
         }
         if (facetCut.facet == address(0)) {
-            revert DiamondCut_validateFacetCut_FacetIsZeroAddress();
+            revert DiamondCut_FacetIsZeroAddress();
         }
         if (!Address.isContract(facetCut.facet)) {
-            revert DiamondCut_validateFacetCut_FacetIsNotContract(facetCut.facet);
+            revert DiamondCut_FacetIsNotContract(facetCut.facet);
         }
         if (facetCut.selectors.length == 0) {
-            revert DiamondCut_validateFacetCut_SelectorArrayEmpty(facetCut.facet);
+            revert DiamondCut_SelectorArrayEmpty(facetCut.facet);
         }
     }
 
     function checkImmutable(address facet, bytes4[] memory) internal view {
-        if (facet == address(this)) revert DiamondCut_checkImmutable_ImmutableFacet();
+        if (facet == address(this)) revert DiamondCut_ImmutableFacet();
     }
 
     function initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
@@ -136,7 +133,7 @@ library DiamondCutBehavior {
             return;
         }
         if (!Address.isContract(init)) {
-            revert DiamondCut_initializeDiamondCut_InitIsNotContract(init);
+            revert DiamondCut_InitIsNotContract(init);
         }
 
         // slither-disable-next-line unused-return
