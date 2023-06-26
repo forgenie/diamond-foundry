@@ -3,10 +3,10 @@ pragma solidity 0.8.19;
 
 import {
     IFacetRegistry,
-    FacetRegistry_validateFacetInfo_FacetAddressZero,
-    FacetRegistry_validateFacetInfo_FacetMustHaveSelectors,
-    FacetRegistry_validateFacetInfo_FacetNotContract,
-    FacetRegistry_validateFacetInfo_FacetAlreadyRegistered
+    FacetRegistry_FacetAddressZero,
+    FacetRegistry_FacetMustHaveSelectors,
+    FacetRegistry_FacetNotContract,
+    FacetRegistry_FacetAlreadyRegistered
 } from "src/registry/FacetRegistry.sol";
 import { FacetRegistryTest } from "../FacetRegistry.t.sol";
 import { IMockFacet } from "test/mocks/MockFacet.sol";
@@ -17,7 +17,7 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
         IFacetRegistry.FacetInfo memory facetInfo =
             IFacetRegistry.FacetInfo({ addr: address(0), initializer: bytes4(0), selectors: new bytes4[](0) });
 
-        vm.expectRevert(FacetRegistry_validateFacetInfo_FacetAddressZero.selector);
+        vm.expectRevert(FacetRegistry_FacetAddressZero.selector);
         facetRegistry.registerFacet(facetInfo);
     }
 
@@ -25,7 +25,7 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
         IFacetRegistry.FacetInfo memory facetInfo =
             IFacetRegistry.FacetInfo({ addr: address(mockFacet), initializer: bytes4(0), selectors: new bytes4[](0) });
 
-        vm.expectRevert(FacetRegistry_validateFacetInfo_FacetMustHaveSelectors.selector);
+        vm.expectRevert(FacetRegistry_FacetMustHaveSelectors.selector);
         facetRegistry.registerFacet(facetInfo);
     }
 
@@ -33,7 +33,7 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
         IFacetRegistry.FacetInfo memory facetInfo =
             IFacetRegistry.FacetInfo({ addr: address(0x1), initializer: bytes4(0), selectors: new bytes4[](1) });
 
-        vm.expectRevert(FacetRegistry_validateFacetInfo_FacetNotContract.selector);
+        vm.expectRevert(FacetRegistry_FacetNotContract.selector);
         facetRegistry.registerFacet(facetInfo);
     }
 
@@ -42,7 +42,7 @@ contract FacetRegistry_registerFacet is FacetRegistryTest {
             IFacetRegistry.FacetInfo({ addr: address(mockFacet), initializer: bytes4(0), selectors: new bytes4[](1) });
 
         facetRegistry.registerFacet(facetInfo);
-        vm.expectRevert(FacetRegistry_validateFacetInfo_FacetAlreadyRegistered.selector);
+        vm.expectRevert(FacetRegistry_FacetAlreadyRegistered.selector);
         facetRegistry.registerFacet(facetInfo);
     }
 

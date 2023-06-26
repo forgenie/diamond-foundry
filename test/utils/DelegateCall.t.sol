@@ -4,10 +4,7 @@ pragma solidity 0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "test/Base.t.sol";
 import { MockDelegate } from "test/mocks/MockDelegate.sol";
-import {
-    DelegateCall_noDelegateCall_DelegateNotAllowed,
-    DelegateCall_onlyDelegateCall_OnlyDelegate
-} from "src/utils/DelegateCall.sol";
+import { DelegateCall_DelegateNotAllowed, DelegateCall_OnlyDelegate } from "src/utils/DelegateCall.sol";
 
 contract DelegateCallTest is BaseTest {
     MockDelegate public mockDelegate;
@@ -21,7 +18,7 @@ contract DelegateCallTest is BaseTest {
     function test_RevertsWhen_DelegateNotAllowed() public {
         bytes memory call = abi.encodeWithSelector(MockDelegate.incrementNoDelegate.selector);
 
-        vm.expectRevert(DelegateCall_noDelegateCall_DelegateNotAllowed.selector);
+        vm.expectRevert(DelegateCall_DelegateNotAllowed.selector);
         Address.functionDelegateCall(address(mockDelegate), call);
     }
 
@@ -32,7 +29,7 @@ contract DelegateCallTest is BaseTest {
     }
 
     function test_RevertsWhen_OnlyDelegateAllowed() public {
-        vm.expectRevert(DelegateCall_onlyDelegateCall_OnlyDelegate.selector);
+        vm.expectRevert(DelegateCall_OnlyDelegate.selector);
 
         mockDelegate.incrementOnlyDelegate();
     }

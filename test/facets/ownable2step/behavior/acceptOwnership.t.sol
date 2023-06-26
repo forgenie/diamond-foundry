@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import { Ownable2StepFacetTest } from "../ownable2step.t.sol";
-import { Ownable2Step_checkPendingOwner_NotPendingOwner } from "src/facets/ownable2step/Ownable2StepBehavior.sol";
+import { Ownable2Step_NotPendingOwner } from "src/facets/ownable2step/Ownable2StepBehavior.sol";
 
 contract Ownable2Step_acceptOwnership is Ownable2StepFacetTest {
     function setUp() public override {
@@ -16,7 +16,7 @@ contract Ownable2Step_acceptOwnership is Ownable2StepFacetTest {
         changePrank(users.stranger);
 
         // solhint-disable-next-line max-line-length
-        vm.expectRevert(abi.encodeWithSelector(Ownable2Step_checkPendingOwner_NotPendingOwner.selector, users.stranger));
+        vm.expectRevert(abi.encodeWithSelector(Ownable2Step_NotPendingOwner.selector, users.stranger));
 
         ownable2Step.acceptOwnership();
     }

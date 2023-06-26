@@ -4,8 +4,8 @@ pragma solidity 0.8.19;
 // uses storage
 import { IntrospectionStorage } from "./IntrospectionStorage.sol";
 
-error Introspection_addInteface_AlreadySupported();
-error Introspection_removeInterface_AlreadyNotSupported();
+error Introspection_AlreadySupported();
+error Introspection_AlreadyNotSupported();
 
 library IntrospectionBehavior {
     function supportsInterface(bytes4 interfaceId) internal view returns (bool) {
@@ -16,7 +16,7 @@ library IntrospectionBehavior {
         if (!supportsInterface(interfaceId)) {
             IntrospectionStorage.layout().supportedInterfaces[interfaceId] = true;
         } else {
-            revert Introspection_addInteface_AlreadySupported();
+            revert Introspection_AlreadySupported();
         }
     }
 
@@ -24,7 +24,7 @@ library IntrospectionBehavior {
         if (supportsInterface(interfaceId)) {
             IntrospectionStorage.layout().supportedInterfaces[interfaceId] = false;
         } else {
-            revert Introspection_removeInterface_AlreadyNotSupported();
+            revert Introspection_AlreadyNotSupported();
         }
     }
 }

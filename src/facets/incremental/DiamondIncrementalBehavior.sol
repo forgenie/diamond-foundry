@@ -5,13 +5,13 @@ import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { DiamondIncrementalStorage } from "./DiamondIncrementalStorage.sol";
 
-error DiamondIncremental_turnImmutable_AlreadyImmutable(bytes4 selector);
-error DiamondIncremental_checkImmutable_ImmutableFunction(bytes4 selector);
+error DiamondIncremental_AlreadyImmutable(bytes4 selector);
+error DiamondIncremental_ImmutableFunction(bytes4 selector);
 
 library DiamondIncrementalBehavior {
     function checkImmutable(bytes4 selector) internal view {
         if (isImmutable(selector)) {
-            revert DiamondIncremental_checkImmutable_ImmutableFunction(selector);
+            revert DiamondIncremental_ImmutableFunction(selector);
         }
     }
 
@@ -25,7 +25,7 @@ library DiamondIncrementalBehavior {
 
     function turnImmutable(bytes4 selector) internal {
         if (isImmutable(selector)) {
-            revert DiamondIncremental_turnImmutable_AlreadyImmutable(selector);
+            revert DiamondIncremental_AlreadyImmutable(selector);
         }
 
         DiamondIncrementalStorage.layout().immutableFunctions[selector] = true;

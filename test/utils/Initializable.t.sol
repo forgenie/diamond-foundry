@@ -4,10 +4,10 @@ pragma solidity 0.8.19;
 import { BaseTest } from "../Base.t.sol";
 import { MockInitializable } from "test/mocks/MockInitializable.sol";
 import {
-    Initializable_initializer_AlreadyInitialized,
-    Initializable_reinitializer_AlreadyInitialized,
-    Initializable_onlyInitializing_NotInInitializingState,
-    Initializable_disableInitializers_InInitializingState
+    Initializable_AlreadyInitialized,
+    Initializable_AlreadyInitialized,
+    Initializable_NotInInitializingState,
+    Initializable_InInitializingState
 } from "src/utils/Initializable.sol";
 
 contract InitializableTest is BaseTest {
@@ -24,7 +24,7 @@ contract InitializableTest is BaseTest {
     function test_RevertsWhen_AlreadyInitialized() public {
         mock.initialize();
 
-        vm.expectRevert(Initializable_initializer_AlreadyInitialized.selector);
+        vm.expectRevert(abi.encodeWithSelector(Initializable_AlreadyInitialized.selector, 1));
 
         mock.initialize();
     }
@@ -32,31 +32,29 @@ contract InitializableTest is BaseTest {
     function testFuzz_RevertsWhen_InitializersAreDisabled(uint8 version) public {
         mock.disableInitializers();
 
-        vm.expectRevert(Initializable_initializer_AlreadyInitialized.selector);
+        vm.expectRevert(abi.encodeWithSelector(Initializable_AlreadyInitialized.selector, type(uint8).max));
 
         mock.initialize();
 
-        vm.expectRevert(
-            abi.encodeWithSelector(Initializable_reinitializer_AlreadyInitialized.selector, type(uint8).max)
-        );
+        vm.expectRevert(abi.encodeWithSelector(Initializable_AlreadyInitialized.selector, type(uint8).max));
 
         mock.reinitialize(version);
     }
 
     function test_RevertsWhen_DoubleInitializer() public {
-        vm.expectRevert(Initializable_initializer_AlreadyInitialized.selector);
+        vm.expectRevert(abi.encodeWithSelector(Initializable_AlreadyInitialized.selector, 1));
 
         mock.doubleInitializer();
     }
 
     function test_RevertsWhen_NonInitializer() public {
-        vm.expectRevert(Initializable_onlyInitializing_NotInInitializingState.selector);
+        vm.expectRevert(Initializable_NotInInitializingState.selector);
 
         mock.nonInitializer();
     }
 
     function test_RevertsWhen_DisabledInitializer() public {
-        vm.expectRevert(Initializable_disableInitializers_InInitializingState.selector);
+        vm.expectRevert(Initializable_InInitializingState.selector);
 
         mock.disabledInitializer();
     }
@@ -67,7 +65,7 @@ contract InitializableTest is BaseTest {
 
         mock.reinitialize(currVersion);
 
-        vm.expectRevert(abi.encodeWithSelector(Initializable_reinitializer_AlreadyInitialized.selector, currVersion));
+        vm.expectRevert(abi.encodeWithSelector(Initializable_AlreadyInitialized.selector, currVersion));
 
         mock.reinitialize(newVersion);
     }
