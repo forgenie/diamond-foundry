@@ -22,18 +22,12 @@ abstract contract OwnableBase is IOwnableEvents, Initializable {
     }
 
     function _transferOwnership(address newOwner) internal {
-        address oldOwner = _owner();
-
+        emit OwnershipTransferred(_owner(), newOwner);
         OwnableBehavior.transferOwnership(newOwner);
-
-        emit OwnershipTransferred(oldOwner, newOwner);
     }
 
     function _renounceOwnership() internal {
-        address oldOwner = _owner();
-
+        emit OwnershipTransferred(_owner(), address(0));
         OwnableBehavior.renounceOwnership();
-
-        emit OwnershipTransferred(oldOwner, address(0));
     }
 }
