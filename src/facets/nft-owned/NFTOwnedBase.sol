@@ -19,7 +19,7 @@ abstract contract NFTOwnedBase {
     }
 
     function _token() internal view virtual returns (address nftContract, uint256 tokenId) {
-        return NFTOwnedBehavior.token();
+        (nftContract, tokenId) = NFTOwnedBehavior.token();
     }
 
     function _owner() internal view virtual returns (address) {
