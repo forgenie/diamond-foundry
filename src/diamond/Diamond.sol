@@ -3,13 +3,15 @@ pragma solidity 0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Proxy } from "@openzeppelin/contracts/proxy/Proxy.sol";
+import { Auth, IOwned } from "src/auth/Auth.sol";
 import { DiamondBase } from "./DiamondBase.sol";
 import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamond, IDiamondCut, IDiamondLoupe, IERC165 } from "./IDiamond.sol";
 
 error Diamond_UnsupportedFunction();
+error Diamond_NoOwnableFacetProvided();
 
-contract Diamond is IDiamond, Proxy, DiamondBase {
+contract Diamond is IDiamond, Proxy, DiamondBase, Auth {
     struct InitParams {
         FacetCut[] baseFacets;
         address init;
@@ -36,10 +38,12 @@ contract Diamond is IDiamond, Proxy, DiamondBase {
         DiamondCutBehavior.addFacet(address(this), selectors);
 
         _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
+
+        if (!_supportsInterface(type(IOwned).interfaceId)) revert Diamond_NoOwnableFacetProvided();
     }
 
     /// @inheritdoc IDiamondCut
-    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external {
+    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external onlyOwner {
         _diamondCut(cuts, init, data);
     }
 
