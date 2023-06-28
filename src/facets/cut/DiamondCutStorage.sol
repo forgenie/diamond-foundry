@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity 0.8.19;
 
-// TODO: Create a separate EnumerableSet.Bytes4Set library where 8 selectors are stored into one storage slot
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 library DiamondCutStorage {

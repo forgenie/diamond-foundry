@@ -16,7 +16,6 @@ abstract contract Ownable2StepFacetTest is IOwnableEvents, IOwnable2StepEvents, 
         super.setUp();
 
         pendingOwner = makeAddr("pendingOwner");
-
         ownable2Step = Ownable2StepFacet(diamond);
     }
 
