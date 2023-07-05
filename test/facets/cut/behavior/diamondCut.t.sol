@@ -135,8 +135,9 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
     }
 
     function test_OnRemove_RevertsWhen_SelectorIsImmutable() public {
+        bytes4[] memory selectors = mockFacetHelper.selectors();
         facetCuts.push(
-            IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Remove, facet: diamond, selectors: new bytes4[](1) })
+            IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Remove, facet: diamond, selectors: selectors })
         );
 
         vm.expectRevert(DiamondCut_ImmutableFacet.selector);
@@ -193,7 +194,8 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
     }
 
     function test_OnReplace_RevertsWhen_FunctionIsImmutable() public {
-        bytes4[] memory selectors = mockFacetHelper.selectors();
+        bytes4[] memory selectors = new bytes4[](1);
+        selectors[0] = diamondCut.diamondCut.selector;
         facetCuts.push(
             IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Replace, facet: diamond, selectors: selectors })
         );

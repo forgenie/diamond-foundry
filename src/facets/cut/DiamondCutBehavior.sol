@@ -56,6 +56,9 @@ library DiamondCutBehavior {
             if (selector == bytes4(0)) {
                 revert DiamondCut_SelectorIsZero();
             }
+            if (facet == address(this)) {
+                revert DiamondCut_ImmutableFacet();
+            }
             if (ds.selectorToFacet[selector] != facet) {
                 revert DiamondCut_CannotRemoveFromOtherFacet(facet, selector);
             }
@@ -82,6 +85,9 @@ library DiamondCutBehavior {
 
             if (selector == bytes4(0)) {
                 revert DiamondCut_SelectorIsZero();
+            }
+            if (oldFacet == address(this)) {
+                revert DiamondCut_ImmutableFacet();
             }
             if (oldFacet == facet) {
                 revert DiamondCut_FunctionFromSameFacet(selector);
@@ -122,10 +128,6 @@ library DiamondCutBehavior {
         }
     }
 
-    function checkImmutable(address facet, bytes4[] memory) internal view {
-        if (facet == address(this)) revert DiamondCut_ImmutableFacet();
-    }
-
     function initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
         if (init == address(0)) return;
         if (init == address(this)) {
@@ -135,7 +137,6 @@ library DiamondCutBehavior {
         if (!Address.isContract(init)) {
             revert DiamondCut_InitIsNotContract(init);
         }
-
         // slither-disable-next-line unused-return
         Address.functionDelegateCall(init, initData);
     }
@@ -143,8 +144,12 @@ library DiamondCutBehavior {
     function multiDelegateCall(IDiamond.FacetInit[] memory initData) internal {
         uint256 length = initData.length;
         for (uint256 i = 0; i < length; i++) {
+            address init = initData[i].facet;
+            if (!Address.isContract(init)) {
+                revert DiamondCut_InitIsNotContract(init);
+            }
             // slither-disable-next-line unused-return
-            Address.functionDelegateCall(initData[i].facet, initData[i].data);
+            Address.functionDelegateCall(init, initData[i].data);
         }
     }
 }
