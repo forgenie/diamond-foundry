@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 library Ownable2StepStorage {
     bytes32 internal constant OWNABLE2STEP_STORAGE_SLOT = keccak256("diamond.ownable2step.storage");

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
 import { IERC173, IOwnableEvents } from "src/facets/ownable/IERC173.sol";

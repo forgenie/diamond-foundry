@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { IERC721A } from "@erc721a/IERC721A.sol";
 import { IBeacon } from "@openzeppelin/contracts/proxy/beacon/IBeacon.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { Facet } from "src/facets/Facet.sol";
 import { IOwnable2Step } from "./IOwnable2Step.sol";

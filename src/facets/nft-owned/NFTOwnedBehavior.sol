@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { IERC721 } from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import { NFTOwnedStorage } from "./NFTOwnedStorage.sol";

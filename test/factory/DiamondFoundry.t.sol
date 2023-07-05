@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { BaseTest } from "../Base.t.sol";

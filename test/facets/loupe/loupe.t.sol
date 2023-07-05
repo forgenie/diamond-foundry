@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { BaseTest } from "test/Base.t.sol";
 import { FacetHelper } from "test/facets/Facet.t.sol";

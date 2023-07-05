@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 import { Ownable2StepStorage } from "src/facets/ownable2step/Ownable2StepStorage.sol";

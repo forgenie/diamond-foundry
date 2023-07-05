@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { Auth } from "src/auth/Auth.sol";
 import { Facet } from "src/facets/Facet.sol";

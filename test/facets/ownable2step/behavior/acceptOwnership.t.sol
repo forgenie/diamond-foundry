@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { Ownable2StepFacetTest } from "../ownable2step.t.sol";
 import { Ownable2Step_NotPendingOwner } from "src/facets/ownable2step/Ownable2StepBehavior.sol";

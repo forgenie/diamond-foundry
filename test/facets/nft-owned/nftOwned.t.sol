@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { FacetTest, IDiamond, Diamond, FacetHelper } from "../Facet.t.sol";
 import { INFTOwned, NFTOwnedFacet } from "src/facets/nft-owned/NFTOwnedFacet.sol";
