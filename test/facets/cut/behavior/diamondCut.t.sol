@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { IDiamond } from "src/diamond/Diamond.sol";
 import { DiamondCutFacetTest } from "../cut.t.sol";
@@ -16,7 +16,7 @@ import {
     DiamondCut_SelectorIsZero,
     DiamondCut_SelectorIsZero,
     DiamondCut_FunctionFromSameFacet,
-    DiamondCut_InexistingFunction
+    DiamondCut_NonExistingFunction
 } from "src/facets/cut/DiamondCutBehavior.sol";
 
 contract DiamondCut_diamondCut is DiamondCutFacetTest {
@@ -135,8 +135,9 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
     }
 
     function test_OnRemove_RevertsWhen_SelectorIsImmutable() public {
+        bytes4[] memory selectors = mockFacetHelper.selectors();
         facetCuts.push(
-            IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Remove, facet: diamond, selectors: new bytes4[](1) })
+            IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Remove, facet: diamond, selectors: selectors })
         );
 
         vm.expectRevert(DiamondCut_ImmutableFacet.selector);
@@ -187,13 +188,14 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
             })
         );
 
-        vm.expectRevert(abi.encodeWithSelector(DiamondCut_InexistingFunction.selector, invalidSelectors[0]));
+        vm.expectRevert(abi.encodeWithSelector(DiamondCut_NonExistingFunction.selector, invalidSelectors[0]));
 
         diamondCut.diamondCut(facetCuts, address(0), "");
     }
 
     function test_OnReplace_RevertsWhen_FunctionIsImmutable() public {
-        bytes4[] memory selectors = mockFacetHelper.selectors();
+        bytes4[] memory selectors = new bytes4[](1);
+        selectors[0] = diamondCut.diamondCut.selector;
         facetCuts.push(
             IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Replace, facet: diamond, selectors: selectors })
         );

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 library DiamondIncrementalStorage {
     bytes32 internal constant DIAMOND_INCREMENTAL_STORAGE_POSITION = keccak256("diamond.incremental.storage");

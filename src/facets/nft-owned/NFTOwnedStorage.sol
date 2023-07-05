@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 library NFTOwnedStorage {
     bytes32 internal constant NFT_OWNED_STORAGE_SLOT = keccak256("nft.owned.storage");

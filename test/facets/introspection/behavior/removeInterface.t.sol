@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { IntrospectionBaseTest } from "../introspection.t.sol";
 import { Introspection_AlreadyNotSupported } from "src/facets/introspection/IntrospectionBehavior.sol";

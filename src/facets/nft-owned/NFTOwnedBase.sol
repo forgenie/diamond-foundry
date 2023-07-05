@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { INFTOwned } from "./INFTOwned.sol";
 import { IOwned } from "src/auth/Auth.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 library OwnableStorage {
     bytes32 internal constant OWNABLE_STORAGE_SLOT = keccak256("ownable.storage");

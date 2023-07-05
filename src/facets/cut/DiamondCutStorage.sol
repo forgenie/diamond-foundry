@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
@@ -9,7 +9,7 @@ library DiamondCutStorage {
     struct Layout {
         EnumerableSet.AddressSet facets;
         mapping(bytes4 selector => address facet) selectorToFacet;
-        mapping(address => EnumerableSet.Bytes32Set) facetSelectors;
+        mapping(address facet => EnumerableSet.Bytes32Set selectors) facetSelectors;
     }
 
     function layout() internal pure returns (Layout storage l) {
