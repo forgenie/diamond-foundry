@@ -14,7 +14,7 @@ error DiamondCut_SelectorIsZero();
 error DiamondCut_FunctionAlreadyExists(bytes4 selector);
 error DiamondCut_CannotRemoveFromOtherFacet(address facet, bytes4 selector);
 error DiamondCut_FunctionFromSameFacet(bytes4 selector);
-error DiamondCut_InexistingFunction(bytes4 selector);
+error DiamondCut_NonExistingFunction(bytes4 selector);
 error DiamondCut_ImmutableFacet();
 error DiamondCut_InitIsNotContract(address init);
 
@@ -93,7 +93,7 @@ library DiamondCutBehavior {
                 revert DiamondCut_FunctionFromSameFacet(selector);
             }
             if (oldFacet == address(0)) {
-                revert DiamondCut_InexistingFunction(selector);
+                revert DiamondCut_NonExistingFunction(selector);
             }
 
             // overwrite selector to new facet

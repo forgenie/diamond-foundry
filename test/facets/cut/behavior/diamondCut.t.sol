@@ -16,7 +16,7 @@ import {
     DiamondCut_SelectorIsZero,
     DiamondCut_SelectorIsZero,
     DiamondCut_FunctionFromSameFacet,
-    DiamondCut_InexistingFunction
+    DiamondCut_NonExistingFunction
 } from "src/facets/cut/DiamondCutBehavior.sol";
 
 contract DiamondCut_diamondCut is DiamondCutFacetTest {
@@ -188,7 +188,7 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
             })
         );
 
-        vm.expectRevert(abi.encodeWithSelector(DiamondCut_InexistingFunction.selector, invalidSelectors[0]));
+        vm.expectRevert(abi.encodeWithSelector(DiamondCut_NonExistingFunction.selector, invalidSelectors[0]));
 
         diamondCut.diamondCut(facetCuts, address(0), "");
     }
