@@ -42,10 +42,4 @@ abstract contract DiamondCutBase is IDiamondCutEvents, Initializable {
     function _checkImmutable(address facet, bytes4[] memory selectors) internal view virtual {
         DiamondCutBehavior.checkImmutable(facet, selectors);
     }
-
-    /// @dev Allows multiple possibilities for authorizing `diamondCut`.
-    ///      By default check that sender is owner.
-    function _authorizeDiamondCut() internal virtual {
-        OwnableBehavior.checkOwner(msg.sender);
-    }
 }

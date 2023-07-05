@@ -13,16 +13,9 @@ abstract contract DiamondIncrementalBase is IDiamondIncrementalEvents, Initializ
     }
 
     function _turnImmutable(bytes4 selector) internal {
-        _authorizeImmute(selector);
         DiamondIncrementalBehavior.turnImmutable(selector);
 
         emit SelectorTurnedImmutable(selector);
-    }
-
-    /// @dev Allow inheriting contracts implement other authorization logic
-    //       ownable behavior is used by default.
-    function _authorizeImmute(bytes4) internal virtual {
-        OwnableBehavior.checkOwner(msg.sender);
     }
 
     function _isImmutable(bytes4 selector) internal view returns (bool) {
