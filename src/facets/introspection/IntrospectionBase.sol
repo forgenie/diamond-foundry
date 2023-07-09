@@ -5,7 +5,6 @@ import { Initializable } from "src/utils/Initializable.sol";
 import { IntrospectionBehavior } from "./IntrospectionBehavior.sol";
 import { IERC165, IIntrospectionEvents } from "./IERC165.sol";
 
-// todo: handle interface from factory
 abstract contract IntrospectionBase is IIntrospectionEvents, Initializable {
     function __Introspection_init() internal onlyInitializing {
         _addInterface(type(IERC165).interfaceId);
