@@ -1,5 +1,5 @@
 {
-  "filter_paths": "lib,test",
+  "filter_paths": "lib,test,script",
   "exclude_informational": true,
   "detectors_to_exclude": "solc-version,dead-code,assembly,naming-convention"
 }

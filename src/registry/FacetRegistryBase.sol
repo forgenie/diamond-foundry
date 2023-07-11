@@ -14,10 +14,10 @@ abstract contract FacetRegistryBase is IFacetRegistryBase {
         if (facet == address(0)) revert FacetRegistry_FacetAddressZero();
         if (selectors.length == 0) revert FacetRegistry_FacetMustHaveSelectors();
         if (!facet.isContract()) revert FacetRegistry_FacetNotContract();
-        if (FacetRegistryStorage.layout().facets.contains(facet)) revert FacetRegistry_FacetAlreadyRegistered();
+        if (!FacetRegistryStorage.layout().facets.add(facet)) revert FacetRegistry_FacetAlreadyRegistered();
 
-        FacetRegistryStorage.layout().facets.add(facet);
         for (uint256 i; i < selectors.length; i++) {
+            // slither-disable-next-line unused-return
             FacetRegistryStorage.layout().facetSelectors[facet].add(selectors[i]);
         }
 
@@ -30,6 +30,7 @@ abstract contract FacetRegistryBase is IFacetRegistryBase {
 
         uint256 selectorCount = l.facetSelectors[facet].length();
         for (uint256 i = 0; i < selectorCount; i++) {
+            // slither-disable-next-line unused-return
             l.facetSelectors[facet].remove(l.facetSelectors[facet].at(i));
         }
 
