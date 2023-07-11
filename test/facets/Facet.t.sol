@@ -37,10 +37,6 @@ abstract contract FacetHelper {
 
     function supportedInterfaces() public pure virtual returns (bytes4[] memory);
 
-    function facetInfo() public view returns (IFacetRegistry.FacetInfo memory info) {
-        info = IFacetRegistry.FacetInfo({ addr: facet(), initializer: initializer(), selectors: selectors() });
-    }
-
     function makeFacetCut(IDiamond.FacetCutAction action) public view returns (IDiamond.FacetCut memory) {
         return IDiamond.FacetCut({ action: action, facet: facet(), selectors: selectors() });
     }

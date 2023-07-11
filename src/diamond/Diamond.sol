@@ -38,8 +38,6 @@ contract Diamond is IDiamond, Proxy, DiamondBase, Auth {
         DiamondCutBehavior.addFacet(address(this), selectors);
 
         _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
-
-        if (!_supportsInterface(type(IOwned).interfaceId)) revert Diamond_NoOwnableFacetProvided();
     }
 
     /// @inheritdoc IDiamondCut

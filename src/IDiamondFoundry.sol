@@ -10,7 +10,7 @@ import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
  * @title IDiamondFoundry
  * @notice Interface of the Diamond Factory contract.
  */
-interface IDiamondFoundry is IERC721A, IBeacon {
+interface IDiamondFoundry is IFacetRegistry, IERC721A, IBeacon {
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
@@ -32,9 +32,4 @@ interface IDiamondFoundry is IERC721A, IBeacon {
      * @param diamond The address of the diamond.
      */
     function diamondId(address diamond) external view returns (uint256);
-
-    /**
-     * @notice Returns the address of the `FacetRegistry`.
-     */
-    function facetRegistry() external view returns (IFacetRegistry);
 }
