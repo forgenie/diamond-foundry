@@ -23,4 +23,10 @@ interface IFacetRegistryBase {
      * @param selectors Function selectors of the registered facet.
      */
     event FacetRegistered(address indexed facet, bytes4[] selectors);
+
+    /**
+     * @notice Emitted when a facet is unregistered.
+     * @param facet Address of the unregistered facet.
+     */
+    event FacetUnregistered(address indexed facet);
 }

@@ -5,15 +5,13 @@ import { IERC721A } from "@erc721a/IERC721A.sol";
 import { BaseScript } from "../Base.s.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { DiamondFoundry } from "src/DiamondFoundry.sol";
-import { FacetRegistry } from "src/registry/FacetRegistry.sol";
 import { NFTOwnedFacet } from "src/facets/nft-owned/NFTOwnedFacet.sol";
 
 contract Deploy is BaseScript {
     function run() public broadcaster {
-        FacetRegistry registry = new FacetRegistry();
         Diamond diamond = new Diamond();
         NFTOwnedFacet nftOwned = new NFTOwnedFacet();
-        DiamondFoundry foundry = new DiamondFoundry(registry, address(diamond));
+        DiamondFoundry foundry = new DiamondFoundry(address(diamond));
         IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](1);
         facetCuts[0] = makeNFTOwnedFacetCut(address(nftOwned));
         foundry.mintDiamond(

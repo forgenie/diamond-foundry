@@ -32,6 +32,8 @@ abstract contract FacetRegistryBase is IFacetRegistryBase {
         for (uint256 i = 0; i < selectorCount; i++) {
             l.facetSelectors[facet].remove(l.facetSelectors[facet].at(i));
         }
+
+        emit FacetUnregistered(facet);
     }
 
     function _facetSelectors(address facet) internal view returns (bytes4[] memory selectors) {
