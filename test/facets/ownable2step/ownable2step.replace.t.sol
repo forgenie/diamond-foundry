@@ -29,7 +29,7 @@ abstract contract Ownable2StepFacetTest_ReplaceOwnable is FacetTest {
         baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Replace);
         baseFacets[1] = ownable2StepHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](2);
+        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](2);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
         diamondInitData[1] = ownable2StepHelper.makeInitData("");
 

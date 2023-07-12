@@ -29,7 +29,7 @@ abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {
         IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
         baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](1);
+        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](1);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({

@@ -21,7 +21,7 @@ abstract contract OwnableFacetTest is IOwnableEvents, FacetTest {
         IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
         baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](1);
+        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](1);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
@@ -59,10 +59,10 @@ contract OwnableFacetHelper is FacetHelper {
     }
 
     // NOTE: This is a hack to give the initializer the owner address
-    function makeInitData(bytes memory args) public view override returns (IDiamond.FacetInit memory) {
-        return IDiamond.FacetInit({
-            facet: facet(),
-            data: abi.encodeWithSelector(initializer(), abi.decode(args, (address)))
+    function makeInitData(bytes memory args) public view override returns (IDiamond.MultiInit memory) {
+        return IDiamond.MultiInit({
+            init: facet(),
+            initData: abi.encodeWithSelector(initializer(), abi.decode(args, (address)))
         });
     }
 }

@@ -28,7 +28,7 @@ abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalEvents, Face
         baseFacets[0] = diamondIncrementalHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
         baseFacets[1] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](2);
+        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](2);
         diamondInitData[0] = diamondIncrementalHelper.makeInitData("");
         diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
 
