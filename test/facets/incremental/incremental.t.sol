@@ -34,8 +34,8 @@ abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalEvents, Face
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(diamondIncrementalHelper),
-            initData: abi.encodeWithSelector(diamondIncrementalHelper.multiDelegateCall.selector, diamondInitData)
+            init: MULTI_INIT_ADDRESS,
+            initData: abi.encode(diamondInitData)
         });
     }
 }
@@ -58,7 +58,7 @@ contract DiamondIncrementalFacetHelper is FacetHelper {
     }
 
     function initializer() public view override returns (bytes4) {
-        return diamondIncremental.initialize.selector;
+        return diamondIncremental.DiamondIncremental_init.selector;
     }
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {

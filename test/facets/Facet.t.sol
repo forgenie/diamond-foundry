@@ -5,8 +5,11 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "../Base.t.sol";
 import { DiamondFactory } from "src/factory/DiamondFactory.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
+import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 
 abstract contract FacetTest is BaseTest, DiamondFactory {
+    address public constant MULTI_INIT_ADDRESS = DiamondCutBehavior._MULTI_INIT_IDENTIFIER;
+
     /// @dev Attach facet interface to diamond for testing
     address public diamond;
 
@@ -43,11 +46,11 @@ abstract contract FacetHelper {
     }
 
     /// @dev Helper multiDelegateCall
-    function multiDelegateCall(IDiamond.MultiInit[] memory diamondInitData) external {
-        for (uint256 i = 0; i < diamondInitData.length; i++) {
-            IDiamond.MultiInit memory diamondInit = diamondInitData[i];
+    // function multiDelegateCall(IDiamond.MultiInit[] memory diamondInitData) external {
+    //     for (uint256 i = 0; i < diamondInitData.length; i++) {
+    //         IDiamond.MultiInit memory diamondInit = diamondInitData[i];
 
-            Address.functionDelegateCall(diamondInit.init, diamondInit.initData);
-        }
-    }
+    //         Address.functionDelegateCall(diamondInit.init, diamondInit.initData);
+    //     }
+    // }
 }

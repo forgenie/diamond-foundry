@@ -26,6 +26,8 @@ library DiamondCutBehavior {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
+    address internal constant _MULTI_INIT_IDENTIFIER = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
+
     function addFacet(address facet, bytes4[] memory selectors) internal {
         DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
 
@@ -130,7 +132,7 @@ library DiamondCutBehavior {
 
     function initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
         if (init == address(0)) return;
-        if (init == address(this)) {
+        if (init == _MULTI_INIT_IDENTIFIER) {
             multiDelegateCall(abi.decode(initData, (IDiamond.MultiInit[])));
             return;
         }

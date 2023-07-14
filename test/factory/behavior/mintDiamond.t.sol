@@ -5,6 +5,7 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { DiamondFoundryTest } from "../DiamondFoundry.t.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
+import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 
 contract DiamondFoundry_mintDiamond is DiamondFoundryTest {
     Diamond.InitParams public diamondInitParams;
@@ -21,8 +22,8 @@ contract DiamondFoundry_mintDiamond is DiamondFoundryTest {
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         diamondInitParams.baseFacets.push(baseFacets[0]);
-        diamondInitParams.init = address(ownableHelper);
-        diamondInitParams.initData = abi.encodeWithSelector(ownableHelper.multiDelegateCall.selector, diamondInitData);
+        diamondInitParams.init = DiamondCutBehavior._MULTI_INIT_IDENTIFIER;
+        diamondInitParams.initData = abi.encode(diamondInitData);
     }
 
     function test_ZeroTokenIdIsMinted() public {

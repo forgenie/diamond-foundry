@@ -26,8 +26,8 @@ abstract contract OwnableFacetTest is IOwnableEvents, FacetTest {
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(ownableHelper),
-            initData: abi.encodeWithSelector(ownableHelper.multiDelegateCall.selector, diamondInitData)
+            init: MULTI_INIT_ADDRESS,
+            initData: abi.encode(diamondInitData)
         });
     }
 }
@@ -55,7 +55,7 @@ contract OwnableFacetHelper is FacetHelper {
     }
 
     function initializer() public pure override returns (bytes4) {
-        return OwnableFacet.initialize.selector;
+        return OwnableFacet.Ownable_init.selector;
     }
 
     // NOTE: This is a hack to give the initializer the owner address

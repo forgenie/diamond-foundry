@@ -8,7 +8,7 @@ import { DiamondCutBehavior } from "./DiamondCutBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 abstract contract DiamondCutBase is IDiamondCutEvents, Initializable {
-    function __DiamondCut_init() internal onlyInitializing {
+    function __DiamondCut_init() internal {
         IntrospectionBehavior.addInterface(type(IDiamondCut).interfaceId);
     }
 

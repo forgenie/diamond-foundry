@@ -6,7 +6,7 @@ import { IERC173 } from "./IERC173.sol";
 import { OwnableBase } from "./OwnableBase.sol";
 
 contract OwnableFacet is IERC173, OwnableBase, Facet {
-    function initialize(address owner_) external onlyInitializing {
+    function Ownable_init(address owner_) external onlyInitializing {
         __Ownable_init(owner_);
     }
 

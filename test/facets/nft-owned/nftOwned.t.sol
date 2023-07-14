@@ -30,8 +30,8 @@ abstract contract NFTOwnedTest is FacetTest {
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(nftOwnedHelper),
-            initData: abi.encodeWithSelector(nftOwnedHelper.multiDelegateCall.selector, diamondInitData)
+            init: MULTI_INIT_ADDRESS,
+            initData: abi.encode(diamondInitData)
         });
     }
 }
@@ -59,7 +59,7 @@ contract NFTOwnedFacetHelper is FacetHelper {
     }
 
     function initializer() public pure override returns (bytes4) {
-        return NFTOwnedFacet.initialize.selector;
+        return NFTOwnedFacet.NFTOwned_init.selector;
     }
 
     function makeInitData(bytes memory args) public view override returns (IDiamond.MultiInit memory) {

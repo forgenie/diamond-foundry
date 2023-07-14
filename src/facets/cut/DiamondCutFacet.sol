@@ -7,7 +7,7 @@ import { Facet } from "src/facets/Facet.sol";
 import { DiamondCutBase } from "./DiamondCutBase.sol";
 
 contract DiamondCutFacet is IDiamondCut, DiamondCutBase, Facet, Auth {
-    function initialize() external initializer {
+    function DiamondCut_init() external onlyInitializing {
         __DiamondCut_init();
     }
 

@@ -27,7 +27,7 @@ contract Diamond is IDiamond, Proxy, DiamondBase, Auth {
         __Introspection_init();
         __DiamondCut_init();
 
-        // Register immutable functiions.
+        // Register immutable functions.
         bytes4[] memory selectors = new bytes4[](6);
         selectors[0] = this.diamondCut.selector;
         selectors[1] = this.facets.selector;

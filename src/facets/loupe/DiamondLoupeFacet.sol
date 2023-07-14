@@ -8,7 +8,7 @@ import { IERC165 } from "src/facets/introspection/IERC165.sol";
 import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
 
 contract DiamondLoupeFacet is IDiamondLoupe, IERC165, DiamondLoupeBase, IntrospectionBase, Facet {
-    function initialize() external initializer {
+    function DiamondLoupe_init() external onlyInitializing {
         __DiamondLoupe_init();
         __Introspection_init();
     }

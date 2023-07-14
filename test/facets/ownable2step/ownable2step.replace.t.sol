@@ -35,8 +35,8 @@ abstract contract Ownable2StepFacetTest_ReplaceOwnable is FacetTest {
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(ownable2StepHelper),
-            initData: abi.encodeWithSelector(ownable2StepHelper.multiDelegateCall.selector, diamondInitData)
+            init: MULTI_INIT_ADDRESS,
+            initData: abi.encode(diamondInitData)
         });
     }
 }
@@ -59,7 +59,7 @@ contract OwnableReplaceHelper is FacetHelper {
     }
 
     function initializer() public view override returns (bytes4) {
-        return ownable2Step.initialize_Replace_Ownable.selector;
+        return ownable2Step.Ownable2Step_init.selector;
     }
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {

@@ -6,7 +6,7 @@ import { INFTOwned } from "./INFTOwned.sol";
 import { NFTOwnedBase } from "./NFTOwnedBase.sol";
 
 contract NFTOwnedFacet is INFTOwned, NFTOwnedBase, Facet {
-    function initialize(address nftContract, uint256 tokenId) external onlyInitializing {
+    function NFTOwned_init(address nftContract, uint256 tokenId) external onlyInitializing {
         __NFTOwned_init(nftContract, tokenId);
     }
 
