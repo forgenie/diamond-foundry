@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.19;
 
-import { Auth } from "src/auth/Auth.sol";
 import { Facet } from "src/facets/Facet.sol";
 import { IDiamondIncremental } from "./IDiamondIncremental.sol";
 import { DiamondIncrementalBase } from "./DiamondIncrementalBase.sol";
 
 // todo: inherit diamondCutBase
-contract DiamondIncrementalFacet is IDiamondIncremental, DiamondIncrementalBase, Facet, Auth {
+contract DiamondIncrementalFacet is IDiamondIncremental, DiamondIncrementalBase, Facet {
     function DiamondIncremental_init() external onlyInitializing {
         __DiamondIncremental_init();
     }

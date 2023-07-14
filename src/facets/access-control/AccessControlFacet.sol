@@ -5,7 +5,7 @@ import { Facet } from "src/facets/Facet.sol";
 import { AccessControlBase } from "./AccessControlBase.sol";
 import { IAccessControl } from "./IAccessControl.sol";
 
-error AccessControl_CannotRemoveAdmin();
+error AccessControl_CannotRemoveAdminCapability();
 
 contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
     uint8 public constant DEFAULT_ADMIN_ROLE = 0;
@@ -21,7 +21,7 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
             role == DEFAULT_ADMIN_ROLE && enabled == false
                 && (functionSig == this.setRoleCapability.selector || functionSig == this.setUserRole.selector)
         ) {
-            revert AccessControl_CannotRemoveAdmin();
+            revert AccessControl_CannotRemoveAdminCapability();
         }
 
         _setRoleCapability(role, functionSig, enabled);

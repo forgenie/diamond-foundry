@@ -7,11 +7,6 @@ import { AccessControlBehavior } from "./AccessControlBehavior.sol";
 error AccessControl_Unauthorized();
 
 abstract contract AccessControlBase is IAccessControlEvents {
-    modifier onlyAuthorized() {
-        if (!_canCall(msg.sender, msg.sig)) revert AccessControl_Unauthorized();
-        _;
-    }
-
     function _setRoleCapability(uint8 role, bytes4 functionSig, bool enabled) internal {
         AccessControlBehavior.setRoleCapability(role, functionSig, enabled);
 

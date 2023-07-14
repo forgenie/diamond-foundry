@@ -3,15 +3,15 @@ pragma solidity >=0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Proxy } from "@openzeppelin/contracts/proxy/Proxy.sol";
-import { Auth, IOwned } from "src/auth/Auth.sol";
 import { DiamondBase } from "./DiamondBase.sol";
 import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamond, IDiamondCut, IDiamondLoupe, IERC165 } from "./IDiamond.sol";
+import { DelegateCall } from "src/utils/DelegateCall.sol";
 
 error Diamond_UnsupportedFunction();
 error Diamond_NoOwnableFacetProvided();
 
-contract Diamond is IDiamond, Proxy, DiamondBase, Auth {
+contract Diamond is IDiamond, Proxy, DelegateCall, DiamondBase {
     struct InitParams {
         FacetCut[] baseFacets;
         address init;
