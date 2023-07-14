@@ -7,7 +7,7 @@ import { DiamondIncrementalBehavior } from "./DiamondIncrementalBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 abstract contract DiamondIncrementalBase is IDiamondIncrementalEvents, Initializable {
-    function __DiamondIncremental_init() internal onlyInitializing {
+    function __DiamondIncremental_init() internal {
         IntrospectionBehavior.addInterface(type(IDiamondIncremental).interfaceId);
     }
 

@@ -28,14 +28,14 @@ abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalEvents, Face
         baseFacets[0] = diamondIncrementalHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
         baseFacets[1] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](2);
+        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](2);
         diamondInitData[0] = diamondIncrementalHelper.makeInitData("");
         diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(diamondIncrementalHelper),
-            initData: abi.encodeWithSelector(diamondIncrementalHelper.multiDelegateCall.selector, diamondInitData)
+            init: MULTI_INIT_ADDRESS,
+            initData: abi.encode(diamondInitData)
         });
     }
 }
@@ -58,7 +58,7 @@ contract DiamondIncrementalFacetHelper is FacetHelper {
     }
 
     function initializer() public view override returns (bytes4) {
-        return diamondIncremental.initialize.selector;
+        return diamondIncremental.DiamondIncremental_init.selector;
     }
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {

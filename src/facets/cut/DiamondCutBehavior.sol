@@ -26,6 +26,8 @@ library DiamondCutBehavior {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
+    address internal constant _MULTI_INIT_IDENTIFIER = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
+
     function addFacet(address facet, bytes4[] memory selectors) internal {
         DiamondCutStorage.Layout storage ds = DiamondCutStorage.layout();
 
@@ -130,8 +132,8 @@ library DiamondCutBehavior {
 
     function initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
         if (init == address(0)) return;
-        if (init == address(this)) {
-            multiDelegateCall(abi.decode(initData, (IDiamond.FacetInit[])));
+        if (init == _MULTI_INIT_IDENTIFIER) {
+            multiDelegateCall(abi.decode(initData, (IDiamond.MultiInit[])));
             return;
         }
         if (!Address.isContract(init)) {
@@ -141,15 +143,15 @@ library DiamondCutBehavior {
         Address.functionDelegateCall(init, initData);
     }
 
-    function multiDelegateCall(IDiamond.FacetInit[] memory initData) internal {
+    function multiDelegateCall(IDiamond.MultiInit[] memory initData) internal {
         uint256 length = initData.length;
         for (uint256 i = 0; i < length; i++) {
-            address init = initData[i].facet;
+            address init = initData[i].init;
             if (!Address.isContract(init)) {
                 revert DiamondCut_InitIsNotContract(init);
             }
             // slither-disable-next-line unused-return
-            Address.functionDelegateCall(init, initData[i].data);
+            Address.functionDelegateCall(init, initData[i].initData);
         }
     }
 }

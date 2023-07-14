@@ -7,6 +7,7 @@ import { IOwnable2Step, IOwnable2StepEvents } from "src/facets/ownable2step/IOwn
 import { Ownable2StepFacet } from "src/facets/ownable2step/Ownable2StepFacet.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
+import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract Ownable2StepFacetTest is IOwnableEvents, IOwnable2StepEvents, FacetTest {
     address public pendingOwner;
@@ -20,18 +21,20 @@ abstract contract Ownable2StepFacetTest is IOwnableEvents, IOwnable2StepEvents, 
     }
 
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
+        OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
         Ownable2StepFacetHelper ownable2StepHelper = new Ownable2StepFacetHelper();
 
         IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
         baseFacets[0] = ownable2StepHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.FacetInit[] memory diamondInitData = new IDiamond.FacetInit[](1);
-        diamondInitData[0] = ownable2StepHelper.makeInitData(abi.encode(users.owner));
+        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](2);
+        diamondInitData[0] = ownable2StepHelper.makeInitData("");
+        diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
-            init: address(ownable2StepHelper),
-            initData: abi.encodeWithSelector(ownable2StepHelper.multiDelegateCall.selector, diamondInitData)
+            init: MULTI_INIT_ADDRESS,
+            initData: abi.encode(diamondInitData)
         });
     }
 }
@@ -56,20 +59,12 @@ contract Ownable2StepFacetHelper is FacetHelper {
     }
 
     function initializer() public view override returns (bytes4) {
-        return ownable2Step.initialize.selector;
+        return ownable2Step.Ownable2Step_init.selector;
     }
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
         interfaces = new bytes4[](2);
         interfaces[0] = type(IERC173).interfaceId;
         interfaces[1] = type(IOwnable2Step).interfaceId;
-    }
-
-    // NOTE: This is a hack to give the initializer the owner address
-    function makeInitData(bytes memory args) public view override returns (IDiamond.FacetInit memory) {
-        return IDiamond.FacetInit({
-            facet: facet(),
-            data: abi.encodeWithSelector(initializer(), abi.decode(args, (address)))
-        });
     }
 }

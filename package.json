@@ -32,7 +32,7 @@
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "forge fmt --check && pnpm solhint \"{script,src,test}/**/*.sol\"",
     "fmt": "forge fmt && pnpm prettier:write",
-    "types": "forge build && rimraf types && pnpm typechain --target=ethers-v6 './out/!(*test*|*.t.sol|*.s.sol|build-info)/**/*.json'",
+    "types": "forge build && rimraf types && pnpm typechain --target=ethers-v6 './out/!(*test*|*.t.sol|*.s.sol|Std*|src|Mock*|build-info)/**/*.json'",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
     "prettier:write": "prettier --write \"**/*.{json,md,yml}\""
   }

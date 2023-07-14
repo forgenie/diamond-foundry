@@ -33,6 +33,6 @@ contract Deploy is BaseScript {
 
     function makeNFTOwnedInitData(IERC721A nftContract) internal view returns (bytes memory) {
         uint256 tokenId = nftContract.totalSupply();
-        return abi.encodeWithSelector(NFTOwnedFacet.initialize.selector, nftContract, tokenId);
+        return abi.encodeWithSelector(NFTOwnedFacet.NFTOwned_init.selector, nftContract, tokenId);
     }
 }

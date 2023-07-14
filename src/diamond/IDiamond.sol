@@ -35,8 +35,8 @@ interface IDiamond is IDiamondCut, IDiamondLoupe, IERC165 {
      * @notice Represents data used in multiDelegateCall.
      * @param data Includes encoded initializer + arguments.
      */
-    struct FacetInit {
-        address facet;
-        bytes data;
+    struct MultiInit {
+        address init;
+        bytes initData;
     }
 }

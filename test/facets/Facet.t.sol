@@ -5,9 +5,11 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "../Base.t.sol";
 import { DiamondFactory } from "src/factory/DiamondFactory.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
-import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
+import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 
 abstract contract FacetTest is BaseTest, DiamondFactory {
+    address public constant MULTI_INIT_ADDRESS = DiamondCutBehavior._MULTI_INIT_IDENTIFIER;
+
     /// @dev Attach facet interface to diamond for testing
     address public diamond;
 
@@ -31,10 +33,6 @@ abstract contract FacetHelper {
 
     function initializer() public view virtual returns (bytes4);
 
-    function facetId() public view virtual returns (bytes32) {
-        return facet().codehash;
-    }
-
     function supportedInterfaces() public pure virtual returns (bytes4[] memory);
 
     function makeFacetCut(IDiamond.FacetCutAction action) public view returns (IDiamond.FacetCut memory) {
@@ -43,16 +41,16 @@ abstract contract FacetHelper {
 
     /// @dev Initializers accepting arguments can override this function
     //       and decode the arguments here.
-    function makeInitData(bytes memory) public view virtual returns (IDiamond.FacetInit memory) {
-        return IDiamond.FacetInit({ facet: facet(), data: abi.encodeWithSelector(initializer()) });
+    function makeInitData(bytes memory) public view virtual returns (IDiamond.MultiInit memory) {
+        return IDiamond.MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer()) });
     }
 
     /// @dev Helper multiDelegateCall
-    function multiDelegateCall(IDiamond.FacetInit[] memory diamondInitData) external {
-        for (uint256 i = 0; i < diamondInitData.length; i++) {
-            IDiamond.FacetInit memory facetInit = diamondInitData[i];
+    // function multiDelegateCall(IDiamond.MultiInit[] memory diamondInitData) external {
+    //     for (uint256 i = 0; i < diamondInitData.length; i++) {
+    //         IDiamond.MultiInit memory diamondInit = diamondInitData[i];
 
-            Address.functionDelegateCall(facetInit.facet, facetInit.data);
-        }
-    }
+    //         Address.functionDelegateCall(diamondInit.init, diamondInit.initData);
+    //     }
+    // }
 }
