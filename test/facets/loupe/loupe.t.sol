@@ -26,7 +26,7 @@ abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, BaseTest {
         _;
     }
 
-    function setUp() public virtual override initializer {
+    function setUp() public virtual override {
         super.setUp();
 
         __DiamondLoupe_init();

@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { Initializable } from "src/utils/Initializable.sol";
 import { IDiamondLoupe, IDiamondLoupeStructs } from "./IDiamondLoupe.sol";
 import { DiamondLoupeBehavior } from "./DiamondLoupeBehavior.sol";
 import { IERC165 } from "src/facets/introspection/IERC165.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
-abstract contract DiamondLoupeBase is IDiamondLoupeStructs, Initializable {
-    function __DiamondLoupe_init() internal onlyInitializing {
+abstract contract DiamondLoupeBase is IDiamondLoupeStructs {
+    function __DiamondLoupe_init() internal {
         IntrospectionBehavior.addInterface(type(IDiamondLoupe).interfaceId);
     }
 
