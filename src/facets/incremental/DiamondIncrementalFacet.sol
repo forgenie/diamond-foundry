@@ -12,7 +12,7 @@ contract DiamondIncrementalFacet is IDiamondIncremental, DiamondIncrementalBase,
     }
 
     /// @inheritdoc IDiamondIncremental
-    function turnImmutable(bytes4 selector) external onlyOwner {
+    function turnImmutable(bytes4 selector) external protected {
         _turnImmutable(selector);
     }
 

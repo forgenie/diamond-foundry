@@ -11,7 +11,7 @@ contract DiamondCutFacet is IDiamondCut, DiamondCutBase, Facet {
     }
 
     /// @inheritdoc IDiamondCut
-    function diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) external onlyOwner {
+    function diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) external protected {
         _diamondCut(facetCuts, init, initData);
     }
 }

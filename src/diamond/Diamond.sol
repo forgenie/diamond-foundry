@@ -41,7 +41,7 @@ contract Diamond is IDiamond, Proxy, DelegateContext, DiamondBase {
     }
 
     /// @inheritdoc IDiamondCut
-    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external onlyOwner {
+    function diamondCut(FacetCut[] memory cuts, address init, bytes memory data) external protected {
         _diamondCut(cuts, init, data);
     }
 
