@@ -2,9 +2,9 @@
 pragma solidity >=0.8.19;
 
 import { Initializable } from "src/utils/Initializable.sol";
-import { DelegateCall } from "src/utils/DelegateCall.sol";
+import { DelegateContext } from "src/utils/DelegateCall.sol";
 
-abstract contract Facet is Initializable, DelegateCall {
+abstract contract Facet is Initializable, DelegateContext {
     constructor() {
         _disableInitializers();
     }

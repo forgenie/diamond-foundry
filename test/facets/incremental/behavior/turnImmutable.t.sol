@@ -6,14 +6,14 @@ import {
     DiamondIncrementalBehavior,
     DiamondIncremental_AlreadyImmutable
 } from "src/facets/incremental/DiamondIncrementalBehavior.sol";
-import { DelegateCall_CallerIsNotOwner } from "src/utils/DelegateCall.sol";
+import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateCall.sol";
 
 contract DiamondIncremental_turnImmutable is DiamondIncrementalFacetTest {
     function test_RevertsWhen_CallerIsNotOwner() public {
         bytes4 selector = mockFacet.selectors()[0];
         changePrank(users.stranger);
 
-        vm.expectRevert(DelegateCall_CallerIsNotOwner.selector);
+        vm.expectRevert(DelegateContext_CallerIsNotOwner.selector);
 
         diamondIncremental.turnImmutable(selector);
     }
