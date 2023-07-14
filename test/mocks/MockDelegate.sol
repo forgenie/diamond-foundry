@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { DelegateContext } from "src/utils/DelegateCall.sol";
+import { DelegateContext } from "src/utils/DelegateContext.sol";
 
 contract MockDelegate is DelegateContext {
     bytes32 public constant COUNTER_STORAGE_SLOT = keccak256("MockDelegate.counter.storage");

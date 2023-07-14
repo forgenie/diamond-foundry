@@ -6,7 +6,7 @@ import {
     DiamondIncrementalBehavior,
     DiamondIncremental_AlreadyImmutable
 } from "src/facets/incremental/DiamondIncrementalBehavior.sol";
-import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateCall.sol";
+import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateContext.sol";
 
 contract DiamondIncremental_turnImmutable is DiamondIncrementalFacetTest {
     function test_RevertsWhen_CallerIsNotOwner() public {

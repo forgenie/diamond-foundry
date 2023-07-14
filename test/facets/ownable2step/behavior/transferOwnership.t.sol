@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { Ownable2StepFacetTest } from "../ownable2step.t.sol";
-import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateCall.sol";
+import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateContext.sol";
 
 contract Ownable2Step_transferOwnership is Ownable2StepFacetTest {
     function test_RevertsWhen_CallerIsNotOwner() public {
