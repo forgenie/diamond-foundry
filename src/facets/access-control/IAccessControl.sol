@@ -4,8 +4,7 @@ pragma solidity 0.8.19;
 interface IAccessControlEvents {
     event UserRoleUpdated(address indexed user, uint8 indexed role, bool enabled);
 
-    event RoleCapabilityUpdated(uint8 indexed role, bytes4 indexed functionSig, bool enabled)
-    
+    event RoleCapabilityUpdated(uint8 indexed role, bytes4 indexed functionSig, bool enabled);
 }
 
 interface IAccessControl {
