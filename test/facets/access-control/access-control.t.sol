@@ -48,7 +48,7 @@ contract AccessControlFacetHelper is FacetHelper {
         selectors_[1] = acl.setUserRole.selector;
         selectors_[2] = acl.canCall.selector;
         selectors_[3] = acl.userRoles.selector;
-        selectors_[4] = acl.allowedRoles.selector;
+        selectors_[4] = acl.functionRoles.selector;
         selectors_[5] = acl.hasRole.selector;
         selectors_[6] = acl.roleHasAccess.selector;
     }

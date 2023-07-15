@@ -44,8 +44,8 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
     }
 
     /// @inheritdoc IAccessControl
-    function allowedRoles(bytes4 functionSig) external view returns (bytes32) {
-        return _allowedRoles(functionSig);
+    function functionRoles(bytes4 functionSig) external view returns (bytes32) {
+        return _functionRoles(functionSig);
     }
 
     /// @inheritdoc IAccessControl

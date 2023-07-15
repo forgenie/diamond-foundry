@@ -56,7 +56,7 @@ interface IAccessControl {
      * @param functionSig The function signature to get the roles for.
      * @return The roles that can call the function encoded in 256 bits.
      */
-    function allowedRoles(bytes4 functionSig) external view returns (bytes32);
+    function functionRoles(bytes4 functionSig) external view returns (bytes32);
 
     /**
      * @notice Checks whether a given user has a given role.

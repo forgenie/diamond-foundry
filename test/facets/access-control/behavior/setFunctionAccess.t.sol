@@ -11,16 +11,7 @@ contract AccessControl_setUserRole is AccessControlFacetTest {
         // call
     }
 
-    function test_RevertsWhen_RemovingAdmin() public {
+    function test_UserCanCall() public {
         // todo
-    }
-
-    function test_SetsUserRoles() public {
-        // test userRoles()
-        // test hasRole()
-
-        // setFunctionAccess()
-
-        // test canCall()
     }
 }

@@ -4,8 +4,6 @@ pragma solidity 0.8.19;
 import { IAccessControlEvents } from "./IAccessControl.sol";
 import { AccessControlBehavior } from "./AccessControlBehavior.sol";
 
-error AccessControl_Unauthorized();
-
 abstract contract AccessControlBase is IAccessControlEvents {
     function _setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) internal {
         AccessControlBehavior.setFunctionAccess(functionSig, role, enabled);
@@ -27,8 +25,8 @@ abstract contract AccessControlBase is IAccessControlEvents {
         return AccessControlBehavior.userRoles(user);
     }
 
-    function _allowedRoles(bytes4 functionSig) internal view returns (bytes32) {
-        return AccessControlBehavior.allowedRoles(functionSig);
+    function _functionRoles(bytes4 functionSig) internal view returns (bytes32) {
+        return AccessControlBehavior.functionRoles(functionSig);
     }
 
     function _hasRole(address user, uint8 role) internal view returns (bool) {

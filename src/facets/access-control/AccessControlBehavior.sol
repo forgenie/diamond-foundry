@@ -6,9 +6,9 @@ import { AccessControlStorage } from "./AccessControlStorage.sol";
 library AccessControlBehavior {
     function setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) internal {
         if (enabled) {
-            AccessControlStorage.layout().allowedRoles[functionSig] |= bytes32(1 << role);
+            AccessControlStorage.layout().functionRoles[functionSig] |= bytes32(1 << role);
         } else {
-            AccessControlStorage.layout().allowedRoles[functionSig] &= ~bytes32(1 << role);
+            AccessControlStorage.layout().functionRoles[functionSig] &= ~bytes32(1 << role);
         }
     }
 
@@ -21,15 +21,15 @@ library AccessControlBehavior {
     }
 
     function canCall(address user, bytes4 functionSig) internal view returns (bool) {
-        return userRoles(user) & allowedRoles(functionSig) != bytes32(0);
+        return userRoles(user) & functionRoles(functionSig) != bytes32(0);
     }
 
     function userRoles(address user) internal view returns (bytes32) {
         return AccessControlStorage.layout().userRoles[user];
     }
 
-    function allowedRoles(bytes4 functionSig) internal view returns (bytes32) {
-        return AccessControlStorage.layout().allowedRoles[functionSig];
+    function functionRoles(bytes4 functionSig) internal view returns (bytes32) {
+        return AccessControlStorage.layout().functionRoles[functionSig];
     }
 
     function hasRole(address user, uint8 role) internal view returns (bool) {
@@ -37,6 +37,6 @@ library AccessControlBehavior {
     }
 
     function roleHasAccess(uint8 role, bytes4 functionSig) internal view returns (bool) {
-        return allowedRoles(functionSig) & bytes32(1 << role) != bytes32(0);
+        return functionRoles(functionSig) & bytes32(1 << role) != bytes32(0);
     }
 }

@@ -6,7 +6,7 @@ library AccessControlStorage {
 
     struct Layout {
         mapping(address user => bytes32 roles) userRoles;
-        mapping(bytes4 method => bytes32 roles) allowedRoles;
+        mapping(bytes4 selector => bytes32 roles) functionRoles;
     }
 
     function layout() internal pure returns (Layout storage l) {
