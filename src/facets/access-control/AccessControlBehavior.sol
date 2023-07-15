@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 import { AccessControlStorage } from "./AccessControlStorage.sol";
 
 library AccessControlBehavior {
-    function setRoleCapability(uint8 role, bytes4 functionSig, bool enabled) internal {
+    function setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) internal {
         if (enabled) {
             AccessControlStorage.layout().allowedRoles[functionSig] |= bytes32(1 << role);
         } else {
@@ -36,7 +36,7 @@ library AccessControlBehavior {
         return userRoles(user) & bytes32(1 << role) != bytes32(0);
     }
 
-    function roleHasCapability(uint8 role, bytes4 functionSig) internal view returns (bool) {
+    function roleHasAccess(uint8 role, bytes4 functionSig) internal view returns (bool) {
         return allowedRoles(functionSig) & bytes32(1 << role) != bytes32(0);
     }
 }

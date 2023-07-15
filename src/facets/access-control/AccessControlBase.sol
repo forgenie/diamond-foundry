@@ -7,10 +7,10 @@ import { AccessControlBehavior } from "./AccessControlBehavior.sol";
 error AccessControl_Unauthorized();
 
 abstract contract AccessControlBase is IAccessControlEvents {
-    function _setRoleCapability(uint8 role, bytes4 functionSig, bool enabled) internal {
-        AccessControlBehavior.setRoleCapability(role, functionSig, enabled);
+    function _setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) internal {
+        AccessControlBehavior.setFunctionAccess(functionSig, role, enabled);
 
-        emit RoleCapabilityUpdated(role, functionSig, enabled);
+        emit FunctionAccessChanged(functionSig, role, enabled);
     }
 
     function _setUserRole(address user, uint8 role, bool enabled) internal {
@@ -35,7 +35,7 @@ abstract contract AccessControlBase is IAccessControlEvents {
         return AccessControlBehavior.hasRole(user, role);
     }
 
-    function _roleHasCapability(uint8 role, bytes4 functionSig) internal view returns (bool) {
-        return AccessControlBehavior.roleHasCapability(role, functionSig);
+    function _roleHasAccess(uint8 role, bytes4 functionSig) internal view returns (bool) {
+        return AccessControlBehavior.roleHasAccess(role, functionSig);
     }
 }

@@ -12,19 +12,19 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
 
     function AccessControl_init(address roleAdmin) external onlyInitializing {
         _setUserRole(roleAdmin, DEFAULT_ADMIN_ROLE, true);
-        _setRoleCapability(DEFAULT_ADMIN_ROLE, this.setRoleCapability.selector, true);
-        _setRoleCapability(DEFAULT_ADMIN_ROLE, this.setUserRole.selector, true);
+        _setFunctionAccess(this.setFunctionAccess.selector, DEFAULT_ADMIN_ROLE, true);
+        _setFunctionAccess(this.setUserRole.selector, DEFAULT_ADMIN_ROLE, true);
     }
 
-    function setRoleCapability(uint8 role, bytes4 functionSig, bool enabled) external onlyAuthorized {
+    function setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) external onlyAuthorized {
         if (
             role == DEFAULT_ADMIN_ROLE && enabled == false
-                && (functionSig == this.setRoleCapability.selector || functionSig == this.setUserRole.selector)
+                && (functionSig == this.setFunctionAccess.selector || functionSig == this.setUserRole.selector)
         ) {
             revert AccessControl_CannotRemoveAdminCapability();
         }
 
-        _setRoleCapability(role, functionSig, enabled);
+        _setFunctionAccess(functionSig, role, enabled);
     }
 
     function setUserRole(address user, uint8 role, bool enabled) external onlyAuthorized {
@@ -47,7 +47,7 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
         return _hasRole(user, role);
     }
 
-    function roleHasCapability(uint8 role, bytes4 functionSig) external view returns (bool) {
-        return _roleHasCapability(role, functionSig);
+    function roleHasAccess(uint8 role, bytes4 functionSig) external view returns (bool) {
+        return _roleHasAccess(role, functionSig);
     }
 }
