@@ -40,7 +40,7 @@ abstract contract DelegateContext is SelfReferenced {
     }
 
     modifier onlyAuthorized() {
-        if (!IAccessControl(address(this)).canCall(msg.sender, msg.sig)) revert DelegateContext_CallerIsNotOwner();
+        if (!IAccessControl(address(this)).canCall(msg.sender, msg.sig)) revert DelegateContext_CallerIsNotAuthorized();
         _;
     }
 }

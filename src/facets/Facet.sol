@@ -8,4 +8,7 @@ abstract contract Facet is Initializable, DelegateContext {
     constructor() {
         _disableInitializers();
     }
+
+    // Consider hardcoding interfaceIds in a noDelegateCall function.
+    // function supportedInterfaces() public noDelegateCall view virtual returns (bytes4[] memory);
 }

@@ -4,6 +4,7 @@ pragma solidity >=0.8.19;
 import { Facet } from "src/facets/Facet.sol";
 import { AccessControlBase } from "./AccessControlBase.sol";
 import { IAccessControl } from "./IAccessControl.sol";
+import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 error AccessControl_CannotRemoveAdmin();
 
@@ -14,6 +15,8 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
         _setUserRole(roleAdmin, DEFAULT_ADMIN_ROLE, true);
         _setFunctionAccess(this.setFunctionAccess.selector, DEFAULT_ADMIN_ROLE, true);
         _setFunctionAccess(this.setUserRole.selector, DEFAULT_ADMIN_ROLE, true);
+
+        IntrospectionBehavior.addInterface(type(IAccessControl).interfaceId);
     }
 
     /// @inheritdoc IAccessControl
