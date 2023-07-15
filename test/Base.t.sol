@@ -6,6 +6,7 @@ import { StdCheats, StdUtils } from "forge-std/Test.sol";
 
 abstract contract BaseTest is PRBTest, StdCheats, StdUtils {
     struct Users {
+        address payable admin;
         address payable owner;
         address payable stranger;
     }
@@ -13,7 +14,7 @@ abstract contract BaseTest is PRBTest, StdCheats, StdUtils {
     Users public users;
 
     function setUp() public virtual {
-        users = Users(createUser("owner"), createUser("stranger"));
+        users = Users(createUser("admin"), createUser("owner"), createUser("stranger"));
 
         // Prank owner by default
         vm.startPrank(users.owner);

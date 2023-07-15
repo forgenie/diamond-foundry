@@ -5,7 +5,7 @@ import { Facet } from "src/facets/Facet.sol";
 import { AccessControlBase } from "./AccessControlBase.sol";
 import { IAccessControl } from "./IAccessControl.sol";
 
-error AccessControl_CannotRemoveAdminCapability();
+error AccessControl_CannotRemoveAdmin();
 
 contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
     uint8 public constant DEFAULT_ADMIN_ROLE = 0;
@@ -16,37 +16,44 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
         _setFunctionAccess(this.setUserRole.selector, DEFAULT_ADMIN_ROLE, true);
     }
 
+    /// @inheritdoc IAccessControl
     function setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) external onlyAuthorized {
         if (
             role == DEFAULT_ADMIN_ROLE && enabled == false
                 && (functionSig == this.setFunctionAccess.selector || functionSig == this.setUserRole.selector)
         ) {
-            revert AccessControl_CannotRemoveAdminCapability();
+            revert AccessControl_CannotRemoveAdmin();
         }
 
         _setFunctionAccess(functionSig, role, enabled);
     }
 
+    /// @inheritdoc IAccessControl
     function setUserRole(address user, uint8 role, bool enabled) external onlyAuthorized {
         _setUserRole(user, role, enabled);
     }
 
+    /// @inheritdoc IAccessControl
     function canCall(address user, bytes4 functionSig) external view returns (bool) {
         return _canCall(user, functionSig);
     }
 
+    /// @inheritdoc IAccessControl
     function userRoles(address user) external view returns (bytes32) {
         return _userRoles(user);
     }
 
+    /// @inheritdoc IAccessControl
     function allowedRoles(bytes4 functionSig) external view returns (bytes32) {
         return _allowedRoles(functionSig);
     }
 
+    /// @inheritdoc IAccessControl
     function hasRole(address user, uint8 role) external view returns (bool) {
         return _hasRole(user, role);
     }
 
+    /// @inheritdoc IAccessControl
     function roleHasAccess(uint8 role, bytes4 functionSig) external view returns (bool) {
         return _roleHasAccess(role, functionSig);
     }
