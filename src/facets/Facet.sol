@@ -3,8 +3,9 @@ pragma solidity >=0.8.19;
 
 import { Initializable } from "src/utils/Initializable.sol";
 import { DelegateContext } from "src/utils/DelegateContext.sol";
+import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 
-abstract contract Facet is Initializable, DelegateContext {
+abstract contract Facet is Initializable, DelegateContext, DiamondLoupeBase {
     constructor() {
         _disableInitializers();
     }

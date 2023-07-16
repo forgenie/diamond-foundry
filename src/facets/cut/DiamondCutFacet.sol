@@ -7,7 +7,7 @@ import { DiamondCutBase } from "./DiamondCutBase.sol";
 
 contract DiamondCutFacet is IDiamondCut, DiamondCutBase, Facet {
     function DiamondCut_init() external onlyInitializing {
-        __DiamondCut_init();
+        _addInterface(type(IDiamondCut).interfaceId);
     }
 
     /// @inheritdoc IDiamondCut

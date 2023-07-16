@@ -29,7 +29,7 @@ abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, BaseTest {
     function setUp() public virtual override {
         super.setUp();
 
-        __DiamondLoupe_init();
+        // todo: set up diamond
     }
 
     function mockFacet() internal returns (FacetHelper[] memory) {
@@ -37,4 +37,7 @@ abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, BaseTest {
         facets.push(new MockFacetHelper());
         return facets;
     }
+
+    // todo: write helper function addFacet
+    // todo: write helper function removeFacet
 }

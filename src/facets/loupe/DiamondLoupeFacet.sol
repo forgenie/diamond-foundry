@@ -2,15 +2,13 @@
 pragma solidity >=0.8.19;
 
 import { Facet } from "src/facets/Facet.sol";
-import { IDiamondLoupe } from "./IDiamondLoupe.sol";
+import { IERC165, IDiamondLoupe } from "./IDiamondLoupe.sol";
 import { DiamondLoupeBase } from "./DiamondLoupeBase.sol";
-import { IERC165 } from "src/facets/introspection/IERC165.sol";
-import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
 
-contract DiamondLoupeFacet is IDiamondLoupe, IERC165, DiamondLoupeBase, IntrospectionBase, Facet {
+contract DiamondLoupeFacet is IDiamondLoupe, DiamondLoupeBase, Facet {
     function DiamondLoupe_init() external onlyInitializing {
-        __DiamondLoupe_init();
-        __Introspection_init();
+        _addInterface(type(IDiamondLoupe).interfaceId);
+        _addInterface(type(IERC165).interfaceId);
     }
 
     /// @inheritdoc IDiamondLoupe

@@ -9,7 +9,7 @@ import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
 
 contract Ownable2StepFacet is IERC173, IOwnable2Step, Ownable2StepBase, Facet {
     function Ownable2Step_init() external onlyInitializing {
-        __Ownable2Step_init();
+        _addInterface(type(IOwnable2Step).interfaceId);
     }
 
     /// @inheritdoc IOwnable2Step

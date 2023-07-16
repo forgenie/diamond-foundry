@@ -7,7 +7,8 @@ import { OwnableBase } from "./OwnableBase.sol";
 
 contract OwnableFacet is IERC173, OwnableBase, Facet {
     function Ownable_init(address owner_) external onlyInitializing {
-        __Ownable_init(owner_);
+        _transferOwnership(owner_);
+        _addInterface(type(IERC173).interfaceId);
     }
 
     /// @inheritdoc IERC173

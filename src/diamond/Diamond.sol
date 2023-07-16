@@ -20,9 +20,8 @@ contract Diamond is IDiamond, Proxy, DelegateContext, DiamondBase {
     }
 
     function initialize(InitParams calldata initDiamondCut) external initializer {
-        __DiamondLoupe_init();
-        __Introspection_init();
-        __DiamondCut_init();
+        // __DiamondLoupe_init();
+        // __DiamondCut_init();
 
         // Register immutable functions.
         bytes4[] memory selectors = new bytes4[](6);

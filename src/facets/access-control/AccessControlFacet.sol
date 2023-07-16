@@ -4,7 +4,6 @@ pragma solidity >=0.8.19;
 import { Facet } from "src/facets/Facet.sol";
 import { AccessControlBase } from "./AccessControlBase.sol";
 import { IAccessControl } from "./IAccessControl.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
     function AccessControl_init(address roleAdmin) external onlyInitializing {
@@ -12,7 +11,7 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
         _setFunctionAccess(this.setFunctionAccess.selector, _DEFAULT_ADMIN_ROLE, true);
         _setFunctionAccess(this.setUserRole.selector, _DEFAULT_ADMIN_ROLE, true);
 
-        IntrospectionBehavior.addInterface(type(IAccessControl).interfaceId);
+        _addInterface(type(IAccessControl).interfaceId);
     }
 
     /// @inheritdoc IAccessControl

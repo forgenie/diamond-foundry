@@ -1,16 +1,10 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.19;
 
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { IERC173, IOwnableBase } from "./IERC173.sol";
 import { OwnableStorage } from "./OwnableStorage.sol";
 
 abstract contract OwnableBase is IOwnableBase {
-    function __Ownable_init(address owner_) internal {
-        _transferOwnership(owner_);
-        IntrospectionBehavior.addInterface(type(IERC173).interfaceId);
-    }
-
     function _owner() internal view returns (address) {
         return OwnableStorage.layout().owner;
     }

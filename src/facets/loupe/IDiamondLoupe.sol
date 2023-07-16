@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.19;
 
+import { IERC165 } from "@openzeppelin/contracts/interfaces/IERC165.sol";
+
 interface IDiamondLoupeBase {
     struct Facet {
         address facet;
@@ -13,7 +15,7 @@ interface IDiamondLoupeBase {
  * @notice A loupe is a small magnifying glass used to look at diamonds.
  *         See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamondLoupe is IDiamondLoupeBase {
+interface IDiamondLoupe is IDiamondLoupeBase, IERC165 {
     /**
      * @notice Gets all facet addresses and the selectors of supported functions.
      * @return facetInfo An array of Facet structs.

@@ -6,7 +6,6 @@ import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondCutEvents, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract DiamondCutFacetTest is IDiamondCutEvents, FacetTest {

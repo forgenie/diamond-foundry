@@ -4,13 +4,11 @@ pragma solidity >=0.8.19;
 import { IERC721 } from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import { INFTOwned } from "./INFTOwned.sol";
 import { NFTOwnedStorage } from "./NFTOwnedStorage.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
 abstract contract NFTOwnedBase {
     function __NFTOwned_init(address nftContract, uint256 tokenId) internal {
         NFTOwnedStorage.layout().nftContract = nftContract;
         NFTOwnedStorage.layout().tokenId = tokenId;
-        IntrospectionBehavior.addInterface(type(INFTOwned).interfaceId);
     }
 
     function _token() internal view virtual returns (address nftContract, uint256 tokenId) {

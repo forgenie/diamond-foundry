@@ -8,6 +8,7 @@ import { NFTOwnedBase } from "./NFTOwnedBase.sol";
 contract NFTOwnedFacet is INFTOwned, NFTOwnedBase, Facet {
     function NFTOwned_init(address nftContract, uint256 tokenId) external onlyInitializing {
         __NFTOwned_init(nftContract, tokenId);
+        _addInterface(type(INFTOwned).interfaceId);
     }
 
     /// @inheritdoc INFTOwned

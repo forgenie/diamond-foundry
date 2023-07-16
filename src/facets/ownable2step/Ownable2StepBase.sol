@@ -3,7 +3,6 @@ pragma solidity >=0.8.19;
 
 import { IOwnableBase } from "src/facets/ownable/IERC173.sol";
 import { IOwnable2Step, IOwnable2StepBase } from "./IOwnable2Step.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
 import { Ownable2StepStorage } from "src/facets/ownable2step/Ownable2StepStorage.sol";
 
@@ -11,10 +10,6 @@ abstract contract Ownable2StepBase is IOwnable2StepBase, IOwnableBase, OwnableBa
     modifier onlyPendingOwner() {
         if (msg.sender != _pendingOwner()) revert Ownable2Step_NotPendingOwner(msg.sender);
         _;
-    }
-
-    function __Ownable2Step_init() internal {
-        IntrospectionBehavior.addInterface(type(IOwnable2Step).interfaceId);
     }
 
     function _startTransferOwnership(address owner, address pendingOwner) internal {

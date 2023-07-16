@@ -5,13 +5,8 @@ import { Initializable } from "src/utils/Initializable.sol";
 import { IDiamond } from "src/diamond/IDiamond.sol";
 import { IDiamondCut, IDiamondCutEvents } from "./IDiamondCut.sol";
 import { DiamondCutBehavior } from "./DiamondCutBehavior.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
-abstract contract DiamondCutBase is IDiamondCutEvents, Initializable {
-    function __DiamondCut_init() internal {
-        IntrospectionBehavior.addInterface(type(IDiamondCut).interfaceId);
-    }
-
+abstract contract DiamondCutBase is IDiamondCutEvents {
     function _diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) internal {
         for (uint256 i = 0; i < facetCuts.length; i++) {
             IDiamond.FacetCut memory facetCut = facetCuts[i];
