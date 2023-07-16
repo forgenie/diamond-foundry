@@ -8,9 +8,6 @@ import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamond, IDiamondCut, IDiamondLoupe, IERC165 } from "./IDiamond.sol";
 import { DelegateContext } from "src/utils/DelegateContext.sol";
 
-error Diamond_UnsupportedFunction();
-error Diamond_NoOwnableFacetProvided();
-
 contract Diamond is IDiamond, Proxy, DelegateContext, DiamondBase {
     struct InitParams {
         FacetCut[] baseFacets;

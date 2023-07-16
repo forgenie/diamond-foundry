@@ -4,6 +4,7 @@ pragma solidity >=0.8.19;
 // uses storage
 import { IntrospectionStorage } from "./IntrospectionStorage.sol";
 
+// todo: move to base
 error Introspection_AlreadySupported();
 error Introspection_AlreadyNotSupported();
 

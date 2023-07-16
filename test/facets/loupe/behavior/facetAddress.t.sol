@@ -3,7 +3,6 @@ pragma solidity >=0.8.19;
 
 import { DiamondLoupeBaseTest } from "../loupe.t.sol";
 import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
-import { DiamondLoupeBehavior } from "src/facets/loupe/DiamondLoupeBehavior.sol";
 import { MockFacet } from "test/mocks/MockFacet.sol";
 
 contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
@@ -14,7 +13,7 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
         DiamondCutBehavior.addFacet(expectedFacetAddress, expectedSelectors);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+            address facetAddress = _facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, expectedFacetAddress);
         }
@@ -29,7 +28,7 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
         DiamondCutBehavior.removeFacet(expectedFacetAddress, expectedSelectors);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+            address facetAddress = _facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, address(0));
         }
@@ -45,7 +44,7 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
         DiamondCutBehavior.replaceFacet(expectedFacet, expectedSelectors);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+            address facetAddress = _facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, expectedFacet);
         }

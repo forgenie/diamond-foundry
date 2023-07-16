@@ -5,11 +5,17 @@ import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 import { IERC165 } from "src/facets/introspection/IERC165.sol";
 
+interface IDiamondBase {
+    error Diamond_UnsupportedFunction();
+    error Diamond_NoOwnableFacetProvided();
+}
+
 /**
  * @title IDiamond
  * @notice Interface of the Diamond Proxy contract. See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamond is IDiamondCut, IDiamondLoupe, IERC165 {
+interface IDiamond is IDiamondBase, IDiamondCut, IDiamondLoupe, IERC165 {
+    // todo: move into IDiamondBase
     /**
      * @notice Expresses the action of adding, replacing, or removing a facet.
      */

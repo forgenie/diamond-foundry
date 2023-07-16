@@ -7,6 +7,7 @@ library DiamondIncrementalStorage {
     struct Layout {
         mapping(bytes4 selector => bool isImmutable) immutableFunctions;
     }
+    // todo: add immutable facets
 
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = DIAMOND_INCREMENTAL_STORAGE_POSITION;

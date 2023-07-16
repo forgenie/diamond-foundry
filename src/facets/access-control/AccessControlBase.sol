@@ -1,39 +1,60 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { IAccessControlEvents } from "./IAccessControl.sol";
-import { AccessControlBehavior } from "./AccessControlBehavior.sol";
+import { IAccessControl, IAccessControlBase } from "./IAccessControl.sol";
+import { AccessControlStorage } from "./AccessControlStorage.sol";
 
-abstract contract AccessControlBase is IAccessControlEvents {
+abstract contract AccessControlBase is IAccessControlBase {
+    uint8 internal constant _DEFAULT_ADMIN_ROLE = 0;
+
     function _setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) internal {
-        AccessControlBehavior.setFunctionAccess(functionSig, role, enabled);
+        if (enabled) {
+            AccessControlStorage.layout().functionRoles[functionSig] |= bytes32(1 << role);
+        } else {
+            // Revert if removing admin role from access control functions.
+            if (
+                role == _DEFAULT_ADMIN_ROLE
+                    && (
+                        functionSig == IAccessControl.setFunctionAccess.selector
+                            || functionSig == IAccessControl.setUserRole.selector
+                    )
+            ) {
+                revert AccessControl_CannotRemoveAdmin();
+            }
+
+            AccessControlStorage.layout().functionRoles[functionSig] &= ~bytes32(1 << role);
+        }
 
         emit FunctionAccessChanged(functionSig, role, enabled);
     }
 
     function _setUserRole(address user, uint8 role, bool enabled) internal {
-        AccessControlBehavior.setUserRole(user, role, enabled);
+        if (enabled) {
+            AccessControlStorage.layout().userRoles[user] |= bytes32(1 << role);
+        } else {
+            AccessControlStorage.layout().userRoles[user] &= ~bytes32(1 << role);
+        }
 
         emit UserRoleUpdated(user, role, enabled);
     }
 
     function _canCall(address user, bytes4 functionSig) internal view returns (bool) {
-        return AccessControlBehavior.canCall(user, functionSig);
+        return _userRoles(user) & _functionRoles(functionSig) != bytes32(0);
     }
 
     function _userRoles(address user) internal view returns (bytes32) {
-        return AccessControlBehavior.userRoles(user);
+        return AccessControlStorage.layout().userRoles[user];
     }
 
     function _functionRoles(bytes4 functionSig) internal view returns (bytes32) {
-        return AccessControlBehavior.functionRoles(functionSig);
+        return AccessControlStorage.layout().functionRoles[functionSig];
     }
 
     function _hasRole(address user, uint8 role) internal view returns (bool) {
-        return AccessControlBehavior.hasRole(user, role);
+        return _userRoles(user) & bytes32(1 << role) != bytes32(0);
     }
 
     function _roleHasAccess(uint8 role, bytes4 functionSig) internal view returns (bool) {
-        return AccessControlBehavior.roleHasAccess(role, functionSig);
+        return _functionRoles(functionSig) & bytes32(1 << role) != bytes32(0);
     }
 }
