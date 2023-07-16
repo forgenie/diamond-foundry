@@ -2,14 +2,19 @@
 pragma solidity >=0.8.19;
 
 import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
-import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
-import { IERC165 } from "src/facets/introspection/IERC165.sol";
+import { IDiamondLoupe, IERC165 } from "src/facets/loupe/IDiamondLoupe.sol";
+
+interface IDiamondBase {
+    /// @notice Thrown when calling a function that was not registered in the diamond.
+    error Diamond_UnsupportedFunction();
+}
 
 /**
  * @title IDiamond
  * @notice Interface of the Diamond Proxy contract. See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamond is IDiamondCut, IDiamondLoupe, IERC165 {
+interface IDiamond is IDiamondBase, IDiamondCut, IDiamondLoupe {
+    // todo: move into IDiamondBase
     /**
      * @notice Expresses the action of adding, replacing, or removing a facet.
      */

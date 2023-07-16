@@ -2,8 +2,6 @@
 pragma solidity >=0.8.19;
 
 import { DiamondLoupeBaseTest } from "../loupe.t.sol";
-import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
-import { DiamondLoupeBehavior } from "src/facets/loupe/DiamondLoupeBehavior.sol";
 import { MockFacet } from "test/mocks/MockFacet.sol";
 
 contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
@@ -11,10 +9,10 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
         bytes4[] memory expectedSelectors = facet.selectors();
         address expectedFacetAddress = facet.facet();
 
-        DiamondCutBehavior.addFacet(expectedFacetAddress, expectedSelectors);
+        _addFacet(expectedFacetAddress, expectedSelectors);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+            address facetAddress = _facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, expectedFacetAddress);
         }
@@ -24,12 +22,11 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
         bytes4[] memory expectedSelectors = facet.selectors();
         address expectedFacetAddress = facet.facet();
 
-        DiamondCutBehavior.addFacet(expectedFacetAddress, expectedSelectors);
-
-        DiamondCutBehavior.removeFacet(expectedFacetAddress, expectedSelectors);
+        _addFacet(expectedFacetAddress, expectedSelectors);
+        _removeFacet(expectedFacetAddress, expectedSelectors);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+            address facetAddress = _facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, address(0));
         }
@@ -39,13 +36,12 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
         bytes4[] memory expectedSelectors = facet.selectors();
         address oldFacet = facet.facet();
 
-        DiamondCutBehavior.addFacet(oldFacet, expectedSelectors);
-
+        _addFacet(oldFacet, expectedSelectors);
         address expectedFacet = address(new MockFacet());
-        DiamondCutBehavior.replaceFacet(expectedFacet, expectedSelectors);
+        _replaceFacet(expectedFacet, expectedSelectors);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = DiamondLoupeBehavior.facetAddress(expectedSelectors[i]);
+            address facetAddress = _facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, expectedFacet);
         }

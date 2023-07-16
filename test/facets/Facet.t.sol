@@ -5,10 +5,10 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "../Base.t.sol";
 import { DiamondFactory } from "src/factory/DiamondFactory.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
-import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
+import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
 
 abstract contract FacetTest is BaseTest, DiamondFactory {
-    address public constant MULTI_INIT_ADDRESS = DiamondCutBehavior._MULTI_INIT_IDENTIFIER;
+    address public constant MULTI_INIT_ADDRESS = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
 
     /// @dev Attach facet interface to diamond for testing
     address public diamond;

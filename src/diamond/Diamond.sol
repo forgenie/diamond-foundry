@@ -4,12 +4,8 @@ pragma solidity >=0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Proxy } from "@openzeppelin/contracts/proxy/Proxy.sol";
 import { DiamondBase } from "./DiamondBase.sol";
-import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { IDiamond, IDiamondCut, IDiamondLoupe, IERC165 } from "./IDiamond.sol";
 import { DelegateContext } from "src/utils/DelegateContext.sol";
-
-error Diamond_UnsupportedFunction();
-error Diamond_NoOwnableFacetProvided();
 
 contract Diamond is IDiamond, Proxy, DelegateContext, DiamondBase {
     struct InitParams {
@@ -23,9 +19,8 @@ contract Diamond is IDiamond, Proxy, DelegateContext, DiamondBase {
     }
 
     function initialize(InitParams calldata initDiamondCut) external initializer {
-        __DiamondLoupe_init();
-        __Introspection_init();
-        __DiamondCut_init();
+        // __DiamondLoupe_init();
+        // __DiamondCut_init();
 
         // Register immutable functions.
         bytes4[] memory selectors = new bytes4[](6);
@@ -35,7 +30,7 @@ contract Diamond is IDiamond, Proxy, DelegateContext, DiamondBase {
         selectors[3] = this.facetFunctionSelectors.selector;
         selectors[4] = this.facetAddress.selector;
         selectors[5] = this.supportsInterface.selector;
-        DiamondCutBehavior.addFacet(address(this), selectors);
+        _addFacet(address(this), selectors);
 
         _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
     }

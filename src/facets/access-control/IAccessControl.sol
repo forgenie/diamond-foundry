@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-interface IAccessControlEvents {
+interface IAccessControlBase {
+    /// @notice Thrown when removing admin role access from acl functions.
+    error AccessControl_CannotRemoveAdmin();
+
     /**
      * @notice Emitted when a user role is updated.
      * @param user The user whose role is updated.

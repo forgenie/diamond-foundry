@@ -3,13 +3,13 @@ pragma solidity >=0.8.19;
 
 import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
-import { IDiamondIncremental, IDiamondIncrementalEvents } from "src/facets/incremental/IDiamondIncremental.sol";
+import { IDiamondIncremental, IDiamondIncrementalBase } from "src/facets/incremental/IDiamondIncremental.sol";
 import { DiamondIncrementalFacet } from "src/facets/incremental/DiamondIncrementalFacet.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { DiamondCutFacetHelper } from "test/facets/cut/cut.t.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
-abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalEvents, FacetTest {
+abstract contract DiamondIncrementalFacetTest is IDiamondIncrementalBase, FacetTest {
     IDiamondIncremental public diamondIncremental;
     MockFacetHelper public mockFacet;
 

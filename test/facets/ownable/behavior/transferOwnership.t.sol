@@ -2,7 +2,6 @@
 pragma solidity >=0.8.19;
 
 import { OwnableFacetTest } from "../ownable.t.sol";
-import { OwnableBehavior, Ownable_ZeroAddress } from "src/facets/ownable/OwnableBehavior.sol";
 import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateContext.sol";
 
 contract Ownable_transferOwnership is OwnableFacetTest {

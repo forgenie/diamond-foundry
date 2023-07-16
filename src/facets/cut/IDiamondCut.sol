@@ -3,7 +3,20 @@ pragma solidity >=0.8.19;
 
 import { IDiamond } from "src/diamond/IDiamond.sol";
 
-interface IDiamondCutEvents {
+interface IDiamondCutBase {
+    //todo: add docs
+    error DiamondCut_SelectorArrayEmpty(address facet);
+    error DiamondCut_FacetIsZeroAddress();
+    error DiamondCut_FacetIsNotContract(address facet);
+    error DiamondCut_IncorrectFacetCutAction();
+    error DiamondCut_SelectorIsZero();
+    error DiamondCut_FunctionAlreadyExists(bytes4 selector);
+    error DiamondCut_CannotRemoveFromOtherFacet(address facet, bytes4 selector);
+    error DiamondCut_FunctionFromSameFacet(bytes4 selector);
+    error DiamondCut_NonExistingFunction(bytes4 selector);
+    error DiamondCut_ImmutableFacet();
+    error DiamondCut_InitIsNotContract(address init);
+
     /**
      * @dev Emitted when a facet is added, replaced or removed.
      * @param facetCuts The Facet actions that were performed.
@@ -17,7 +30,7 @@ interface IDiamondCutEvents {
  * @title IDiamondCut
  * @notice Interface of the DiamondCut facet. See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamondCut is IDiamondCutEvents {
+interface IDiamondCut is IDiamondCutBase {
     /**
      * @notice Add/replace/remove any number of functions and optionally execute
      *         a function with delegatecall.

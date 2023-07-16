@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
+import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import { SelfReferenced } from "./SelfReferenced.sol";
 import { IAccessControl } from "src/facets/access-control/IAccessControl.sol";
 import { IERC173 } from "src/facets/ownable/IERC173.sol";
-import { IERC165 } from "src/facets/introspection/IERC165.sol";
 
 error DelegateContext_DelegateNotAllowed();
 error DelegateContext_OnlyDelegate();

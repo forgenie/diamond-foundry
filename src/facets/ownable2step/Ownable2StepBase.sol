@@ -1,36 +1,32 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.19;
 
-import { IOwnableEvents } from "src/facets/ownable/IERC173.sol";
-import { IOwnable2Step, IOwnable2StepEvents } from "./IOwnable2Step.sol";
-import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
-import { Ownable2StepBehavior } from "./Ownable2StepBehavior.sol";
-import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
+import { IOwnableBase } from "src/facets/ownable/IERC173.sol";
+import { IOwnable2Step, IOwnable2StepBase } from "./IOwnable2Step.sol";
+import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
+import { Ownable2StepStorage } from "src/facets/ownable2step/Ownable2StepStorage.sol";
 
-abstract contract Ownable2StepBase is IOwnable2StepEvents, IOwnableEvents {
+abstract contract Ownable2StepBase is IOwnable2StepBase, IOwnableBase, OwnableBase {
     modifier onlyPendingOwner() {
-        Ownable2StepBehavior.checkPendingOwner(msg.sender);
+        if (msg.sender != _pendingOwner()) revert Ownable2Step_NotPendingOwner(msg.sender);
         _;
     }
 
-    function __Ownable2Step_init() internal {
-        IntrospectionBehavior.addInterface(type(IOwnable2Step).interfaceId);
-    }
-
-    function _transferOwnership(address owner, address pendingOwner) internal {
-        Ownable2StepBehavior.setPendingOwner(pendingOwner);
-
+    function _startTransferOwnership(address owner, address pendingOwner) internal {
+        Ownable2StepStorage.layout().pendingOwner = pendingOwner;
         emit OwnershipTransferStarted(owner, pendingOwner);
     }
 
     function _acceptOwnership() internal {
-        address previousOwner = OwnableBehavior.owner();
-        address newOwner = Ownable2StepBehavior.acceptOwnership();
+        address newOwner = _pendingOwner();
 
-        emit OwnershipTransferred(previousOwner, newOwner);
+        emit OwnershipTransferred(_owner(), newOwner);
+        _transferOwnership(newOwner);
+
+        delete Ownable2StepStorage.layout().pendingOwner;
     }
 
     function _pendingOwner() internal view returns (address) {
-        return Ownable2StepBehavior.pendingOwner();
+        return Ownable2StepStorage.layout().pendingOwner;
     }
 }

@@ -2,10 +2,6 @@
 pragma solidity >=0.8.19;
 
 import { DiamondIncrementalFacetTest } from "../incremental.t.sol";
-import {
-    DiamondIncrementalBehavior,
-    DiamondIncremental_AlreadyImmutable
-} from "src/facets/incremental/DiamondIncrementalBehavior.sol";
 import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateContext.sol";
 
 contract DiamondIncremental_turnImmutable is DiamondIncrementalFacetTest {
