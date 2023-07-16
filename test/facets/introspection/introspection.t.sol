@@ -6,7 +6,7 @@ import { IIntrospectionEvents } from "src/facets/introspection/IERC165.sol";
 import { IntrospectionBase } from "src/facets/introspection/IntrospectionBase.sol";
 
 abstract contract IntrospectionBaseTest is IIntrospectionEvents, IntrospectionBase, BaseTest {
-    function setUp() public virtual override initializer {
+    function setUp() public virtual override {
         super.setUp();
 
         __Introspection_init();

@@ -2,13 +2,13 @@
 pragma solidity >=0.8.19;
 
 import { Ownable2StepFacetTest } from "../ownable2step.t.sol";
-import { Ownable_NotOwner } from "src/facets/ownable/OwnableBehavior.sol";
+import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateContext.sol";
 
 contract Ownable2Step_transferOwnership is Ownable2StepFacetTest {
     function test_RevertsWhen_CallerIsNotOwner() public {
         changePrank(users.stranger);
 
-        vm.expectRevert(abi.encodeWithSelector(Ownable_NotOwner.selector, users.stranger));
+        vm.expectRevert(DelegateContext_CallerIsNotOwner.selector);
 
         ownable2Step.transferOwnership(pendingOwner);
     }

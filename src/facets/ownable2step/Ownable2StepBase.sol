@@ -1,20 +1,19 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.19;
 
-import { Initializable } from "src/utils/Initializable.sol";
 import { IOwnableEvents } from "src/facets/ownable/IERC173.sol";
 import { IOwnable2Step, IOwnable2StepEvents } from "./IOwnable2Step.sol";
 import { OwnableBehavior } from "src/facets/ownable/OwnableBehavior.sol";
 import { Ownable2StepBehavior } from "./Ownable2StepBehavior.sol";
 import { IntrospectionBehavior } from "src/facets/introspection/IntrospectionBehavior.sol";
 
-abstract contract Ownable2StepBase is IOwnable2StepEvents, IOwnableEvents, Initializable {
+abstract contract Ownable2StepBase is IOwnable2StepEvents, IOwnableEvents {
     modifier onlyPendingOwner() {
         Ownable2StepBehavior.checkPendingOwner(msg.sender);
         _;
     }
 
-    function __Ownable2Step_init() internal onlyInitializing {
+    function __Ownable2Step_init() internal {
         IntrospectionBehavior.addInterface(type(IOwnable2Step).interfaceId);
     }
 

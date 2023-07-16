@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { Initializable } from "src/utils/Initializable.sol";
 import { IntrospectionBehavior } from "./IntrospectionBehavior.sol";
 import { IERC165, IIntrospectionEvents } from "./IERC165.sol";
 
-abstract contract IntrospectionBase is IIntrospectionEvents, Initializable {
-    function __Introspection_init() internal onlyInitializing {
+abstract contract IntrospectionBase is IIntrospectionEvents {
+    function __Introspection_init() internal {
         _addInterface(type(IERC165).interfaceId);
     }
 
