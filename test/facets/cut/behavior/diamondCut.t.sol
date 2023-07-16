@@ -3,21 +3,6 @@ pragma solidity >=0.8.19;
 
 import { IDiamond } from "src/diamond/Diamond.sol";
 import { DiamondCutFacetTest } from "../cut.t.sol";
-import {
-    DiamondCut_InitIsNotContract,
-    DiamondCut_IncorrectFacetCutAction,
-    DiamondCut_FacetIsNotContract,
-    DiamondCut_FacetIsZeroAddress,
-    DiamondCut_SelectorArrayEmpty,
-    DiamondCut_ImmutableFacet,
-    DiamondCut_SelectorIsZero,
-    DiamondCut_FunctionAlreadyExists,
-    DiamondCut_CannotRemoveFromOtherFacet,
-    DiamondCut_SelectorIsZero,
-    DiamondCut_SelectorIsZero,
-    DiamondCut_FunctionFromSameFacet,
-    DiamondCut_NonExistingFunction
-} from "src/facets/cut/DiamondCutBehavior.sol";
 
 contract DiamondCut_diamondCut is DiamondCutFacetTest {
     function test_RevertsWhen_InitIsNotContract() public {

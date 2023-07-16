@@ -2,7 +2,6 @@
 pragma solidity >=0.8.19;
 
 import { DiamondLoupeBaseTest } from "../loupe.t.sol";
-import { DiamondCutBehavior } from "src/facets/cut/DiamondCutBehavior.sol";
 import { MockFacet } from "test/mocks/MockFacet.sol";
 
 contract DiamondLoupeBase_facetAddresses is DiamondLoupeBaseTest {
@@ -10,7 +9,7 @@ contract DiamondLoupeBase_facetAddresses is DiamondLoupeBaseTest {
         for (uint256 i = 0; i < facets.length; i++) {
             facet = facets[i];
 
-            DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
+            _addFacet(facet.facet(), facet.selectors());
         }
 
         address[] memory facetAddresses = _facetAddresses();
@@ -27,8 +26,8 @@ contract DiamondLoupeBase_facetAddresses is DiamondLoupeBaseTest {
         for (uint256 i = 0; i < facets.length; i++) {
             facet = facets[i];
 
-            DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
-            DiamondCutBehavior.removeFacet(facet.facet(), facet.selectors());
+            _addFacet(facet.facet(), facet.selectors());
+            _removeFacet(facet.facet(), facet.selectors());
         }
 
         address[] memory facetAddresses = _facetAddresses();
@@ -42,8 +41,8 @@ contract DiamondLoupeBase_facetAddresses is DiamondLoupeBaseTest {
         for (uint256 i = 0; i < facets.length; i++) {
             facet = facets[i];
 
-            DiamondCutBehavior.addFacet(facet.facet(), facet.selectors());
-            DiamondCutBehavior.replaceFacet(newFacet, facet.selectors());
+            _addFacet(facet.facet(), facet.selectors());
+            _replaceFacet(newFacet, facet.selectors());
         }
 
         address[] memory facetAddresses = _facetAddresses();

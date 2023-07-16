@@ -5,8 +5,9 @@ import { BaseTest } from "test/Base.t.sol";
 import { FacetHelper } from "test/facets/Facet.t.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
+import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
 
-abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, BaseTest {
+abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, DiamondCutBase, BaseTest {
     /// @dev shortcut for multiFacetTest
     FacetHelper public facet;
     FacetHelper[] public facets;
