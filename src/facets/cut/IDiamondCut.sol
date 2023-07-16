@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 import { IDiamond } from "src/diamond/IDiamond.sol";
 
-interface IDiamondCutEvents {
+interface IDiamondCutBase {
     //todo: add docs
     error DiamondCut_SelectorArrayEmpty(address facet);
     error DiamondCut_FacetIsZeroAddress();
@@ -30,7 +30,7 @@ interface IDiamondCutEvents {
  * @title IDiamondCut
  * @notice Interface of the DiamondCut facet. See [EIP-2535](https://eips.ethereum.org/EIPS/eip-2535).
  */
-interface IDiamondCut is IDiamondCutEvents {
+interface IDiamondCut is IDiamondCutBase {
     /**
      * @notice Add/replace/remove any number of functions and optionally execute
      *         a function with delegatecall.

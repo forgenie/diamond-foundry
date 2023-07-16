@@ -4,10 +4,10 @@ pragma solidity >=0.8.19;
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { IDiamond } from "src/diamond/IDiamond.sol";
-import { IDiamondCut, IDiamondCutEvents } from "./IDiamondCut.sol";
+import { IDiamondCut, IDiamondCutBase } from "./IDiamondCut.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
 
-abstract contract DiamondCutBase is IDiamondCutEvents {
+abstract contract DiamondCutBase is IDiamondCutBase {
     using EnumerableSet for *;
 
     address internal constant _MULTI_INIT_IDENTIFIER = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
