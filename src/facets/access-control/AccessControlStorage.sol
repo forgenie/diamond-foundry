@@ -11,6 +11,7 @@ library AccessControlStorage {
 
     function layout() internal pure returns (Layout storage l) {
         bytes32 slot = STORAGE_SLOT;
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := slot
         }

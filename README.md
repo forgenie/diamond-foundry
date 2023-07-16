@@ -1,35 +1,25 @@
 # Diamond Foundry
 
-Welcome to the Diamond Foundry repository! This public project is focused on creating a powerful system for managing
-universal and reusable smart contracts by leveraging the
-[EIP2535 Diamond Proxy Standard](https://eips.ethereum.org/EIPS/eip-2535).
+Welcome to the Diamond Foundry project! This repository introduces a robust system that simplifies smart contract
+management using the EIP2535 Diamond Proxy Standard, a specification for an upgradable smart contract on Ethereum
+blockchain.
 
-This repository proposes an implementation of
-[Diamond Factory and Facet Registry](https://medium.com/@alexeluca.spataru/achieving-universal-and-reusable-smart-contracts-via-erc2535-diamond-proxy-standard-ba4c9f5ac5bc),
-designed to automate the creation of new Diamond proxies given an on-chain library of Facets containing implementation
-behavior, in order to provide code modularity, flexible upgradeability, and increased re-usability.
+The primary goal is to build a versatile and reusable library of smart contract facets and an automated Diamond Factory.
+This system offers a solution to common challenges associated with smart contract development and deployment, such as
+complexity and the requirement for skilled engineers and auditors.
 
-Please note that this software is a work in progress and is provided "as is" without warranty of any kind, use at your
-own risk, not yet stable for production environments.
-
-## Background
-
-Forgenie Protocol aims to address the challenges associated with smart contract development and deployment, such as
-complexity and the need for skilled engineers and auditors. By using the
-[Diamond Management System](https://medium.com/@alexeluca.spataru/transforming-web3-through-a-diamond-management-system-d2efa560ea7f),
-the project proposes a more accessible method for building and managing smart contracts across the web3 landscape, by
-providing decentralized tools to incrementally grow your smart contract application without sacrificing immutability.
+Please note that the project is still a work in progress. While we strive for accuracy, the software is provided "as
+is", and users are urged to use it with discretion as it's not yet stable for production environments.
 
 ## Features
 
 1. Facet Registry and Diamond Factory.
-1. Granular immutability for Diamonds.
-1. Linting, Build, Test & Slither in CI.
-1. Facets contain built-in initializers.
-1. TBA Automatic ERC165 handling.
-1. TBA Customizable fallback.
-1. TBA Wide range of available and re-usable Facets.
-1. TBA Compose a Facet which is a Diamond of other Facets.
+1. Linting, Build, Test & Slither in CI. Deployment of artifacts to be added.
+1. Multi address delegate call and Facets containing built-in initializers.
+<!-- 1. `DiamondCutFacet` and `DiamondLoupeFacet` -->
+1. `Ownable2StepFacet` with pending owner functionality.
+1. `NFTOwnershipFacet`, where ownership is attributed to a NFT.
+1. `AccessControlFacet`, optimized access control with 256 roles.
 
 ## Installation
 
@@ -116,23 +106,20 @@ behind.
 
 1. Adding facets
 
-- Use `DiamondStorage` pattern for storing variables
-- Interact with storage in the Behavior `library`
-- Compose external calls in the final implementation of Facet `contract`
-- If possible, don't use inherited `interface`
-- Follow naming structure and rules of a Facet
+- Use diamond storage `Layout` pattern for storing variables in file named `<FacetName>Storage`.
+- Define internal behavior, interact with storage in the `<FacetName>Base` abstract contract.
+- Compose initializer and protect external calls in `<FacetName>Facet` contract.
+- `I<FacetName>` for interface of external functions, and `I<FacetName>Base` for errors, structs, enums, and events.
 
-2. Testing & naming
+2. Testing
 
-- Deploy test contracts in the `setUp` of an `abstract contract`
+- Build helper contract named `<FacetName>Helper` for getting facet's selectors, initalizer and supported interfaces.
+- Attach facet interface to a diamond's address in the `setUp` of an `abstract <FacetName>FacetTest` contract. Override
+  `diamondInitParams()` to initialize diamond with tested facet or others if needed.
+- Reuse `I<Facet>Base` interface for accessing internal structs, errors, events or enums.
 - Test facets by attaching their `interface` to a diamond address.
 - There is one `Test` contract per each function within a Facet. It's naming should follow the `<Contract>_<method>`
   rule, so that we can isolate it with `--match-contract <REGEX>`.
-- Facet Naming guidelines:
-  - Optional: `<Name>Storage` for independent facet storage. Facets can be stateless and use other storage.
-  - `<Name>Behavior` for behavior library.
-  - `I<Name>` for interface, or should comply with eip number.
-  - `<Name>Facet` final deployable implementation. Use the `Behavior` library here for defining functionality.
 
 ## License
 
