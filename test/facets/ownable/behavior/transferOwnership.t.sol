@@ -2,13 +2,13 @@
 pragma solidity >=0.8.19;
 
 import { OwnableFacetTest } from "../ownable.t.sol";
-import { DelegateContext_CallerIsNotOwner } from "src/utils/DelegateContext.sol";
+import { Facet } from "src/facets/Facet.sol";
 
 contract Ownable_transferOwnership is OwnableFacetTest {
     function test_RevertsWhen_CallerIsNotOwner() public {
         changePrank(users.stranger);
 
-        vm.expectRevert(DelegateContext_CallerIsNotOwner.selector);
+        vm.expectRevert(Facet.CallerIsNotOwner.selector);
 
         ownable.transferOwnership(users.stranger);
     }

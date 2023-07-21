@@ -6,11 +6,12 @@ import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondCutBase, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
+import { DiamondLoupeFacetHelper } from "test/facets/loupe/loupe.t.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract DiamondCutFacetTest is IDiamondCutBase, FacetTest {
     /// @dev helper to avoid boilerplate
-    IDiamond.FacetCut[] public facetCuts;
+    FacetCut[] public facetCuts;
 
     MockFacetHelper public mockFacetHelper;
     IDiamondCut public diamondCut;
@@ -22,14 +23,20 @@ abstract contract DiamondCutFacetTest is IDiamondCutBase, FacetTest {
         mockFacetHelper = new MockFacetHelper();
     }
 
-    function diamondInitParams() internal override returns (Diamond.InitParams memory) {
+    function diamondInitParams() public override returns (Diamond.InitParams memory) {
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
+        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
+        DiamondLoupeFacetHelper diamondLoupeHelper = new DiamondLoupeFacetHelper();
 
-        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
-        baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        FacetCut[] memory baseFacets = new FacetCut[](3);
+        baseFacets[0] = ownableHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[1] = diamondCutHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[2] = diamondLoupeHelper.makeFacetCut(FacetCutAction.Add);
 
-        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](1);
+        MultiInit[] memory diamondInitData = new MultiInit[](3);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
+        diamondInitData[1] = diamondCutHelper.makeInitData("");
+        diamondInitData[2] = diamondLoupeHelper.makeInitData("");
 
         return Diamond.InitParams({
             baseFacets: baseFacets,

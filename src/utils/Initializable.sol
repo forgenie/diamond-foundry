@@ -2,13 +2,12 @@
 pragma solidity >=0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { SelfReferenced } from "./SelfReferenced.sol";
-
-error Initializable_AlreadyInitialized(uint8 version);
-error Initializable_NotInInitializingState();
-error Initializable_InInitializingState();
 
 abstract contract Initializable {
+    error AlreadyInitialized(uint8 version);
+    error NotInInitializingState();
+    error InInitializingState();
+
     bytes32 internal constant _INITIALIZABLE_SLOT = keccak256("utils.initializable");
 
     struct Storage {
@@ -23,7 +22,7 @@ abstract contract Initializable {
 
         bool isTopLevelCall = !s.initializing;
         if ((!isTopLevelCall || s.initialized >= 1) && (Address.isContract(address(this)) || s.initialized != 1)) {
-            revert Initializable_AlreadyInitialized(s.initialized);
+            revert AlreadyInitialized(s.initialized);
         }
         s.initialized = 1;
         if (isTopLevelCall) {
@@ -40,7 +39,7 @@ abstract contract Initializable {
         Storage storage s = layout();
 
         if (s.initializing || s.initialized >= version) {
-            revert Initializable_AlreadyInitialized(s.initialized);
+            revert AlreadyInitialized(s.initialized);
         }
         s.initialized = version;
         s.initializing = true;
@@ -50,13 +49,13 @@ abstract contract Initializable {
     }
 
     modifier onlyInitializing() {
-        if (!layout().initializing) revert Initializable_NotInInitializingState();
+        if (!layout().initializing) revert NotInInitializingState();
         _;
     }
 
     function _disableInitializers() internal {
         Storage storage s = layout();
-        if (s.initializing) revert Initializable_InInitializingState();
+        if (s.initializing) revert InInitializingState();
 
         if (s.initialized < type(uint8).max) {
             s.initialized = type(uint8).max;

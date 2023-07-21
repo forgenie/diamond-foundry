@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-error ReentrancyGuard_ReentrantCall();
-
 abstract contract ReentrancyGuard {
+    error ReentrantCall();
+
     bytes32 private constant _REENTRANCY_GUARD_SLOT = keccak256("utils.reentrancy.guard");
     uint256 private constant _NOT_ENTERED = 0;
     uint256 private constant _ENTERED = 1;
@@ -13,7 +13,7 @@ abstract contract ReentrancyGuard {
     }
 
     modifier nonReentrant() {
-        if (layout().status == _ENTERED) revert ReentrancyGuard_ReentrantCall();
+        if (layout().status == _ENTERED) revert ReentrantCall();
 
         layout().status = _ENTERED;
         _;

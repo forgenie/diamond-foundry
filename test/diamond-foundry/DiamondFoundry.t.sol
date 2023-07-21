@@ -14,7 +14,6 @@ abstract contract DiamondFoundryTest is BaseTest {
     function setUp() public virtual override {
         super.setUp();
 
-        Diamond diamondBase = new Diamond();
-        diamondFoundry = new DiamondFoundry( address(diamondBase));
+        diamondFoundry = new DiamondFoundry( );
     }
 }

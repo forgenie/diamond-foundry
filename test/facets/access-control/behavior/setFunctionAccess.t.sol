@@ -2,12 +2,12 @@
 pragma solidity >=0.8.19;
 
 import { AccessControlFacetTest } from "../access-control.t.sol";
-import { DelegateContext_CallerIsNotAuthorized } from "src/utils/DelegateContext.sol";
+import { Facet } from "src/facets/Facet.sol";
 
 contract AccessControl_setFunctionAccess is AccessControlFacetTest {
     function testFuzz_RevertsWhen_CallerIsUnauthorized(uint8 role, bytes4 selector) public {
         changePrank(users.stranger);
-        vm.expectRevert(DelegateContext_CallerIsNotAuthorized.selector);
+        vm.expectRevert(Facet.CallerIsNotAuthorized.selector);
         acl.setFunctionAccess(selector, role, true);
     }
 
