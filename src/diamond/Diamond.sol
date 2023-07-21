@@ -19,11 +19,6 @@ contract Diamond is IDiamond, Proxy, DiamondCutBase, DiamondLoupeBase, Initializ
         _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
     }
 
-    // todo: remove
-    function initialize(InitParams calldata initDiamondCut) external initializer {
-        _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
-    }
-
     function _implementation() internal view override returns (address facet) {
         facet = _facetAddress(msg.sig);
         if (facet == address(0)) revert Diamond_UnsupportedFunction();

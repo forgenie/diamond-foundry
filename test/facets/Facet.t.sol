@@ -3,11 +3,10 @@ pragma solidity >=0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "../Base.t.sol";
-import { DiamondFactory } from "src/factory/DiamondFactory.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
 
-abstract contract FacetTest is BaseTest, DiamondFactory {
+abstract contract FacetTest is BaseTest {
     address public constant MULTI_INIT_ADDRESS = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
 
     /// @dev Attach facet interface to diamond for testing
@@ -42,13 +41,4 @@ abstract contract FacetHelper {
     function makeInitData(bytes memory) public view virtual returns (IDiamond.MultiInit memory) {
         return IDiamond.MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer()) });
     }
-
-    /// @dev Helper multiDelegateCall
-    // function multiDelegateCall(IDiamond.MultiInit[] memory diamondInitData) external {
-    //     for (uint256 i = 0; i < diamondInitData.length; i++) {
-    //         IDiamond.MultiInit memory diamondInit = diamondInitData[i];
-
-    //         Address.functionDelegateCall(diamondInit.init, diamondInit.initData);
-    //     }
-    // }
 }

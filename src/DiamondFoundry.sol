@@ -4,10 +4,9 @@ pragma solidity >=0.8.19;
 import { ERC721A } from "@erc721a/ERC721A.sol";
 import { Diamond } from "src/diamond/Diamond.sol";
 import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
-import { DiamondFactoryBase } from "src/factory/DiamondFactory.sol";
 import { FacetRegistryBase } from "src/registry/FacetRegistry.sol";
 
-contract DiamondFoundry is IDiamondFoundry, DiamondFactoryBase, FacetRegistryBase, ERC721A {
+contract DiamondFoundry is IDiamondFoundry, FacetRegistryBase, ERC721A {
     mapping(uint256 tokenId => address proxy) private _diamonds;
     mapping(address proxy => uint256 tokenId) private _tokenIds;
 
