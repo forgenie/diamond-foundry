@@ -17,7 +17,7 @@ abstract contract Ownable2StepFacetTest_ReplaceOwnable is FacetTest {
         ownable2Step = Ownable2StepFacet(diamond);
     }
 
-    function diamondInitParams() internal override returns (Diamond.InitParams memory) {
+    function diamondInitParams() public override returns (Diamond.InitParams memory) {
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
         OwnableReplaceHelper ownable2StepHelper = new OwnableReplaceHelper();
 
@@ -25,11 +25,11 @@ abstract contract Ownable2StepFacetTest_ReplaceOwnable is FacetTest {
         // ownable() function does not need to be replaced
         replaceSelectors[0] = Ownable2StepFacet.transferOwnership.selector;
 
-        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](3);
-        baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Replace);
-        baseFacets[1] = ownable2StepHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        FacetCut[] memory baseFacets = new FacetCut[](3);
+        baseFacets[0] = ownableHelper.makeFacetCut(FacetCutAction.Replace);
+        baseFacets[1] = ownable2StepHelper.makeFacetCut(FacetCutAction.Add);
 
-        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](2);
+        MultiInit[] memory diamondInitData = new MultiInit[](2);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
         diamondInitData[1] = ownable2StepHelper.makeInitData("");
 

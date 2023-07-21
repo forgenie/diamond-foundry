@@ -20,14 +20,14 @@ abstract contract Ownable2StepFacetTest is IOwnableBase, IOwnable2StepBase, Face
         ownable2Step = Ownable2StepFacet(diamond);
     }
 
-    function diamondInitParams() internal override returns (Diamond.InitParams memory) {
+    function diamondInitParams() public override returns (Diamond.InitParams memory) {
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
         Ownable2StepFacetHelper ownable2StepHelper = new Ownable2StepFacetHelper();
 
-        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
-        baseFacets[0] = ownable2StepHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        FacetCut[] memory baseFacets = new FacetCut[](1);
+        baseFacets[0] = ownable2StepHelper.makeFacetCut(FacetCutAction.Add);
 
-        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](2);
+        MultiInit[] memory diamondInitData = new MultiInit[](2);
         diamondInitData[0] = ownable2StepHelper.makeInitData("");
         diamondInitData[1] = ownableHelper.makeInitData(abi.encode(users.owner));
 

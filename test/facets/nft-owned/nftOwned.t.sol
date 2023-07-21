@@ -19,13 +19,13 @@ abstract contract NFTOwnedTest is FacetTest {
         nftOwned = INFTOwned(diamond);
     }
 
-    function diamondInitParams() internal override returns (Diamond.InitParams memory) {
+    function diamondInitParams() public override returns (Diamond.InitParams memory) {
         NFTOwnedFacetHelper nftOwnedHelper = new NFTOwnedFacetHelper();
 
-        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
-        baseFacets[0] = nftOwnedHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        FacetCut[] memory baseFacets = new FacetCut[](1);
+        baseFacets[0] = nftOwnedHelper.makeFacetCut(FacetCutAction.Add);
 
-        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](1);
+        MultiInit[] memory diamondInitData = new MultiInit[](1);
         diamondInitData[0] = nftOwnedHelper.makeInitData(abi.encode(address(tokenContract), tokenId));
 
         return Diamond.InitParams({
@@ -62,11 +62,8 @@ contract NFTOwnedFacetHelper is FacetHelper {
         return NFTOwnedFacet.NFTOwned_init.selector;
     }
 
-    function makeInitData(bytes memory args) public view override returns (IDiamond.MultiInit memory) {
+    function makeInitData(bytes memory args) public view override returns (MultiInit memory) {
         (address tokenContract, uint256 tokenId) = abi.decode(args, (address, uint256));
-        return IDiamond.MultiInit({
-            init: facet(),
-            initData: abi.encodeWithSelector(initializer(), tokenContract, tokenId)
-        });
+        return MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer(), tokenContract, tokenId) });
     }
 }

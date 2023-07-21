@@ -15,11 +15,11 @@ abstract contract AccessControlFacetTest is IAccessControlBase, FacetTest {
         acl = IAccessControl(diamond);
     }
 
-    function diamondInitParams() internal override returns (Diamond.InitParams memory) {
+    function diamondInitParams() public override returns (Diamond.InitParams memory) {
         AccessControlFacetHelper aclHelper = new AccessControlFacetHelper();
 
-        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
-        baseFacets[0] = aclHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        FacetCut[] memory baseFacets = new FacetCut[](1);
+        baseFacets[0] = aclHelper.makeFacetCut(FacetCutAction.Add);
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
