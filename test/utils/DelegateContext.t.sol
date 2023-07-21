@@ -4,7 +4,7 @@ pragma solidity >=0.8.19;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "test/Base.t.sol";
 import { MockDelegate } from "test/mocks/MockDelegate.sol";
-import { DelegateContext_DelegateNotAllowed, DelegateContext_OnlyDelegate } from "src/utils/DelegateContext.sol";
+import { DelegateContext } from "src/utils/DelegateContext.sol";
 
 contract DelegateContextTest is BaseTest {
     MockDelegate public mockDelegate;
@@ -18,7 +18,7 @@ contract DelegateContextTest is BaseTest {
     function test_RevertsWhen_DelegateNotAllowed() public {
         bytes memory call = abi.encodeWithSelector(MockDelegate.incrementNoDelegate.selector);
 
-        vm.expectRevert(DelegateContext_DelegateNotAllowed.selector);
+        vm.expectRevert(DelegateContext.DelegateNotAllowed.selector);
         Address.functionDelegateCall(address(mockDelegate), call);
     }
 
@@ -29,7 +29,7 @@ contract DelegateContextTest is BaseTest {
     }
 
     function test_RevertsWhen_OnlyDelegateAllowed() public {
-        vm.expectRevert(DelegateContext_OnlyDelegate.selector);
+        vm.expectRevert(DelegateContext.OnlyDelegate.selector);
 
         mockDelegate.incrementOnlyDelegate();
     }
