@@ -16,9 +16,7 @@ abstract contract FacetTest is BaseTest, DiamondFactory {
     function setUp() public virtual override {
         super.setUp();
 
-        address implementation = address(new Diamond());
-
-        diamond = _deployDiamondClone(implementation, diamondInitParams());
+        diamond = address(new Diamond(diamondInitParams()));
     }
 
     /// @dev Add facet as init param for diamond

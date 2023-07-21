@@ -15,10 +15,11 @@ contract Diamond is IDiamond, Proxy, DiamondCutBase, DiamondLoupeBase, Initializ
         bytes initData;
     }
 
-    constructor() {
-        _disableInitializers();
+    constructor(InitParams memory initDiamondCut) initializer {
+        _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
     }
 
+    // todo: remove
     function initialize(InitParams calldata initDiamondCut) external initializer {
         _diamondCut(initDiamondCut.baseFacets, initDiamondCut.init, initDiamondCut.initData);
     }

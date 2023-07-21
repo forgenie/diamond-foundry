@@ -9,9 +9,8 @@ import { NFTOwnedFacet } from "src/facets/nft-owned/NFTOwnedFacet.sol";
 
 contract Deploy is BaseScript {
     function run() public broadcaster {
-        Diamond diamond = new Diamond();
         NFTOwnedFacet nftOwned = new NFTOwnedFacet();
-        DiamondFoundry foundry = new DiamondFoundry(address(diamond));
+        DiamondFoundry foundry = new DiamondFoundry();
         IDiamond.FacetCut[] memory facetCuts = new IDiamond.FacetCut[](1);
         facetCuts[0] = makeNFTOwnedFacetCut(address(nftOwned));
         foundry.mintDiamond(
