@@ -16,8 +16,8 @@ is", and users are urged to use it with discretion as it's not yet stable for pr
 1. Facet Registry and Diamond Factory.
 1. Linting, Build, Test & Slither in CI. Deployment of artifacts to be added.
 1. Multi address delegate call and Facets containing built-in initializers.
-<!-- 1. `DiamondCutFacet` and `DiamondLoupeFacet` -->
-1. `Ownable2StepFacet` with pending owner functionality.
+1. `DiamondCutFacet` and `DiamondLoupeFacet` implementation.
+1. Simple `OwnableFacet` and `Ownable2StepFacet` with pending owner functionality.
 1. `NFTOwnershipFacet`, where ownership is attributed to a NFT.
 1. `AccessControlFacet`, optimized access control with 256 roles.
 
