@@ -180,7 +180,8 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
 
     function test_OnReplace_RevertsWhen_FunctionIsImmutable() public {
         bytes4[] memory selectors = new bytes4[](1);
-        selectors[0] = diamondCut.diamondCut.selector;
+        selectors[0] = 0x12345678;
+        facetCuts.push(IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Add, facet: diamond, selectors: selectors }));
         facetCuts.push(
             IDiamond.FacetCut({ action: IDiamond.FacetCutAction.Replace, facet: diamond, selectors: selectors })
         );

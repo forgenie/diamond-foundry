@@ -6,6 +6,7 @@ import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondCutBase, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
+import { DiamondLoupeFacetHelper } from "test/facets/loupe/loupe.t.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract DiamondCutFacetTest is IDiamondCutBase, FacetTest {
@@ -24,12 +25,18 @@ abstract contract DiamondCutFacetTest is IDiamondCutBase, FacetTest {
 
     function diamondInitParams() internal override returns (Diamond.InitParams memory) {
         OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
+        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
+        DiamondLoupeFacetHelper diamondLoupeHelper = new DiamondLoupeFacetHelper();
 
-        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](1);
+        IDiamond.FacetCut[] memory baseFacets = new IDiamond.FacetCut[](3);
         baseFacets[0] = ownableHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        baseFacets[1] = diamondCutHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
+        baseFacets[2] = diamondLoupeHelper.makeFacetCut(IDiamond.FacetCutAction.Add);
 
-        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](1);
+        IDiamond.MultiInit[] memory diamondInitData = new IDiamond.MultiInit[](3);
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
+        diamondInitData[1] = diamondCutHelper.makeInitData("");
+        diamondInitData[2] = diamondLoupeHelper.makeInitData("");
 
         return Diamond.InitParams({
             baseFacets: baseFacets,
