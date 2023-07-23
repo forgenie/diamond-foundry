@@ -11,7 +11,7 @@ abstract contract Initializable {
     bytes32 internal constant _INITIALIZABLE_SLOT = keccak256("utils.initializable");
 
     struct Storage {
-        uint8 initialized;
+        uint8 initialized; // todo: replace with version
         bool initializing;
     }
 
