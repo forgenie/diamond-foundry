@@ -63,4 +63,12 @@ contract OwnableFacetHelper is FacetHelper {
         return
             MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer(), abi.decode(args, (address))) });
     }
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(OwnableFacet).creationCode;
+    }
+
+    function envName() public pure override returns (string memory) {
+        return "OWNABLE_FACET";
+    }
 }

@@ -66,4 +66,12 @@ contract NFTOwnedFacetHelper is FacetHelper {
         (address tokenContract, uint256 tokenId) = abi.decode(args, (address, uint256));
         return MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer(), tokenContract, tokenId) });
     }
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(NFTOwnedFacet).creationCode;
+    }
+
+    function envName() public pure override returns (string memory) {
+        return "NFT_OWNED_FACET";
+    }
 }

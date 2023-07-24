@@ -37,4 +37,12 @@ contract MockFacetHelper is FacetHelper {
         interfaces = new bytes4[](1);
         interfaces[0] = type(IMockFacet).interfaceId;
     }
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(MockFacet).creationCode;
+    }
+
+    function envName() public pure override returns (string memory) {
+        return "MOCK_FACET";
+    }
 }

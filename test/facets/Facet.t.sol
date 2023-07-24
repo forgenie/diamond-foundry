@@ -41,4 +41,9 @@ abstract contract FacetHelper is IDiamond {
     function makeInitData(bytes memory) public view virtual returns (MultiInit memory) {
         return MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer()) });
     }
+
+    function creationCode() public pure virtual returns (bytes memory);
+
+    /// @dev Used to generate env file with addresses for deploy script.
+    function envName() public pure virtual returns (string memory);
 }

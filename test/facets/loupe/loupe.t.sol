@@ -74,4 +74,12 @@ contract DiamondLoupeFacetHelper is FacetHelper {
         interfaces_[0] = type(IDiamondLoupe).interfaceId;
         interfaces_[1] = type(IERC165).interfaceId;
     }
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(DiamondLoupeFacet).creationCode;
+    }
+
+    function envName() public pure override returns (string memory) {
+        return "DIAMOND_LOUPE_FACET";
+    }
 }
