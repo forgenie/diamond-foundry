@@ -11,22 +11,20 @@ contract FacetRegistry_removeFacet is FacetRegistryTest {
     }
 
     function test_RemovesFacet() public {
-        bytes4[] memory selectors = new bytes4[](1);
-        selectors[0] = mockFacet.mockFunction.selector;
-        address facet = address(mockFacet);
+        bytes4[] memory selectors = mockFacetHelper.selectors();
 
-        facetRegistry.addFacet(facet, selectors);
+        facetRegistry.addFacet(mockFacet, selectors);
 
         vm.expectEmit(address(facetRegistry));
-        emit FacetUnregistered(facet);
+        emit FacetUnregistered(mockFacet);
 
-        facetRegistry.removeFacet(facet);
+        facetRegistry.removeFacet(mockFacet);
 
         address[] memory facetAddresses = facetRegistry.facetAddresses();
         for (uint256 i = 0; i < facetAddresses.length; i++) {
-            assertNotEq(facetAddresses[i], facet);
+            assertNotEq(facetAddresses[i], mockFacet);
         }
-        bytes4[] memory facetSelectors = facetRegistry.facetSelectors(facet);
+        bytes4[] memory facetSelectors = facetRegistry.facetSelectors(mockFacet);
         assertEq(facetSelectors.length, 0);
     }
 }

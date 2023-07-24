@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
+import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { IFacetRegistryBase } from "./IFacetRegistryBase.sol";
@@ -35,6 +36,22 @@ abstract contract FacetRegistryBase is IFacetRegistryBase {
         }
 
         emit FacetUnregistered(facet);
+    }
+
+    function _deployFacet(
+        bytes32 salt,
+        bytes memory creationCode,
+        bytes4[] memory selectors
+    )
+        internal
+        returns (address facet)
+    {
+        facet = Create2.deploy(0, salt, creationCode);
+        _addFacet(facet, selectors);
+    }
+
+    function _computeFacetAddress(bytes32 salt, bytes memory creationCode) internal view returns (address facet) {
+        facet = Create2.computeAddress(salt, keccak256(creationCode));
     }
 
     function _facetSelectors(address facet) internal view returns (bytes4[] memory selectors) {

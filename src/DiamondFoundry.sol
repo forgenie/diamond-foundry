@@ -4,9 +4,9 @@ pragma solidity >=0.8.19;
 import { ERC721A } from "@erc721a/ERC721A.sol";
 import { Diamond } from "src/diamond/Diamond.sol";
 import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
-import { FacetRegistryBase } from "src/registry/FacetRegistry.sol";
+import { FacetRegistry } from "src/registry/FacetRegistry.sol";
 
-contract DiamondFoundry is IDiamondFoundry, FacetRegistryBase, ERC721A {
+contract DiamondFoundry is IDiamondFoundry, FacetRegistry, ERC721A {
     mapping(uint256 tokenId => address proxy) private _diamonds;
     mapping(address proxy => uint256 tokenId) private _tokenIds;
 
@@ -31,16 +31,6 @@ contract DiamondFoundry is IDiamondFoundry, FacetRegistryBase, ERC721A {
         _safeMint(msg.sender, 1, "");
     }
 
-    /// @inheritdoc IFacetRegistry
-    function addFacet(address facet, bytes4[] calldata selectors) external override {
-        _addFacet(facet, selectors);
-    }
-
-    /// @inheritdoc IFacetRegistry
-    function removeFacet(address facet) external override {
-        _removeFacet(facet);
-    }
-
     /// @inheritdoc IDiamondFoundry
     function diamondAddress(uint256 tokenId) external view returns (address) {
         return _diamonds[tokenId];
@@ -49,15 +39,5 @@ contract DiamondFoundry is IDiamondFoundry, FacetRegistryBase, ERC721A {
     /// @inheritdoc IDiamondFoundry
     function diamondId(address diamond) external view returns (uint256) {
         return _tokenIds[diamond];
-    }
-
-    /// @inheritdoc IFacetRegistry
-    function facetSelectors(address facet) external view override returns (bytes4[] memory) {
-        return _facetSelectors(facet);
-    }
-
-    /// @inheritdoc IFacetRegistry
-    function facetAddresses() external view override returns (address[] memory) {
-        return _facetAddresses();
     }
 }

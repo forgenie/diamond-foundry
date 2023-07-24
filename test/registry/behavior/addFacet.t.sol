@@ -13,7 +13,7 @@ contract FacetRegistry_addFacet is FacetRegistryTest {
     function test_RevertsWhen_SelectorArrayEmpty() public {
         vm.expectRevert(FacetRegistry_FacetMustHaveSelectors.selector);
 
-        facetRegistry.addFacet(address(mockFacet), new bytes4[](0));
+        facetRegistry.addFacet(mockFacet, new bytes4[](0));
     }
 
     function test_RevertsWhen_FacetIsNotContract() public {
@@ -23,25 +23,23 @@ contract FacetRegistry_addFacet is FacetRegistryTest {
     }
 
     function test_RevertsWhen_FacetAlreadyRegistered() public {
-        facetRegistry.addFacet(address(mockFacet), new bytes4[](1));
+        facetRegistry.addFacet(mockFacet, new bytes4[](1));
 
         vm.expectRevert(FacetRegistry_FacetAlreadyRegistered.selector);
 
-        facetRegistry.addFacet(address(mockFacet), new bytes4[](1));
+        facetRegistry.addFacet(mockFacet, new bytes4[](1));
     }
 
     function test_RegistersFacet() public {
-        bytes4[] memory selectors = new bytes4[](1);
-        selectors[0] = mockFacet.mockFunction.selector;
-        address facet = address(mockFacet);
+        bytes4[] memory selectors = mockFacetHelper.selectors();
 
         vm.expectEmit(address(facetRegistry));
-        emit FacetRegistered(facet, selectors);
+        emit FacetRegistered(mockFacet, selectors);
 
-        facetRegistry.addFacet(facet, selectors);
+        facetRegistry.addFacet(mockFacet, selectors);
 
-        assertContains(facetRegistry.facetAddresses(), facet);
-        bytes4[] memory facetSelectors = facetRegistry.facetSelectors(facet);
+        assertContains(facetRegistry.facetAddresses(), mockFacet);
+        bytes4[] memory facetSelectors = facetRegistry.facetSelectors(mockFacet);
         for (uint256 i = 0; i < selectors.length; i++) {
             assertEq(facetSelectors[i], selectors[i]);
         }
