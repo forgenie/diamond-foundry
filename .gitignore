@@ -2,6 +2,7 @@
 cache
 node_modules
 out
+artifacts
 
 # files
 *.env

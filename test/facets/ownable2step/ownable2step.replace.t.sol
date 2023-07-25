@@ -41,6 +41,7 @@ abstract contract Ownable2StepFacetTest_ReplaceOwnable is FacetTest {
     }
 }
 
+// todo: inherit from Ownable2StepHelper
 contract OwnableReplaceHelper is FacetHelper {
     Ownable2StepFacet public ownable2Step;
 
@@ -68,4 +69,8 @@ contract OwnableReplaceHelper is FacetHelper {
     }
 
     // todo: make replace facet cut
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(Ownable2StepFacet).creationCode;
+    }
 }

@@ -70,4 +70,8 @@ contract DiamondCutFacetHelper is FacetHelper {
         interfaces = new bytes4[](1);
         interfaces[0] = type(IDiamondCut).interfaceId;
     }
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(DiamondCutFacet).creationCode;
+    }
 }

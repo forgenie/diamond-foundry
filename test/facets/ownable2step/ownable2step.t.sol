@@ -67,4 +67,8 @@ contract Ownable2StepFacetHelper is FacetHelper {
         interfaces[0] = type(IERC173).interfaceId;
         interfaces[1] = type(IOwnable2Step).interfaceId;
     }
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(Ownable2StepFacet).creationCode;
+    }
 }
