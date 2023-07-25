@@ -6,16 +6,28 @@ import { IERC20Base } from "src/facets/erc20/IERC20Base.sol";
 import { ERC20Facet, IERC20, IERC20Metadata } from "src/facets/erc20/ERC20Facet.sol";
 
 abstract contract ERC20FacetTest is IERC20Base, FacetTest {
-    IERC20 public erc20;
+    string public name = "TestToken";
+    string public symbol = "TEST";
+    uint8 public decimals = 18;
+    ERC20Facet public erc20;
 
     function setUp() public virtual override {
         super.setUp();
 
-        erc20 = IERC20(diamond);
+        erc20 = ERC20Facet(diamond);
     }
 
     function diamondInitParams() public override returns (Diamond.InitParams memory) {
-        // todo:
+        ERC20FacetHelper erc20Helper = new ERC20FacetHelper();
+
+        FacetCut[] memory baseFacets = new FacetCut[](1);
+        baseFacets[0] = erc20Helper.makeFacetCut(FacetCutAction.Add);
+
+        return Diamond.InitParams({
+            baseFacets: baseFacets,
+            init: erc20Helper.facet(),
+            initData: abi.encodeWithSelector(erc20Helper.initializer(), name, symbol, decimals)
+        });
     }
 }
 
