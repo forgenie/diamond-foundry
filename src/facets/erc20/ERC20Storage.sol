@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity >=0.8.19;
 
 library ERC20Storage {
     bytes32 private constant _ERC20_STORAGE_SLOT = keccak256("erc20.storage");
