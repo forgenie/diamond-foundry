@@ -41,8 +41,4 @@ contract MockFacetHelper is FacetHelper {
     function creationCode() public pure override returns (bytes memory) {
         return type(MockFacet).creationCode;
     }
-
-    function envName() public pure override returns (string memory) {
-        return "MOCK_FACET";
-    }
 }

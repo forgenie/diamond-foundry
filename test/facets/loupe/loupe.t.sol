@@ -78,8 +78,4 @@ contract DiamondLoupeFacetHelper is FacetHelper {
     function creationCode() public pure override returns (bytes memory) {
         return type(DiamondLoupeFacet).creationCode;
     }
-
-    function envName() public pure override returns (string memory) {
-        return "DIAMOND_LOUPE_FACET";
-    }
 }

@@ -70,8 +70,4 @@ contract NFTOwnedFacetHelper is FacetHelper {
     function creationCode() public pure override returns (bytes memory) {
         return type(NFTOwnedFacet).creationCode;
     }
-
-    function envName() public pure override returns (string memory) {
-        return "NFT_OWNED_FACET";
-    }
 }

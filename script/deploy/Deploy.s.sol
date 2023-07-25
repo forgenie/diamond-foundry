@@ -9,12 +9,10 @@ import { DiamondFoundry } from "src/DiamondFoundry.sol";
 contract Deploy is BaseScript {
     function run() public broadcaster {
         DiamondFoundry foundry = new DiamondFoundry();
+
         for (uint256 i = 0; i < facetHelpers.length; i++) {
             FacetHelper helper = facetHelpers[i];
-
-            // creation code
-
-            foundry.addFacet(helper.facet(), helper.selectors());
+            foundry.deployFacet(salt, helper.creationCode(), helper.selectors());
         }
     }
 }

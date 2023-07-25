@@ -64,8 +64,4 @@ contract AccessControlFacetHelper is FacetHelper {
     function creationCode() public pure override returns (bytes memory) {
         return type(AccessControlFacet).creationCode;
     }
-
-    function envName() public pure override returns (string memory) {
-        return "ACCESS_CONTROL_FACET";
-    }
 }

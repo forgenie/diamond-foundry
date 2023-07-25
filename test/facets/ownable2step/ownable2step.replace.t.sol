@@ -73,8 +73,4 @@ contract OwnableReplaceHelper is FacetHelper {
     function creationCode() public pure override returns (bytes memory) {
         return type(Ownable2StepFacet).creationCode;
     }
-
-    function envName() public pure override returns (string memory) {
-        return "OWNABLE2STEP_FACET";
-    }
 }

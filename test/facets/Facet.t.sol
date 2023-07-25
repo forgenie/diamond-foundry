@@ -43,7 +43,4 @@ abstract contract FacetHelper is IDiamond {
     }
 
     function creationCode() public pure virtual returns (bytes memory);
-
-    /// @dev Used to generate env file with addresses for deploy script.
-    function envName() public pure virtual returns (string memory);
 }
