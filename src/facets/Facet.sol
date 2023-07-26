@@ -16,6 +16,8 @@ abstract contract Facet is Initializable, DelegateContext, DiamondLoupeBase {
         _disableInitializers();
     }
 
+    // todo: rename to onlyDiamondProtected for explicitness
+    /// @dev Reverts if the caller is not the owner or does not have role access to the function.
     modifier protected() {
         if (IERC165(address(this)).supportsInterface(type(IAccessControl).interfaceId)) {
             if (!IAccessControl(address(this)).canCall(msg.sender, msg.sig)) {
