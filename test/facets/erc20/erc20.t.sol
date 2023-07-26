@@ -63,4 +63,9 @@ contract ERC20FacetHelper is FacetHelper {
     function initializer() public pure override returns (bytes4) {
         return ERC20Facet.ERC20_init.selector;
     }
+
+    function makeInitData(bytes memory args) public view override returns (MultiInit memory) {
+        (string memory name, string memory symbol, uint8 decimals) = abi.decode(args, (string, string, uint8));
+        return MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer(), name, symbol, decimals) });
+    }
 }

@@ -16,7 +16,7 @@ contract ERC20MintableFacet is IERC20Mintable, ERC20Base, AccessControlBase, Fac
     }
 
     /// @inheritdoc IERC20Mintable
-    function mint(address to, uint256 amount) external onlyAuthorized {
+    function mint(address to, uint256 amount) external protected {
         _mint(to, amount);
     }
 }
