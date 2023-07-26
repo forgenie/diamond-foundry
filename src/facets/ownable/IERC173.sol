@@ -5,6 +5,9 @@ interface IOwnableBase {
     /// @notice Thrown when setting the owner to the zero address.
     error Ownable_ZeroAddress();
 
+    /// @notice Thrown when a caller is not the owner.
+    error Ownable_CallerIsNotOwner();
+
     /**
      * @notice Emitted when the ownership of the contract is transferred.
      * @param previousOwner The previous owner of the contract.

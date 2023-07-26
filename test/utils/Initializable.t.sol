@@ -6,7 +6,7 @@ import { MockInitializable } from "test/mocks/MockInitializable.sol";
 import { Initializable } from "src/utils/Initializable.sol";
 
 contract InitializableTest is BaseTest {
-    event Initialized(uint8 version);
+    event Initialized(uint32 version);
 
     MockInitializable public mock;
 
@@ -24,14 +24,14 @@ contract InitializableTest is BaseTest {
         mock.initialize();
     }
 
-    function testFuzz_RevertsWhen_InitializersAreDisabled(uint8 version) public {
+    function testFuzz_RevertsWhen_InitializersAreDisabled(uint32 version) public {
         mock.disableInitializers();
 
-        vm.expectRevert(abi.encodeWithSelector(Initializable.AlreadyInitialized.selector, type(uint8).max));
+        vm.expectRevert(abi.encodeWithSelector(Initializable.AlreadyInitialized.selector, type(uint32).max));
 
         mock.initialize();
 
-        vm.expectRevert(abi.encodeWithSelector(Initializable.AlreadyInitialized.selector, type(uint8).max));
+        vm.expectRevert(abi.encodeWithSelector(Initializable.AlreadyInitialized.selector, type(uint32).max));
 
         mock.reinitialize(version);
     }
@@ -54,9 +54,9 @@ contract InitializableTest is BaseTest {
         mock.disabledInitializer();
     }
 
-    function testFuzz_RevertsWhen_ReinitializingWithSmallerVersion(uint8 currVersion, uint8 newVersion) public {
+    function testFuzz_RevertsWhen_ReinitializingWithSmallerVersion(uint32 currVersion, uint32 newVersion) public {
         vm.assume(currVersion > 1);
-        newVersion = uint8(bound(newVersion, 1, currVersion - 1));
+        newVersion = uint32(bound(newVersion, 1, currVersion - 1));
 
         mock.reinitialize(currVersion);
 
@@ -72,7 +72,7 @@ contract InitializableTest is BaseTest {
         mock.initialize();
     }
 
-    function testFuzz_ReinitializesContract(uint8 version) public {
+    function testFuzz_ReinitializesContract(uint32 version) public {
         vm.assume(version > 1);
 
         mock.initialize();

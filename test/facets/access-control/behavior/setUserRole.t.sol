@@ -2,12 +2,11 @@
 pragma solidity >=0.8.19;
 
 import { AccessControlFacetTest } from "../access-control.t.sol";
-import { Facet } from "src/facets/Facet.sol";
 
 contract AccessControl_setUserRole is AccessControlFacetTest {
     function test_RevertsWhen_CallerIsUnauthorized(uint8 role) public {
         changePrank(users.stranger);
-        vm.expectRevert(Facet.CallerIsNotAuthorized.selector);
+        vm.expectRevert(AccessControl_CallerIsNotAuthorized.selector);
         acl.setUserRole(users.stranger, role, true);
     }
 

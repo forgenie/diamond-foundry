@@ -5,6 +5,9 @@ interface IAccessControlBase {
     /// @notice Thrown when removing admin role access from acl functions.
     error AccessControl_CannotRemoveAdmin();
 
+    /// @notice Thrown when a user is not authorized to call a function.
+    error AccessControl_CallerIsNotAuthorized();
+
     /**
      * @notice Emitted when a user role is updated.
      * @param user The user whose role is updated.
@@ -23,9 +26,6 @@ interface IAccessControlBase {
 }
 
 interface IAccessControl {
-    /// @notice The value of the default admin role.
-    function DEFAULT_ADMIN_ROLE() external view returns (uint8);
-
     /**
      * @notice Sets the function access for a given role.
      * @param functionSig The function signature to set access for.

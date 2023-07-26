@@ -5,6 +5,7 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { DiamondFoundryTest } from "../DiamondFoundry.t.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
+import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
 
 contract DiamondFoundry_mintDiamond is DiamondFoundryTest {
     Diamond.InitParams public diamondInitParams;
@@ -21,7 +22,7 @@ contract DiamondFoundry_mintDiamond is DiamondFoundryTest {
         diamondInitData[0] = ownableHelper.makeInitData(abi.encode(users.owner));
 
         diamondInitParams.baseFacets.push(baseFacets[0]);
-        diamondInitParams.init = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
+        diamondInitParams.init = MULTI_INIT_ADDRESS;
         diamondInitParams.initData = abi.encode(diamondInitData);
     }
 

@@ -27,12 +27,12 @@ abstract contract Facet is Initializable, DelegateContext, DiamondLoupeBase {
         _;
     }
 
-    modifier onlyOwner() {
+    modifier onlyDiamondOwner() {
         if (msg.sender != IERC173(address(this)).owner()) revert CallerIsNotOwner();
         _;
     }
 
-    modifier onlyAuthorized() {
+    modifier onlyDiamondAuthorized() {
         if (!IAccessControl(address(this)).canCall(msg.sender, msg.sig)) revert CallerIsNotAuthorized();
         _;
     }

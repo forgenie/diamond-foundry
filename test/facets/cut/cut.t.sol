@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
-import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
+import { FacetTest, FacetHelper, MULTI_INIT_ADDRESS, Diamond } from "test/facets/Facet.t.sol";
 import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.sol";
 import { IDiamondCutBase, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";

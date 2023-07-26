@@ -3,9 +3,13 @@ pragma solidity 0.8.19;
 
 import { IAccessControl, IAccessControlBase } from "./IAccessControl.sol";
 import { AccessControlStorage } from "./AccessControlStorage.sol";
+import { DEFAULT_ADMIN_ROLE } from "src/Constants.sol";
 
 abstract contract AccessControlBase is IAccessControlBase {
-    uint8 internal constant _DEFAULT_ADMIN_ROLE = 0;
+    modifier onlyAuthorized() {
+        if (!_canCall(msg.sender, msg.sig)) revert AccessControl_CallerIsNotAuthorized();
+        _;
+    }
 
     function _setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) internal {
         if (enabled) {
@@ -13,7 +17,7 @@ abstract contract AccessControlBase is IAccessControlBase {
         } else {
             // Revert if removing admin role from access control functions.
             if (
-                role == _DEFAULT_ADMIN_ROLE
+                role == DEFAULT_ADMIN_ROLE
                     && (
                         functionSig == IAccessControl.setFunctionAccess.selector
                             || functionSig == IAccessControl.setUserRole.selector
