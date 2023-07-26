@@ -5,10 +5,9 @@ import { Facet } from "src/facets/Facet.sol";
 import { IERC20Burnable } from "./IERC20Burnable.sol";
 import { ERC20Base } from "src/facets/erc20/ERC20Base.sol";
 import { AccessControlBase } from "src/facets/access-control/AccessControlBase.sol";
+import { BURNER_ROLE } from "src/Constants.sol";
 
 contract ERC20BurnableFacet is IERC20Burnable, ERC20Base, AccessControlBase, Facet {
-    uint8 public constant BURNER_ROLE = 2;
-
     function ERC20Burnable_init() external {
         _setFunctionAccess(this.burn.selector, BURNER_ROLE, true);
         _setFunctionAccess(this.burnFrom.selector, BURNER_ROLE, true);

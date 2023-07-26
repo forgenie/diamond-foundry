@@ -38,7 +38,6 @@ interface IERC20Base {
      * @param to The account where the tokens are transferred to.
      * @param value The number of tokens transferred.
      */
-
     event Transfer(address indexed from, address indexed to, uint256 value);
 
     /**
