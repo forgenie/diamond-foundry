@@ -26,9 +26,6 @@ interface IAccessControlBase {
 }
 
 interface IAccessControl {
-    /// @notice The value of the default admin role.
-    function DEFAULT_ADMIN_ROLE() external view returns (uint8);
-
     /**
      * @notice Sets the function access for a given role.
      * @param functionSig The function signature to set access for.

@@ -41,7 +41,7 @@ contract AccessControlFacetHelper is FacetHelper {
     }
 
     function selectors() public view override returns (bytes4[] memory selectors_) {
-        selectors_ = new bytes4[](8);
+        selectors_ = new bytes4[](7);
         selectors_[0] = acl.setFunctionAccess.selector;
         selectors_[1] = acl.setUserRole.selector;
         selectors_[2] = acl.canCall.selector;
@@ -49,7 +49,6 @@ contract AccessControlFacetHelper is FacetHelper {
         selectors_[4] = acl.functionRoles.selector;
         selectors_[5] = acl.hasRole.selector;
         selectors_[6] = acl.roleHasAccess.selector;
-        selectors_[7] = acl.DEFAULT_ADMIN_ROLE.selector;
     }
 
     function initializer() public view override returns (bytes4) {

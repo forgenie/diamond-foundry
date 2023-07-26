@@ -2,6 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { AccessControlFacetTest } from "../access-control.t.sol";
+import { DEFAULT_ADMIN_ROLE } from "src/Constants.sol";
 
 contract AccessControl_setFunctionAccess is AccessControlFacetTest {
     function testFuzz_RevertsWhen_CallerIsUnauthorized(uint8 role, bytes4 selector) public {
@@ -12,13 +13,12 @@ contract AccessControl_setFunctionAccess is AccessControlFacetTest {
 
     function test_RevertsWhen_RemovingAdmin() public {
         changePrank(users.admin);
-        uint8 adminRole = acl.DEFAULT_ADMIN_ROLE();
 
         vm.expectRevert(AccessControl_CannotRemoveAdmin.selector);
-        acl.setFunctionAccess(acl.setFunctionAccess.selector, adminRole, false);
+        acl.setFunctionAccess(acl.setFunctionAccess.selector, DEFAULT_ADMIN_ROLE, false);
 
         vm.expectRevert(AccessControl_CannotRemoveAdmin.selector);
-        acl.setFunctionAccess(acl.setFunctionAccess.selector, adminRole, false);
+        acl.setFunctionAccess(acl.setFunctionAccess.selector, DEFAULT_ADMIN_ROLE, false);
     }
 
     function testFuzz_SetsFunctionAccess(uint8 role, bytes4 selector) public {

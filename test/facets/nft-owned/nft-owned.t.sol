@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.19;
 
-import { FacetTest, IDiamond, Diamond, FacetHelper } from "../Facet.t.sol";
+import { FacetTest, Diamond, FacetHelper, MULTI_INIT_ADDRESS } from "../Facet.t.sol";
 import { INFTOwned, NFTOwnedFacet } from "src/facets/nft-owned/NFTOwnedFacet.sol";
 import { MockERC721 } from "test/mocks/MockERC721.sol";
 

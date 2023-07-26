@@ -4,12 +4,13 @@ pragma solidity >=0.8.19;
 import { Facet } from "src/facets/Facet.sol";
 import { AccessControlBase } from "./AccessControlBase.sol";
 import { IAccessControl } from "./IAccessControl.sol";
+import { DEFAULT_ADMIN_ROLE } from "src/Constants.sol";
 
 contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
     function AccessControl_init(address roleAdmin) external onlyInitializing {
-        _setUserRole(roleAdmin, _DEFAULT_ADMIN_ROLE, true);
-        _setFunctionAccess(this.setFunctionAccess.selector, _DEFAULT_ADMIN_ROLE, true);
-        _setFunctionAccess(this.setUserRole.selector, _DEFAULT_ADMIN_ROLE, true);
+        _setUserRole(roleAdmin, DEFAULT_ADMIN_ROLE, true);
+        _setFunctionAccess(this.setFunctionAccess.selector, DEFAULT_ADMIN_ROLE, true);
+        _setFunctionAccess(this.setUserRole.selector, DEFAULT_ADMIN_ROLE, true);
 
         _addInterface(type(IAccessControl).interfaceId);
     }
@@ -47,10 +48,5 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
     /// @inheritdoc IAccessControl
     function roleHasAccess(uint8 role, bytes4 functionSig) external view returns (bool) {
         return _roleHasAccess(role, functionSig);
-    }
-
-    /// @inheritdoc IAccessControl
-    function DEFAULT_ADMIN_ROLE() external pure returns (uint8) {
-        return _DEFAULT_ADMIN_ROLE;
     }
 }

@@ -6,11 +6,10 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { IDiamond } from "src/diamond/IDiamond.sol";
 import { IDiamondCut, IDiamondCutBase } from "./IDiamondCut.sol";
 import { DiamondCutStorage } from "./DiamondCutStorage.sol";
+import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
 
 abstract contract DiamondCutBase is IDiamondCutBase {
     using EnumerableSet for *;
-
-    address internal constant _MULTI_INIT_IDENTIFIER = 0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF;
 
     function _diamondCut(IDiamond.FacetCut[] memory facetCuts, address init, bytes memory initData) internal {
         for (uint256 i = 0; i < facetCuts.length; i++) {
@@ -136,7 +135,7 @@ abstract contract DiamondCutBase is IDiamondCutBase {
 
     function _initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
         if (init == address(0)) return;
-        if (init == _MULTI_INIT_IDENTIFIER) {
+        if (init == MULTI_INIT_ADDRESS) {
             _multiDelegateCall(abi.decode(initData, (IDiamond.MultiInit[])));
             return;
         }
