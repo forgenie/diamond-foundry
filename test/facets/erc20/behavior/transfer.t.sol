@@ -24,16 +24,28 @@ contract ERC20_transfer is ERC20FacetTest {
 
     function test_RevertsWhen_InsufficientBalance() public {
         address recipient = address(1);
+        address sender = address(2);
         uint256 amount = 1e18;
-        changePrank(address(1));
+        changePrank(sender);
 
         vm.expectRevert(ERC20_TransferExceedsBalance.selector);
 
         erc20.transfer(recipient, amount);
     }
 
-    function testFuzz_EmitsEvent(address sender, address recipient, uint256 amount) public {
-        vm.assume(sender != address(0) && recipient != address(0));
+    function test_RevertsWhen_TransferToSelf() public {
+        address sender = address(1);
+        uint256 amount = 1e18;
+        changePrank(sender);
+
+        vm.expectRevert(ERC20_TransferToSelf.selector);
+
+        erc20.transfer(sender, amount);
+    }
+
+    function testFuzz_EmitsEvent(uint256 amount) public {
+        address sender = address(1);
+        address recipient = address(2);
         changePrank(sender);
         deal(address(erc20), sender, amount);
 
@@ -43,14 +55,15 @@ contract ERC20_transfer is ERC20FacetTest {
         erc20.transfer(recipient, amount);
     }
 
-    function testFuzz_ReturnsBalanceOf(address sender, address recipient, uint256 amount) public {
-        vm.assume(sender != address(0) && recipient != address(0));
+    function testFuzz_ReturnsBalanceOf(uint256 amount) public {
+        address sender = address(1);
+        address recipient = address(2);
         changePrank(sender);
         deal(address(erc20), sender, amount);
 
         assertTrue(erc20.transfer(recipient, amount));
 
-        assertEq(erc20.balanceOf(sender), 0);
         assertEq(erc20.balanceOf(recipient), amount);
+        assertEq(erc20.balanceOf(sender), 0);
     }
 }

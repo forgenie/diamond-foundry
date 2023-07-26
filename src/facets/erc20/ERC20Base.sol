@@ -64,7 +64,7 @@ abstract contract ERC20Base is IERC20Base {
 
         _beforeTokenTransfer(account, address(0), amount);
 
-        uint256 balance = ERC20Storage.layout().balances[account];
+        uint256 balance = _balanceOf(account);
         if (amount > balance) revert ERC20_BurnExceedsBalance();
         unchecked {
             ERC20Storage.layout().balances[account] = balance - amount;
@@ -79,10 +79,11 @@ abstract contract ERC20Base is IERC20Base {
     function _transfer(address from, address to, uint256 amount) internal virtual returns (bool) {
         if (from == address(0)) revert ERC20_TransferFromZeroAddress();
         if (to == address(0)) revert ERC20_TransferToZeroAddress();
+        if (from == to) revert ERC20_TransferToSelf();
 
         _beforeTokenTransfer(from, to, amount);
 
-        uint256 fromBalance = ERC20Storage.layout().balances[from];
+        uint256 fromBalance = _balanceOf(from);
         if (amount > fromBalance) revert ERC20_TransferExceedsBalance();
         unchecked {
             ERC20Storage.layout().balances[from] = fromBalance - amount;
@@ -107,7 +108,9 @@ abstract contract ERC20Base is IERC20Base {
      * @param to receiver of tokens.
      * @param amount quantity of tokens transferred.
      */
-    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual { }
+    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual {
+        // solhint-disable-previous-line no-empty-blocks
+    }
 
     /**
      * @dev Hook that is called after any transfer of tokens including mint and burn.
@@ -115,7 +118,9 @@ abstract contract ERC20Base is IERC20Base {
      * @param to receiver of tokens.
      * @param amount quantity of tokens transferred.
      */
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual { }
+    function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual {
+        // solhint-disable-previous-line no-empty-blocks
+    }
 
     function _name() internal view virtual returns (string memory) {
         return ERC20Storage.layout().name;

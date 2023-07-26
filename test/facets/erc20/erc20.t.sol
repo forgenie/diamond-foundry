@@ -9,12 +9,12 @@ abstract contract ERC20FacetTest is IERC20Base, FacetTest {
     string public name = "TestToken";
     string public symbol = "TEST";
     uint8 public decimals = 18;
-    ERC20Facet public erc20;
+    IERC20 public erc20;
 
     function setUp() public virtual override {
         super.setUp();
 
-        erc20 = ERC20Facet(diamond);
+        erc20 = IERC20(diamond);
     }
 
     function diamondInitParams() public override returns (Diamond.InitParams memory) {

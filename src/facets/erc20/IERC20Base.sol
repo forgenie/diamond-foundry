@@ -29,6 +29,9 @@ interface IERC20Base {
     /// @notice Thrown when transfer is made to zero address, outside burn function.
     error ERC20_TransferToZeroAddress();
 
+    /// @notice Thrown when transfer is made to self, i.e. from == to.
+    error ERC20_TransferToSelf();
+
     /**
      * @notice Emitted when tokens are transferred from one account to another.
      * @param from The account where the tokens are transferred from.
