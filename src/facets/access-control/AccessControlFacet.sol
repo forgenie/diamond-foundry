@@ -15,12 +15,12 @@ contract AccessControlFacet is IAccessControl, AccessControlBase, Facet {
     }
 
     /// @inheritdoc IAccessControl
-    function setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) external onlyAuthorized {
+    function setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) external onlyDiamondAuthorized {
         _setFunctionAccess(functionSig, role, enabled);
     }
 
     /// @inheritdoc IAccessControl
-    function setUserRole(address user, uint8 role, bool enabled) external onlyAuthorized {
+    function setUserRole(address user, uint8 role, bool enabled) external onlyDiamondAuthorized {
         _setUserRole(user, role, enabled);
     }
 

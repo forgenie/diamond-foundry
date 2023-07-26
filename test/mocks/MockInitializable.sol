@@ -25,7 +25,7 @@ contract MockInitializable is Initializable {
     }
 
     // solhint-disable-next-line no-empty-blocks
-    function reinitialize(uint8 version) external reinitializer(version) { }
+    function reinitialize(uint32 version) external reinitializer(version) { }
 
     function disableInitializers() public {
         _disableInitializers();

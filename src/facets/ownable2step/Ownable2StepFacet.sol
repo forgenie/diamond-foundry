@@ -13,7 +13,7 @@ contract Ownable2StepFacet is IERC173, IOwnable2Step, Ownable2StepBase, Facet {
     }
 
     /// @inheritdoc IOwnable2Step
-    function transferOwnership(address newOwner) external override(IERC173, IOwnable2Step) onlyOwner {
+    function transferOwnership(address newOwner) external override(IERC173, IOwnable2Step) onlyDiamondOwner {
         _startTransferOwnership(msg.sender, newOwner);
     }
 
