@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { FacetHelper, FacetTest, Diamond } from "test/facets/Facet.t.sol";
+import { FacetHelper, FacetTest, Diamond, MULTI_INIT_ADDRESS } from "test/facets/Facet.t.sol";
 import { IERC20Mintable } from "src/facets/erc20-mintable/IERC20Mintable.sol";
 import { ERC20MintableFacet } from "src/facets/erc20-mintable/ERC20MintableFacet.sol";
 import { ERC20FacetHelper } from "test/facets/erc20/erc20.t.sol";
@@ -67,5 +67,9 @@ contract ERC20MintableFacetHelper is FacetHelper {
 
     function initializer() public pure override returns (bytes4) {
         return ERC20MintableFacet.ERC20Mintable_init.selector;
+    }
+
+    function creationCode() public pure override returns (bytes memory) {
+        return type(ERC20MintableFacet).creationCode;
     }
 }
