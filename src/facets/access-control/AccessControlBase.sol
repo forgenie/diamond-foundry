@@ -7,6 +7,11 @@ import { AccessControlStorage } from "./AccessControlStorage.sol";
 abstract contract AccessControlBase is IAccessControlBase {
     uint8 internal constant _DEFAULT_ADMIN_ROLE = 0;
 
+    modifier onlyAuthorized() {
+        if (!_canCall(msg.sender, msg.sig)) revert AccessControl_CallerIsNotAuthorized();
+        _;
+    }
+
     function _setFunctionAccess(bytes4 functionSig, uint8 role, bool enabled) internal {
         if (enabled) {
             AccessControlStorage.layout().functionRoles[functionSig] |= bytes32(1 << role);

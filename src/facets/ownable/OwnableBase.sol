@@ -5,6 +5,11 @@ import { IERC173, IOwnableBase } from "./IERC173.sol";
 import { OwnableStorage } from "./OwnableStorage.sol";
 
 abstract contract OwnableBase is IOwnableBase {
+    modifier onlyOwner() {
+        if (msg.sender != _owner()) revert Ownable_CallerIsNotOwner();
+        _;
+    }
+
     function _owner() internal view returns (address) {
         return OwnableStorage.layout().owner;
     }

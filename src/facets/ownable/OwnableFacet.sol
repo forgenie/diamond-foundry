@@ -17,7 +17,7 @@ contract OwnableFacet is IERC173, OwnableBase, Facet {
     }
 
     /// @inheritdoc IERC173
-    function transferOwnership(address newOwner) external onlyDiamondOwner {
+    function transferOwnership(address newOwner) external onlyOwner {
         _transferOwnership(newOwner);
     }
 }
