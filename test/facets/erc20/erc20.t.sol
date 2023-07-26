@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 import { FacetTest, FacetHelper, Diamond } from "../Facet.t.sol";
 import { IERC20Base } from "src/facets/erc20/IERC20Base.sol";
-import { ERC20Facet, IERC20, IERC20Metadata } from "src/facets/erc20/ERC20Facet.sol";
+import { ERC20Facet, IERC20 } from "src/facets/erc20/ERC20Facet.sol";
 
 abstract contract ERC20FacetTest is IERC20Base, FacetTest {
     string public name = "TestToken";
@@ -56,9 +56,8 @@ contract ERC20FacetHelper is FacetHelper {
     }
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
-        interfaces = new bytes4[](2);
+        interfaces = new bytes4[](1);
         interfaces[0] = type(IERC20).interfaceId;
-        interfaces[1] = type(IERC20Metadata).interfaceId;
     }
 
     function initializer() public pure override returns (bytes4) {

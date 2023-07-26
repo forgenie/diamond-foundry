@@ -1,27 +1,26 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { IERC20Metadata } from "./IERC20Metadata.sol";
 import { IERC20 } from "./IERC20.sol";
 import { ERC20Base } from "./ERC20Base.sol";
 import { Facet } from "src/facets/Facet.sol";
 
-contract ERC20Facet is IERC20, IERC20Metadata, ERC20Base, Facet {
+contract ERC20Facet is IERC20, ERC20Base, Facet {
     function ERC20_init(string memory name_, string memory symbol_, uint8 decimals_) external onlyInitializing {
         __ERC20_init(name_, symbol_, decimals_);
     }
 
-    /// @inheritdoc IERC20Metadata
+    /// @inheritdoc IERC20
     function name() external view returns (string memory) {
         return _name();
     }
 
-    /// @inheritdoc IERC20Metadata
+    /// @inheritdoc IERC20
     function symbol() external view returns (string memory) {
         return _symbol();
     }
 
-    /// @inheritdoc IERC20Metadata
+    /// @inheritdoc IERC20
     function decimals() external view returns (uint8) {
         return _decimals();
     }
