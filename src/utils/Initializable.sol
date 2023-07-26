@@ -18,7 +18,7 @@ abstract contract Initializable {
     event Initialized(uint32 version);
 
     modifier initializer() {
-        InitializableStorage storage s = initializableLayout();
+        InitializableStorage storage s = _initializableLayout();
 
         bool isTopLevelCall = !s.initializing;
         if (isTopLevelCall ? s.version >= 1 : _isNotConstructor()) {
@@ -36,7 +36,7 @@ abstract contract Initializable {
     }
 
     modifier reinitializer(uint32 version) {
-        InitializableStorage storage s = initializableLayout();
+        InitializableStorage storage s = _initializableLayout();
 
         if (s.initializing || s.version >= version) {
             revert AlreadyInitialized(s.version);
@@ -49,12 +49,16 @@ abstract contract Initializable {
     }
 
     modifier onlyInitializing() {
-        if (!initializableLayout().initializing) revert NotInInitializingState();
+        if (!_initializableLayout().initializing) revert NotInInitializingState();
         _;
     }
 
+    function _nextVersion() internal view returns (uint32) {
+        return _initializableLayout().version + 1;
+    }
+
     function _disableInitializers() internal {
-        InitializableStorage storage s = initializableLayout();
+        InitializableStorage storage s = _initializableLayout();
         if (s.initializing) revert InInitializingState();
 
         if (s.version < type(uint32).max) {
@@ -67,7 +71,7 @@ abstract contract Initializable {
         return Address.isContract(address(this));
     }
 
-    function initializableLayout() private pure returns (InitializableStorage storage s) {
+    function _initializableLayout() private pure returns (InitializableStorage storage s) {
         bytes32 position = _INITIALIZABLE_SLOT;
 
         // solhint-disable-next-line no-inline-assembly
