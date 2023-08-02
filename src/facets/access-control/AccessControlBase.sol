@@ -43,7 +43,7 @@ abstract contract AccessControlBase is IAccessControlBase {
     }
 
     function _canCall(address user, bytes4 functionSig) internal view returns (bool) {
-        return _userRoles(user) & _functionRoles(functionSig) != bytes32(0);
+        return (_userRoles(user) & _functionRoles(functionSig) != bytes32(0)) || _hasRole(user, DEFAULT_ADMIN_ROLE);
     }
 
     function _userRoles(address user) internal view returns (bytes32) {

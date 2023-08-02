@@ -63,4 +63,9 @@ contract AccessControlFacetHelper is FacetHelper {
     function creationCode() public pure override returns (bytes memory) {
         return type(AccessControlFacet).creationCode;
     }
+
+    function makeInitData(bytes memory args) public view override returns (MultiInit memory) {
+        return
+            MultiInit({ init: facet(), initData: abi.encodeWithSelector(initializer(), abi.decode(args, (address))) });
+    }
 }
