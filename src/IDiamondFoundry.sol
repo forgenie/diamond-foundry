@@ -7,9 +7,13 @@ import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 
 /**
  * @title IDiamondFoundry
- * @notice Interface of the Diamond Factory contract.
+ * @notice Registers all facets and deploys new diamond proxies.
+ * @dev The final contract should be a diamond itself, with ERC721A functionality abstracted in a facet.
  */
 interface IDiamondFoundry is IFacetRegistry, IERC721A {
+    /// @notice Emitted when a diamond is deployed without IDiamondLoupe interface.
+    error DiamondFoundry_LoupeNotSupported();
+
     /**
      * @notice Emitted when a diamond is deployed via the factory.
      */
@@ -18,6 +22,7 @@ interface IDiamondFoundry is IFacetRegistry, IERC721A {
     /**
      * @notice Creates a diamond with the given base Facets
      * @return diamond The address of the diamond.
+     * todo: create generic createDiamond(Diamond.InitParams calldata initParams) function.
      */
     function mintDiamond(Diamond.InitParams calldata initParams) external returns (address diamond);
 

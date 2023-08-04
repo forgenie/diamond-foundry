@@ -5,22 +5,23 @@ import { ERC721A } from "@erc721a/ERC721A.sol";
 import { Diamond } from "src/diamond/Diamond.sol";
 import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
 import { FacetRegistry } from "src/registry/FacetRegistry.sol";
+import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 
 contract DiamondFoundry is IDiamondFoundry, FacetRegistry, ERC721A {
     mapping(uint256 tokenId => address proxy) private _diamonds;
     mapping(address proxy => uint256 tokenId) private _tokenIds;
 
-    constructor() ERC721A("Diamond Foundry", "FOUNDRY") {
-        // zero'th token is used as a sentinel value
-        _mint(address(this), 1);
-    }
+    // solhint-disable-next-line no-empty-blocks
+    constructor() ERC721A("Diamond Foundry", "FOUNDRY") { }
 
     /// @inheritdoc IDiamondFoundry
     function mintDiamond(Diamond.InitParams calldata initDiamondCut) external returns (address diamond) {
         uint256 tokenId = _nextTokenId();
 
-        bytes32 salt = keccak256(abi.encode(tokenId, address(this), msg.sender));
-        diamond = address(new Diamond{ salt: salt }(initDiamondCut));
+        diamond = address(new Diamond{ salt: bytes32(tokenId) }(initDiamondCut));
+        if (!IDiamondLoupe(diamond).supportsInterface(type(IDiamondLoupe).interfaceId)) {
+            revert DiamondFoundry_LoupeNotSupported();
+        }
 
         // slither-disable-start reentrancy-benign,reentrancy-events
         _diamonds[tokenId] = diamond;
@@ -39,5 +40,9 @@ contract DiamondFoundry is IDiamondFoundry, FacetRegistry, ERC721A {
     /// @inheritdoc IDiamondFoundry
     function diamondId(address diamond) external view returns (uint256) {
         return _tokenIds[diamond];
+    }
+
+    function _startTokenId() internal pure override returns (uint256) {
+        return 1;
     }
 }
