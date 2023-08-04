@@ -10,6 +10,9 @@ import { AccessControlFacetHelper } from "test/facets/access-control/access-cont
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 import { Ownable2StepFacetHelper } from "test/facets/ownable2step/ownable2step.t.sol";
 import { NFTOwnedFacetHelper } from "test/facets/nft-owned/nft-owned.t.sol";
+import { ERC20FacetHelper } from "test/facets/erc20/erc20.t.sol";
+import { ERC20MintableFacetHelper } from "test/facets/erc20-mintable/erc20-mintable.t.sol";
+import { ERC20BurnableFacetHelper } from "test/facets/erc20-burnable/erc20-burnable.t.sol";
 
 contract BaseScript is Script {
     address internal deployer;
@@ -33,5 +36,8 @@ contract BaseScript is Script {
         facetHelpers.push(new OwnableFacetHelper());
         facetHelpers.push(new Ownable2StepFacetHelper());
         facetHelpers.push(new NFTOwnedFacetHelper());
+        facetHelpers.push(new ERC20FacetHelper());
+        facetHelpers.push(new ERC20MintableFacetHelper());
+        facetHelpers.push(new ERC20BurnableFacetHelper());
     }
 }
