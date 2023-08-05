@@ -33,6 +33,22 @@ contract DiamondFoundry is IDiamondFoundry, FacetRegistry, ERC721A {
     }
 
     /// @inheritdoc IDiamondFoundry
+    function diamondIds(address[] calldata diamonds) external view override returns (uint256[] memory tokenIds) {
+        tokenIds = new uint256[](diamonds.length);
+        for (uint256 i = 0; i < diamonds.length; i++) {
+            tokenIds[i] = _tokenIds[diamonds[i]];
+        }
+    }
+
+    /// @inheritdoc IDiamondFoundry
+    function diamondAddresses(uint256[] calldata tokenIds) external view override returns (address[] memory diamonds) {
+        diamonds = new address[](tokenIds.length);
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            diamonds[i] = _diamonds[tokenIds[i]];
+        }
+    }
+
+    /// @inheritdoc IDiamondFoundry
     function diamondAddress(uint256 tokenId) external view returns (address) {
         return _diamonds[tokenId];
     }

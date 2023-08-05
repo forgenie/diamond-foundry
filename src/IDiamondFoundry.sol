@@ -27,7 +27,22 @@ interface IDiamondFoundry is IFacetRegistry, IERC721A {
     function mintDiamond(Diamond.InitParams calldata initParams) external returns (address diamond);
 
     /**
-     * @notice Returns the address of a diamond.
+     * @notice Returns the addresses of given diamonds, based on tokenIds.
+     * @param tokenIds The tokenIds of the diamonds.
+     * @return diamonds The addresses of the diamonds.
+     */
+    function diamondAddresses(uint256[] calldata tokenIds) external view returns (address[] memory diamonds);
+
+    /**
+     * @notice Returns the tokenIds of given diamonds, based on addresses.
+     * @param diamonds The addresses of the diamonds.
+     * @return tokenIds The tokenIds of the diamonds.
+     */
+    function diamondIds(address[] calldata diamonds) external view returns (uint256[] memory tokenIds);
+
+    /**
+     * @notice Returns the address of a diamond from a tokenId.
+     * @param tokenId The tokenId of the diamond.
      */
     function diamondAddress(uint256 tokenId) external view returns (address);
 
