@@ -33,7 +33,7 @@ contract DiamondFoundry_mintDiamond is DiamondFoundryTest {
 
     function test_MintDiamond() public {
         uint256 startTokenId = 1;
-        address diamond = diamondFoundry.mintDiamond(diamondInitParams);
+        address diamond = diamondFoundry.createDiamond(diamondInitParams);
 
         assertEq(diamondFoundry.ownerOf(startTokenId), users.owner);
         assertEq(diamondFoundry.diamondAddress(startTokenId), diamond);
