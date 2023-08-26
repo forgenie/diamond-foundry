@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "test/Base.t.sol";
-import { MockDelegate } from "test/mocks/MockDelegate.sol";
+import { MockDelegate } from "test/mocks/MockDelegate.t.sol";
 import { DelegateContext } from "src/utils/DelegateContext.sol";
 
 contract DelegateContextTest is BaseTest {

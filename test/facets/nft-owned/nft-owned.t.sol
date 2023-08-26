@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 import { FacetTest, Diamond, FacetHelper, MULTI_INIT_ADDRESS } from "../Facet.t.sol";
 import { INFTOwned, NFTOwnedFacet } from "src/facets/nft-owned/NFTOwnedFacet.sol";
-import { MockERC721 } from "test/mocks/MockERC721.sol";
+import { MockERC721 } from "test/mocks/MockERC721.t.sol";
 
 abstract contract NFTOwnedTest is FacetTest {
     INFTOwned public nftOwned;

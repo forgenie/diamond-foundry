@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { BaseTest } from "test/Base.t.sol";
-import { MockReentrancy } from "test/mocks/MockReentrancy.sol";
+import { MockReentrancy } from "test/mocks/MockReentrancy.t.sol";
 import { ReentrancyGuard } from "src/utils/ReentrancyGuard.sol";
 
 contract ReentrancyGuardTest is BaseTest {
