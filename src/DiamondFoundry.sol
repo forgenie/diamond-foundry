@@ -6,7 +6,7 @@ import { Diamond } from "src/diamond/Diamond.sol";
 import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
 import { FacetRegistry } from "src/registry/FacetRegistry.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
-import { IDiamondFactory, DiamondFactoryBase } from "src/facets/diamond-factory/DiamondFactoryFacet.sol";
+import { IDiamondFactory, DiamondFactoryBase } from "src/facets/factory/DiamondFactoryFacet.sol";
 
 contract DiamondFoundry is IDiamondFoundry, DiamondFactoryBase, FacetRegistry, ERC721A {
     mapping(uint256 tokenId => address diamond) private _diamonds;

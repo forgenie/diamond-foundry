@@ -2,8 +2,8 @@
 pragma solidity >=0.8.19;
 
 import { Diamond, FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
-import { DiamondFactoryFacet, IDiamondFactory } from "src/facets/diamond-factory/DiamondFactoryFacet.sol";
-import { IDiamondFactoryBase } from "src/facets/diamond-factory/IDiamondFactoryBase.sol";
+import { DiamondFactoryFacet, IDiamondFactory } from "src/facets/factory/DiamondFactoryFacet.sol";
+import { IDiamondFactoryBase } from "src/facets/factory/IDiamondFactoryBase.sol";
 
 abstract contract DiamondFactoryFacetTest is IDiamondFactoryBase, FacetTest {
     IDiamondFactory public diamondFactory;

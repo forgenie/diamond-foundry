@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { Diamond, FacetHelper } from "test/facets/Facet.t.sol";
-import { DiamondFactoryFacetTest } from "../diamond-factory.t.sol";
+import { DiamondFactoryFacetTest } from "../factory.t.sol";
 import { DiamondCutFacetHelper } from "test/facets/cut/cut.t.sol";
 import { DiamondLoupeFacetHelper } from "test/facets/loupe/loupe.t.sol";
 
