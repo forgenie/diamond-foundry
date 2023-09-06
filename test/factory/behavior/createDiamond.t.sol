@@ -2,11 +2,11 @@
 pragma solidity >=0.8.19;
 
 import { Diamond, FacetHelper } from "test/facets/Facet.t.sol";
-import { DiamondFactoryFacetTest } from "../factory.t.sol";
+import { DiamondFactoryTest } from "../factory.t.sol";
 import { DiamondCutFacetHelper } from "test/facets/cut/cut.t.sol";
 import { DiamondLoupeFacetHelper } from "test/facets/loupe/loupe.t.sol";
 
-contract DiamondFactory_createDiamond is DiamondFactoryFacetTest {
+contract DiamondFactory_createDiamond is DiamondFactoryTest {
     Diamond.InitParams public initParams;
 
     function test_RevertsWhen_DiamondDoesNotHaveLoupe() public {

@@ -4,7 +4,6 @@ pragma solidity >=0.8.19;
 import { IFacetRegistry } from "./IFacetRegistry.sol";
 import { FacetRegistryBase } from "./FacetRegistryBase.sol";
 
-// todo: transform this contract into a facet
 contract FacetRegistry is IFacetRegistry, FacetRegistryBase {
     /// @inheritdoc IFacetRegistry
     function addFacet(address facet, bytes4[] memory selectors) external {

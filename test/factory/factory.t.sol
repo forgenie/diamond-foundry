@@ -2,10 +2,10 @@
 pragma solidity >=0.8.19;
 
 import { Diamond, FacetTest, FacetHelper } from "test/facets/Facet.t.sol";
-import { DiamondFactoryFacet, IDiamondFactory } from "src/facets/factory/DiamondFactoryFacet.sol";
-import { IDiamondFactoryBase } from "src/facets/factory/IDiamondFactoryBase.sol";
+import { DiamondFactory, IDiamondFactory } from "src/factory/DiamondFactory.sol";
+import { IDiamondFactoryBase } from "src/factory/IDiamondFactoryBase.sol";
 
-abstract contract DiamondFactoryFacetTest is IDiamondFactoryBase, FacetTest {
+abstract contract DiamondFactoryTest is IDiamondFactoryBase, FacetTest {
     IDiamondFactory public diamondFactory;
 
     function setUp() public virtual override {
@@ -15,7 +15,7 @@ abstract contract DiamondFactoryFacetTest is IDiamondFactoryBase, FacetTest {
     }
 
     function diamondInitParams() public override returns (Diamond.InitParams memory) {
-        DiamondFactoryFacetHelper diamondFactoryHelper = new DiamondFactoryFacetHelper();
+        DiamondFactoryHelper diamondFactoryHelper = new DiamondFactoryHelper();
 
         FacetCut[] memory baseFacets = new FacetCut[](1);
         baseFacets[0] = diamondFactoryHelper.makeFacetCut(FacetCutAction.Add);
@@ -24,11 +24,11 @@ abstract contract DiamondFactoryFacetTest is IDiamondFactoryBase, FacetTest {
     }
 }
 
-contract DiamondFactoryFacetHelper is FacetHelper {
-    DiamondFactoryFacet public diamondFactoryFacet;
+contract DiamondFactoryHelper is FacetHelper {
+    DiamondFactory public diamondFactoryFacet;
 
     constructor() {
-        diamondFactoryFacet = new DiamondFactoryFacet();
+        diamondFactoryFacet = new DiamondFactory();
     }
 
     function facet() public view override returns (address) {
@@ -41,7 +41,7 @@ contract DiamondFactoryFacetHelper is FacetHelper {
 
     function selectors() public pure override returns (bytes4[] memory selectors_) {
         selectors_ = new bytes4[](1);
-        selectors_[0] = DiamondFactoryFacet.createDiamond.selector;
+        selectors_[0] = DiamondFactory.createDiamond.selector;
     }
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
@@ -50,6 +50,6 @@ contract DiamondFactoryFacetHelper is FacetHelper {
     }
 
     function creationCode() public pure override returns (bytes memory) {
-        return type(DiamondFactoryFacet).creationCode;
+        return type(DiamondFactory).creationCode;
     }
 }

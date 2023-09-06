@@ -11,8 +11,6 @@ abstract contract FacetRegistryTest is IFacetRegistryBase, BaseTest {
     MockFacetHelper public mockFacetHelper;
     address public mockFacet;
 
-    event FacetImplementationSet(bytes32 indexed facetId, address indexed facet);
-
     function setUp() public virtual override {
         super.setUp();
 
