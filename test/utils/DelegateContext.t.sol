@@ -47,7 +47,6 @@ contract DelegateContextTest is BaseTest {
         MockDelegate.Storage storage s;
         bytes32 position = mockDelegate.COUNTER_STORAGE_SLOT();
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             s.slot := position
         }

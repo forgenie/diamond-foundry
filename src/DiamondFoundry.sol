@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 import { ERC721A } from "@erc721a/ERC721A.sol";
 import { Diamond } from "src/diamond/Diamond.sol";
-import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
+import { IDiamondFoundry } from "./IDiamondFoundry.sol";
 import { FacetRegistry } from "src/registry/FacetRegistry.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 import { IDiamondFactory, DiamondFactoryBase } from "src/factory/DiamondFactory.sol";

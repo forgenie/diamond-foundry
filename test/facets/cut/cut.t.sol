@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { FacetTest, FacetHelper, MULTI_INIT_ADDRESS, Diamond } from "test/facets/Facet.t.sol";
-import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.t.sol";
+import { MockFacetHelper } from "test/mocks/MockFacet.t.sol";
 import { IDiamondCutBase, IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 import { DiamondCutFacet } from "src/facets/cut/DiamondCutFacet.sol";
 import { DiamondLoupeFacetHelper } from "test/facets/loupe/loupe.t.sol";

@@ -2,7 +2,6 @@
 pragma solidity >=0.8.19;
 
 import { IERC721A } from "@erc721a/IERC721A.sol";
-import { Diamond } from "src/diamond/Diamond.sol";
 import { IFacetRegistry } from "src/registry/IFacetRegistry.sol";
 import { IDiamondFactory } from "src/factory/IDiamondFactory.sol";
 

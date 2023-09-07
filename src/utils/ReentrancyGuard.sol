@@ -23,7 +23,6 @@ abstract contract ReentrancyGuard {
     function layout() private pure returns (Storage storage s) {
         bytes32 position = _REENTRANCY_GUARD_SLOT;
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             s.slot := position
         }

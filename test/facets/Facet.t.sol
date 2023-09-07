@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BaseTest } from "../Base.t.sol";
 import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
-import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
-import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
 
 abstract contract FacetTest is BaseTest, IDiamond {
     /// @dev Attach facet interface to diamond for testing

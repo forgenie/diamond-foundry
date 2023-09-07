@@ -10,7 +10,8 @@ abstract contract DelegateContext {
      * @dev Stores the contract's address at the moment of deployment.
      *      Useful for detecting if a contract is being delegated to.
      */
-    address internal immutable _self = address(this);
+    // solhint-disable-next-line immutable-vars-naming
+    address private immutable _self = address(this);
 
     modifier onlyDelegateCall() {
         if (address(this) == _self) revert OnlyDelegate();

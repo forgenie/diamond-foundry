@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { IOwnableBase } from "src/facets/ownable/IERC173.sol";
-import { IOwnable2Step, IOwnable2StepBase } from "./IOwnable2Step.sol";
+import { IOwnable2StepBase } from "./IOwnable2Step.sol";
 import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
 import { Ownable2StepStorage } from "src/facets/ownable2step/Ownable2StepStorage.sol";
 
