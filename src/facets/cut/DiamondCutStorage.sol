@@ -15,7 +15,6 @@ library DiamondCutStorage {
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = DIAMOND_CUT_STORAGE_POSITION;
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }

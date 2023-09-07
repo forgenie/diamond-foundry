@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { DiamondCutStorage } from "src/facets/cut/DiamondCutStorage.sol";
-import { IDiamondLoupe, IERC165, IDiamondLoupeBase } from "./IDiamondLoupe.sol";
+import { IDiamondLoupeBase } from "./IDiamondLoupe.sol";
 import { DiamondLoupeStorage } from "./DiamondLoupeStorage.sol";
 
 abstract contract DiamondLoupeBase is IDiamondLoupeBase {

@@ -3,6 +3,7 @@ pragma solidity >=0.8.19;
 
 contract MockReverter {
     function justRevert() public pure {
+        // solhint-disable-next-line custom-errors
         revert("Reverting");
     }
 

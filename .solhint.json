@@ -11,6 +11,8 @@
     "no-console": "off",
     "not-rely-on-time": "off",
     "use-forbidden-name": "off",
+    "one-contract-per-file": "off",
+    "no-inline-assembly": "off",
     "payable-fallback": "off"
   }
 }

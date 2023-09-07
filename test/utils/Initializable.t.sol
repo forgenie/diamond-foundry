@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { BaseTest } from "../Base.t.sol";
-import { MockInitializable } from "test/mocks/MockInitializable.sol";
+import { MockInitializable } from "test/mocks/MockInitializable.t.sol";
 import { Initializable } from "src/utils/Initializable.sol";
 
 contract InitializableTest is BaseTest {

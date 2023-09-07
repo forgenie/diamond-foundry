@@ -6,7 +6,6 @@ import { Initializable } from "src/utils/Initializable.sol";
 import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
 import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 import { IDiamond } from "./IDiamond.sol";
-import { DelegateContext } from "src/utils/DelegateContext.sol";
 
 contract Diamond is IDiamond, Proxy, DiamondCutBase, DiamondLoupeBase, Initializable {
     struct InitParams {

@@ -5,7 +5,6 @@ import { Facet } from "src/facets/Facet.sol";
 import { IOwnable2Step } from "./IOwnable2Step.sol";
 import { Ownable2StepBase } from "./Ownable2StepBase.sol";
 import { IERC173 } from "src/facets/ownable/IERC173.sol";
-import { OwnableBase } from "src/facets/ownable/OwnableBase.sol";
 
 contract Ownable2StepFacet is IERC173, IOwnable2Step, Ownable2StepBase, Facet {
     function Ownable2Step_init() external onlyInitializing {

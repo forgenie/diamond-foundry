@@ -11,7 +11,6 @@ library Ownable2StepStorage {
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = OWNABLE2STEP_STORAGE_SLOT;
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }

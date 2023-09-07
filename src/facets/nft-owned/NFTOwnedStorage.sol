@@ -12,7 +12,6 @@ library NFTOwnedStorage {
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = NFT_OWNED_STORAGE_SLOT;
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }

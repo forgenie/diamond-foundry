@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { IDiamond } from "src/diamond/Diamond.sol";
 import { DiamondCutFacetTest } from "../cut.t.sol";
 
 contract DiamondCut_diamondCut is DiamondCutFacetTest {

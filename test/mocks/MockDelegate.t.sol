@@ -25,7 +25,6 @@ contract MockDelegate is DelegateContext {
     function layout() internal pure returns (Storage storage s) {
         bytes32 position = COUNTER_STORAGE_SLOT;
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             s.slot := position
         }

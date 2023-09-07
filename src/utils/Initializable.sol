@@ -74,7 +74,6 @@ abstract contract Initializable {
     function _initializableLayout() private pure returns (InitializableStorage storage s) {
         bytes32 position = _INITIALIZABLE_SLOT;
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             s.slot := position
         }

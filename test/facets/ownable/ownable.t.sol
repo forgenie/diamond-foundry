@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { FacetTest, FacetHelper, MULTI_INIT_ADDRESS, Diamond } from "../Facet.t.sol";
+import { FacetTest, FacetHelper, Diamond } from "../Facet.t.sol";
 import { IOwnableBase, IERC173 } from "src/facets/ownable/IERC173.sol";
 import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
+import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
 
 abstract contract OwnableFacetTest is IOwnableBase, FacetTest {
     IERC173 public ownable;

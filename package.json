@@ -11,6 +11,7 @@
     "@commitlint/config-conventional": "^17.4.4",
     "@typechain/ethers-v6": "^0.4.0",
     "husky": "^8.0.3",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.8.4",
     "rimraf": "^4.1.2",
     "solhint": "^3.4.0",
@@ -27,13 +28,17 @@
   ],
   "private": true,
   "scripts": {
-    "clean": "rimraf cache out",
+    "clean": "forge clean & rimraf cache out",
+    "build": "forge build",
+    "build:src": "forge build --skip test script --force",
     "test": "forge test",
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "forge fmt --check && pnpm solhint \"{script,src,test}/**/*.sol\"",
     "fmt": "forge fmt && pnpm prettier:write",
     "types": "forge build && rimraf types && pnpm typechain --target=ethers-v6 './out/!(*test*|*.t.sol|*.s.sol|Std*|src|Mock*|build-info)/**/*.json'",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
-    "prettier:write": "prettier --write \"**/*.{json,md,yml}\""
+    "prettier:write": "prettier --write \"**/*.{json,md,yml}\"",
+    "slither": "slither .",
+    "analyze": "run-s clean 'build:src --build-info' 'slither --ignore-compile'"
   }
 }

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { FacetTest, FacetHelper, MULTI_INIT_ADDRESS, Diamond } from "test/facets/Facet.t.sol";
+import { FacetTest, FacetHelper, Diamond } from "test/facets/Facet.t.sol";
+import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
 import { IERC173, IOwnableBase } from "src/facets/ownable/IERC173.sol";
 import { IOwnable2Step, IOwnable2StepBase } from "src/facets/ownable2step/IOwnable2Step.sol";
 import { Ownable2StepFacet } from "src/facets/ownable2step/Ownable2StepFacet.sol";
-import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 
 abstract contract Ownable2StepFacetTest is IOwnableBase, IOwnable2StepBase, FacetTest {

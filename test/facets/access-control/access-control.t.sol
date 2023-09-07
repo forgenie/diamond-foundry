@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 import { FacetTest, FacetHelper } from "../Facet.t.sol";
 import { AccessControlFacet, IAccessControl } from "src/facets/access-control/AccessControlFacet.sol";
-import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
+import { Diamond } from "src/diamond/Diamond.sol";
 import { IAccessControlBase } from "src/facets/access-control/IAccessControl.sol";
 
 abstract contract AccessControlFacetTest is IAccessControlBase, FacetTest {

@@ -3,30 +3,31 @@ pragma solidity >=0.8.19;
 
 import { ERC721A } from "@erc721a/ERC721A.sol";
 import { Diamond } from "src/diamond/Diamond.sol";
-import { IDiamondFoundry, IFacetRegistry } from "./IDiamondFoundry.sol";
+import { IDiamondFoundry } from "./IDiamondFoundry.sol";
 import { FacetRegistry } from "src/registry/FacetRegistry.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
+import { IDiamondFactory, DiamondFactoryBase } from "src/factory/DiamondFactory.sol";
 
-contract DiamondFoundry is IDiamondFoundry, FacetRegistry, ERC721A {
-    mapping(uint256 tokenId => address proxy) private _diamonds;
-    mapping(address proxy => uint256 tokenId) private _tokenIds;
+contract DiamondFoundry is IDiamondFoundry, DiamondFactoryBase, FacetRegistry, ERC721A {
+    mapping(uint256 tokenId => address diamond) private _diamonds;
+    mapping(address diamond => uint256 tokenId) private _tokenIds;
 
     // solhint-disable-next-line no-empty-blocks
     constructor() ERC721A("Diamond Foundry", "FOUNDRY") { }
 
-    /// @inheritdoc IDiamondFoundry
-    function mintDiamond(Diamond.InitParams calldata initDiamondCut) external returns (address diamond) {
+    /// @inheritdoc IDiamondFactory
+    function createDiamond(Diamond.InitParams calldata initDiamondCut) external returns (address diamond) {
         uint256 tokenId = _nextTokenId();
 
-        diamond = address(new Diamond{ salt: bytes32(tokenId) }(initDiamondCut));
+        diamond = address(new Diamond(initDiamondCut));
         if (!IDiamondLoupe(diamond).supportsInterface(type(IDiamondLoupe).interfaceId)) {
-            revert DiamondFoundry_LoupeNotSupported();
+            revert DiamondFactory_LoupeNotSupported();
         }
 
         // slither-disable-start reentrancy-benign,reentrancy-events
         _diamonds[tokenId] = diamond;
         _tokenIds[diamond] = tokenId;
-        emit DiamondMinted(tokenId, diamond);
+        emit DiamondMinted(tokenId, diamond, msg.sender);
         // slither-disable-end reentrancy-benign,reentrancy-events
 
         _safeMint(msg.sender, 1, "");

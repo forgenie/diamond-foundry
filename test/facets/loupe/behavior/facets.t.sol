@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { DiamondLoupeBaseTest } from "../loupe.t.sol";
-import { MockFacetHelper } from "test/mocks/MockFacet.sol";
+import { MockFacetHelper } from "test/mocks/MockFacet.t.sol";
 
 contract DiamondLoupeBase_facets is DiamondLoupeBaseTest {
     function test_OnAdd_ReturnsCorrectly() public appendFacets(mockFacet()) {

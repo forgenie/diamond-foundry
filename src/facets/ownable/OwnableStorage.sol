@@ -11,7 +11,6 @@ library OwnableStorage {
     function layout() internal pure returns (Layout storage l) {
         bytes32 position = OWNABLE_STORAGE_SLOT;
 
-        // solhint-disable-next-line no-inline-assembly
         assembly {
             l.slot := position
         }
