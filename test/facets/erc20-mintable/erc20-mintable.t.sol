@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { FacetHelper, FacetTest, Diamond, MULTI_INIT_ADDRESS } from "test/facets/Facet.t.sol";
+import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
+import { FacetHelper, FacetTest, Diamond } from "test/facets/Facet.t.sol";
 import { IERC20Mintable } from "src/facets/erc20-mintable/IERC20Mintable.sol";
 import { ERC20MintableFacet } from "src/facets/erc20-mintable/ERC20MintableFacet.sol";
 import { ERC20FacetHelper } from "test/facets/erc20/erc20.t.sol";
