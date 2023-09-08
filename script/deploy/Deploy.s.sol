@@ -2,15 +2,15 @@
 pragma solidity >=0.8.19;
 
 import { BaseScript, FacetHelper } from "../Base.s.sol";
-import { DiamondFoundry } from "src/DiamondFoundry.sol";
+import { FacetRegistry } from "src/registry/FacetRegistry.sol";
 
 contract Deploy is BaseScript {
     function run() public broadcaster {
-        DiamondFoundry foundry = new DiamondFoundry();
+        FacetRegistry registry = new FacetRegistry();
 
         for (uint256 i = 0; i < facetHelpers.length; i++) {
             FacetHelper helper = facetHelpers[i];
-            foundry.deployFacet(salt, helper.creationCode(), helper.selectors());
+            registry.deployFacet(salt, helper.creationCode(), helper.selectors());
         }
     }
 }
