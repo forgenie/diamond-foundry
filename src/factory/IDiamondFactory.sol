@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { Diamond } from "src/diamond/Diamond.sol";
+import { Diamond } from "src/Diamond.sol";
 
 interface IDiamondFactory {
     /**

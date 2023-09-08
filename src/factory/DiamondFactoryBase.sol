@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { IDiamondFactoryBase } from "./IDiamondFactoryBase.sol";
-import { Diamond } from "src/diamond/Diamond.sol";
+import { Diamond } from "src/Diamond.sol";
 import { IDiamondLoupe } from "src/facets/loupe/IDiamondLoupe.sol";
 
 contract DiamondFactoryBase is IDiamondFactoryBase {

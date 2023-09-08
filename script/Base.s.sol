@@ -3,7 +3,6 @@ pragma solidity >=0.8.19;
 
 import { Script } from "forge-std/Script.sol";
 import { FacetHelper } from "test/facets/Facet.t.sol";
-
 import { DiamondCutFacetHelper } from "test/facets/cut/cut.t.sol";
 import { DiamondLoupeFacetHelper } from "test/facets/loupe/loupe.t.sol";
 import { AccessControlFacetHelper } from "test/facets/access-control/access-control.t.sol";

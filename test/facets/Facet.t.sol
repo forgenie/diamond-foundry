@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19;
 
 import { BaseTest } from "../Base.t.sol";
-import { IDiamond, Diamond } from "src/diamond/Diamond.sol";
+import { IDiamond, Diamond } from "src/Diamond.sol";
 
 abstract contract FacetTest is BaseTest, IDiamond {
     /// @dev Attach facet interface to diamond for testing
