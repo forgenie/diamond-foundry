@@ -32,6 +32,7 @@ for installation.
 For guidance on how to integrate a Foundry project in VSCode, please refer to this
 [guide](https://book.getfoundry.sh/config/vscode).
 
+
 ### Set Up
 
 ```
