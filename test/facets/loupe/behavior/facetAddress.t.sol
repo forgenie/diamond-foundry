@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19;
 
-import { DiamondLoupeBaseTest } from "../loupe.t.sol";
-import { MockFacet } from "test/mocks/MockFacet.t.sol";
+import { DiamondLoupeFacetTest } from "../loupe.t.sol";
+import { MockFacet, MockFacetHelper } from "test/mocks/MockFacet.t.sol";
 
-contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
+contract DiamondLoupe_facetAddress is DiamondLoupeFacetTest {
     function test_OnAdd_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
         bytes4[] memory expectedSelectors = facet.selectors();
         address expectedFacetAddress = facet.facet();
 
-        _addFacet(expectedFacetAddress, expectedSelectors);
+        addFacet(facet);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = _facetAddress(expectedSelectors[i]);
+            address facetAddress = diamondLoupe.facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, expectedFacetAddress);
         }
@@ -20,13 +20,12 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
 
     function test_OnRemove_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
         bytes4[] memory expectedSelectors = facet.selectors();
-        address expectedFacetAddress = facet.facet();
 
-        _addFacet(expectedFacetAddress, expectedSelectors);
-        _removeFacet(expectedFacetAddress, expectedSelectors);
+        addFacet(facet);
+        removeFacet(facet);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = _facetAddress(expectedSelectors[i]);
+            address facetAddress = diamondLoupe.facetAddress(expectedSelectors[i]);
 
             assertEq(facetAddress, address(0));
         }
@@ -34,16 +33,15 @@ contract DiamondLoupeBase_facetAddress is DiamondLoupeBaseTest {
 
     function test_OnReplace_ReturnsCorrectly() public multiFacetTest(mockFacet()) {
         bytes4[] memory expectedSelectors = facet.selectors();
-        address oldFacet = facet.facet();
 
-        _addFacet(oldFacet, expectedSelectors);
-        address expectedFacet = address(new MockFacet());
-        _replaceFacet(expectedFacet, expectedSelectors);
+        addFacet(facet);
+        MockFacetHelper mockHelper = new MockFacetHelper();
+        replaceFacet(mockHelper);
 
         for (uint256 i = 0; i < expectedSelectors.length; i++) {
-            address facetAddress = _facetAddress(expectedSelectors[i]);
+            address facetAddress = diamondLoupe.facetAddress(expectedSelectors[i]);
 
-            assertEq(facetAddress, expectedFacet);
+            assertEq(facetAddress, mockHelper.facet());
         }
     }
 }

@@ -28,6 +28,7 @@ abstract contract FacetHelper is IDiamond {
 
     function supportedInterfaces() public pure virtual returns (bytes4[] memory);
 
+    /// @dev On replace, the other facet with the same selectors is replaced.
     function makeFacetCut(FacetCutAction action) public view returns (FacetCut memory) {
         return FacetCut({ action: action, facet: facet(), selectors: selectors() });
     }
