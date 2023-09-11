@@ -2,14 +2,19 @@
 pragma solidity >=0.8.19;
 
 import { BaseTest } from "test/Base.t.sol";
-import { FacetHelper } from "test/facets/Facet.t.sol";
+import { FacetTest, FacetHelper, Diamond } from "test/facets/Facet.t.sol";
 import { MockFacetHelper } from "test/mocks/MockFacet.t.sol";
-import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
-import { DiamondCutBase } from "src/facets/cut/DiamondCutBase.sol";
+import { IDiamondLoupeBase } from "src/facets/loupe/IDiamondLoupe.sol";
 import { DiamondLoupeFacet } from "src/facets/loupe/DiamondLoupeFacet.sol";
+import { DiamondCutFacetHelper } from "test/facets/cut/cut.t.sol";
+import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
 import { IDiamondLoupe, IERC165 } from "src/facets/loupe/IDiamondLoupe.sol";
+import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
+import { IDiamondCut } from "src/facets/cut/IDiamondCut.sol";
 
-abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, DiamondCutBase, BaseTest {
+abstract contract DiamondLoupeFacetTest is IDiamondLoupeBase, FacetTest {
+    IDiamondLoupe public diamondLoupe;
+
     /// @dev shortcut for multiFacetTest
     FacetHelper public facet;
     FacetHelper[] public facets;
@@ -32,7 +37,29 @@ abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, DiamondCutBase, Base
     function setUp() public virtual override {
         super.setUp();
 
-        // todo: set up diamond
+        diamondLoupe = IDiamondLoupe(diamond);
+    }
+
+    function diamondInitParams() public override returns (Diamond.InitParams memory) {
+        DiamondLoupeFacetHelper diamondLoupeHelper = new DiamondLoupeFacetHelper();
+        DiamondCutFacetHelper diamondCutHelper = new DiamondCutFacetHelper();
+        OwnableFacetHelper ownableHelper = new OwnableFacetHelper();
+
+        FacetCut[] memory baseFacets = new FacetCut[](3);
+        baseFacets[0] = diamondLoupeHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[1] = diamondCutHelper.makeFacetCut(FacetCutAction.Add);
+        baseFacets[2] = ownableHelper.makeFacetCut(FacetCutAction.Add);
+
+        MultiInit[] memory diamondInitData = new MultiInit[](3);
+        diamondInitData[0] = diamondLoupeHelper.makeInitData("");
+        diamondInitData[1] = diamondCutHelper.makeInitData("");
+        diamondInitData[2] = ownableHelper.makeInitData(abi.encode(users.owner));
+
+        return Diamond.InitParams({
+            baseFacets: baseFacets,
+            init: MULTI_INIT_ADDRESS,
+            initData: abi.encode(diamondInitData)
+        });
     }
 
     function mockFacet() internal returns (FacetHelper[] memory) {
@@ -41,8 +68,27 @@ abstract contract DiamondLoupeBaseTest is DiamondLoupeBase, DiamondCutBase, Base
         return facets;
     }
 
-    // todo: write helper function addFacet
-    // todo: write helper function removeFacet
+    function addFacet(FacetHelper testFacet) internal {
+        FacetCut[] memory facetCuts = new FacetCut[](1);
+        facetCuts[0] = testFacet.makeFacetCut(FacetCutAction.Add);
+
+        IDiamondCut(diamond).diamondCut(facetCuts, address(0), "");
+    }
+
+    function removeFacet(FacetHelper testFacet) internal {
+        FacetCut[] memory facetCuts = new FacetCut[](1);
+        facetCuts[0] = testFacet.makeFacetCut(FacetCutAction.Remove);
+
+        IDiamondCut(diamond).diamondCut(facetCuts, address(0), "");
+    }
+
+    /// @dev Here testFacet should be the new facet address.
+    function replaceFacet(FacetHelper testFacet) internal {
+        FacetCut[] memory facetCuts = new FacetCut[](1);
+        facetCuts[0] = testFacet.makeFacetCut(FacetCutAction.Replace);
+
+        IDiamondCut(diamond).diamondCut(facetCuts, address(0), "");
+    }
 }
 
 contract DiamondLoupeFacetHelper is FacetHelper {
