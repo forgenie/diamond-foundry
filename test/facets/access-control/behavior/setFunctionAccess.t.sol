@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { AccessControlFacetTest } from "../access-control.t.sol";
 import { DEFAULT_ADMIN_ROLE } from "src/Constants.sol";

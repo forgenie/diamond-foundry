@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 /// @dev In a delegate call, address(this) will return diamond's address.
 abstract contract DelegateContext {

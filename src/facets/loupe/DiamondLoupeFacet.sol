@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { Facet } from "src/facets/Facet.sol";
 import { IERC165, IDiamondLoupe } from "./IDiamondLoupe.sol";

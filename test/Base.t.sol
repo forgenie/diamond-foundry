@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.19 <0.9.0;
+pragma solidity >=0.8.20;
 
 import { PRBTest } from "@prb/test/PRBTest.sol";
 import { IERC20 } from "src/facets/erc20/IERC20.sol";

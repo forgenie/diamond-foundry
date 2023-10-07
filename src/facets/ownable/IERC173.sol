@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 interface IOwnableBase {
     /// @notice Thrown when setting the owner to the zero address.

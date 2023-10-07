@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 library DiamondLoupeStorage {
     bytes32 internal constant DIAMOND_LOUPE_STORAGE = keccak256("diamond.loupe.storage");

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { FacetTest, FacetHelper, Diamond } from "test/facets/Facet.t.sol";
 import { MULTI_INIT_ADDRESS } from "src/Constants.sol";

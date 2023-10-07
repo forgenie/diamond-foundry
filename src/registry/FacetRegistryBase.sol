@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
@@ -14,7 +14,7 @@ abstract contract FacetRegistryBase is IFacetRegistryBase {
     function _addFacet(address facet, bytes4[] memory selectors) internal {
         if (facet == address(0)) revert FacetRegistry_FacetAddressZero();
         if (selectors.length == 0) revert FacetRegistry_FacetMustHaveSelectors();
-        if (!facet.isContract()) revert FacetRegistry_FacetNotContract();
+        if (facet.code.length == 0) revert FacetRegistry_FacetNotContract();
         if (!FacetRegistryStorage.layout().facets.add(facet)) revert FacetRegistry_FacetAlreadyRegistered();
 
         for (uint256 i; i < selectors.length; i++) {

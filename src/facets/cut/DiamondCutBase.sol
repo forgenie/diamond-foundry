@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
@@ -125,7 +125,7 @@ abstract contract DiamondCutBase is IDiamondCutBase {
         if (facetCut.facet == address(0)) {
             revert DiamondCut_FacetIsZeroAddress();
         }
-        if (!Address.isContract(facetCut.facet)) {
+        if (facetCut.facet.code.length == 0) {
             revert DiamondCut_FacetIsNotContract(facetCut.facet);
         }
         if (facetCut.selectors.length == 0) {
@@ -139,7 +139,7 @@ abstract contract DiamondCutBase is IDiamondCutBase {
             _multiDelegateCall(abi.decode(initData, (IDiamond.MultiInit[])));
             return;
         }
-        if (!Address.isContract(init)) {
+        if (init.code.length == 0) {
             revert DiamondCut_InitIsNotContract(init);
         }
         // slither-disable-next-line unused-return
@@ -150,9 +150,8 @@ abstract contract DiamondCutBase is IDiamondCutBase {
         uint256 length = initData.length;
         for (uint256 i = 0; i < length; i++) {
             address init = initData[i].init;
-            if (!Address.isContract(init)) {
-                revert DiamondCut_InitIsNotContract(init);
-            }
+            if (init.code.length == 0) revert DiamondCut_InitIsNotContract(init);
+
             // slither-disable-next-line unused-return
             Address.functionDelegateCall(init, initData[i].initData);
         }
