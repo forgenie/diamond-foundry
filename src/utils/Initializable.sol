@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
-
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
+pragma solidity >=0.8.20;
 
 abstract contract Initializable {
     error AlreadyInitialized(uint32 version);
@@ -68,7 +66,7 @@ abstract contract Initializable {
     }
 
     function _isNotConstructor() private view returns (bool) {
-        return Address.isContract(address(this));
+        return address(this).code.length > 0;
     }
 
     function _initializableLayout() private pure returns (InitializableStorage storage s) {

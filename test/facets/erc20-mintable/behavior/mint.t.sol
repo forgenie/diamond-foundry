@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { ERC20MintableFacetTest } from "../erc20-mintable.t.sol";
 import { IERC20 } from "src/facets/erc20/IERC20.sol";

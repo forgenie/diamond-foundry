@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { FacetTest, FacetHelper, Diamond } from "../Facet.t.sol";
 import { IERC20Base } from "src/facets/erc20/IERC20Base.sol";

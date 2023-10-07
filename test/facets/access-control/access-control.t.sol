@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { FacetTest, FacetHelper } from "../Facet.t.sol";
 import { AccessControlFacet, IAccessControl } from "src/facets/access-control/AccessControlFacet.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { BaseScript, FacetHelper } from "../Base.s.sol";
 import { FacetRegistry } from "src/registry/FacetRegistry.sol";

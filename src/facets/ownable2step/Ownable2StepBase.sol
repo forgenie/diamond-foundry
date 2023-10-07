@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT License
-pragma solidity >=0.8.19;
+pragma solidity >=0.8.20;
 
 import { IOwnableBase } from "src/facets/ownable/IERC173.sol";
 import { IOwnable2StepBase } from "./IOwnable2Step.sol";
