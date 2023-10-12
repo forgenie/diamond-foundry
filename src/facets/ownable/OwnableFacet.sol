@@ -2,21 +2,21 @@
 pragma solidity >=0.8.20;
 
 import { Facet } from "src/facets/Facet.sol";
-import { IERC173 } from "./IERC173.sol";
+import { IOwnable } from "./IOwnable.sol";
 import { OwnableBase } from "./OwnableBase.sol";
 
-contract OwnableFacet is IERC173, OwnableBase, Facet {
+contract OwnableFacet is IOwnable, OwnableBase, Facet {
     function Ownable_init(address owner_) external onlyInitializing {
         _transferOwnership(owner_);
-        _addInterface(type(IERC173).interfaceId);
+        _addInterface(type(IOwnable).interfaceId);
     }
 
-    /// @inheritdoc IERC173
+    /// @inheritdoc IOwnable
     function owner() external view returns (address) {
         return _owner();
     }
 
-    /// @inheritdoc IERC173
+    /// @inheritdoc IOwnable
     function transferOwnership(address newOwner) external onlyOwner {
         _transferOwnership(newOwner);
     }

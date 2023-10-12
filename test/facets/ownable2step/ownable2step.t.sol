@@ -3,7 +3,7 @@ pragma solidity >=0.8.20;
 
 import { FacetTest, FacetHelper, Diamond } from "test/facets/Facet.t.sol";
 import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
-import { IERC173, IOwnableBase } from "src/facets/ownable/IERC173.sol";
+import { IOwnable, IOwnableBase } from "src/facets/ownable/IOwnable.sol";
 import { IOwnable2Step, IOwnable2StepBase } from "src/facets/ownable2step/IOwnable2Step.sol";
 import { Ownable2StepFacet } from "src/facets/ownable2step/Ownable2StepFacet.sol";
 import { OwnableFacetHelper } from "test/facets/ownable/ownable.t.sol";
@@ -63,7 +63,7 @@ contract Ownable2StepFacetHelper is FacetHelper {
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
         interfaces = new bytes4[](2);
-        interfaces[0] = type(IERC173).interfaceId;
+        interfaces[0] = type(IOwnable).interfaceId;
         interfaces[1] = type(IOwnable2Step).interfaceId;
     }
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.20;
 
-import { IOwnableBase } from "./IERC173.sol";
+import { IOwnableBase } from "./IOwnable.sol";
 import { OwnableStorage } from "./OwnableStorage.sol";
 
 abstract contract OwnableBase is IOwnableBase {
