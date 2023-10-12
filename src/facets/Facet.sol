@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.20;
 
-import { Initializable } from "src/utils/Initializable.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import { DelegateContext } from "src/utils/DelegateContext.sol";
 import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
