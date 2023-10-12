@@ -2,13 +2,14 @@
 pragma solidity >=0.8.20;
 
 import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import { DelegateContext } from "src/utils/DelegateContext.sol";
 import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import { IAccessControl } from "src/facets/access-control/IAccessControl.sol";
 import { IERC173 } from "src/facets/ownable/IERC173.sol";
 
-abstract contract Facet is Initializable, DelegateContext, DiamondLoupeBase {
+abstract contract Facet is Initializable, ReentrancyGuardUpgradeable, DelegateContext, DiamondLoupeBase {
     error CallerIsNotOwner();
     error CallerIsNotAuthorized();
 
