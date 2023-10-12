@@ -2,17 +2,17 @@
 pragma solidity >=0.8.20;
 
 import { FacetTest, FacetHelper, Diamond } from "../Facet.t.sol";
-import { IOwnableBase, IERC173 } from "src/facets/ownable/IERC173.sol";
+import { IOwnableBase, IOwnable } from "src/facets/ownable/IOwnable.sol";
 import { OwnableFacet } from "src/facets/ownable/OwnableFacet.sol";
 import { MULTI_INIT_ADDRESS } from "src/Constants.sol";
 
 abstract contract OwnableFacetTest is IOwnableBase, FacetTest {
-    IERC173 public ownable;
+    IOwnable public ownable;
 
     function setUp() public virtual override {
         super.setUp();
 
-        ownable = IERC173(diamond);
+        ownable = IOwnable(diamond);
     }
 
     function diamondInitParams() public override returns (Diamond.InitParams memory) {
@@ -51,7 +51,7 @@ contract OwnableFacetHelper is FacetHelper {
 
     function supportedInterfaces() public pure override returns (bytes4[] memory interfaces) {
         interfaces = new bytes4[](1);
-        interfaces[0] = type(IERC173).interfaceId;
+        interfaces[0] = type(IOwnable).interfaceId;
     }
 
     function initializer() public pure override returns (bytes4) {

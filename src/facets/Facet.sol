@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: MIT License
 pragma solidity >=0.8.20;
 
-import { Initializable } from "src/utils/Initializable.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import { DelegateContext } from "src/utils/DelegateContext.sol";
 import { DiamondLoupeBase } from "src/facets/loupe/DiamondLoupeBase.sol";
 import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import { IAccessControl } from "src/facets/access-control/IAccessControl.sol";
-import { IERC173 } from "src/facets/ownable/IERC173.sol";
+import { IOwnable } from "src/facets/ownable/IOwnable.sol";
 
-abstract contract Facet is Initializable, DelegateContext, DiamondLoupeBase {
+abstract contract Facet is Initializable, ReentrancyGuardUpgradeable, DelegateContext, DiamondLoupeBase {
     error CallerIsNotOwner();
     error CallerIsNotAuthorized();
 
@@ -22,14 +23,14 @@ abstract contract Facet is Initializable, DelegateContext, DiamondLoupeBase {
             if (!IAccessControl(address(this)).canCall(msg.sender, msg.sig)) {
                 revert CallerIsNotAuthorized();
             }
-        } else if (msg.sender != IERC173(address(this)).owner()) {
+        } else if (msg.sender != IOwnable(address(this)).owner()) {
             revert CallerIsNotOwner();
         }
         _;
     }
 
     modifier onlyDiamondOwner() {
-        if (msg.sender != IERC173(address(this)).owner()) revert CallerIsNotOwner();
+        if (msg.sender != IOwnable(address(this)).owner()) revert CallerIsNotOwner();
         _;
     }
 

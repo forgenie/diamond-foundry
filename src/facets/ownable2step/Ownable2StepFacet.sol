@@ -4,15 +4,15 @@ pragma solidity >=0.8.20;
 import { Facet } from "src/facets/Facet.sol";
 import { IOwnable2Step } from "./IOwnable2Step.sol";
 import { Ownable2StepBase } from "./Ownable2StepBase.sol";
-import { IERC173 } from "src/facets/ownable/IERC173.sol";
+import { IOwnable } from "src/facets/ownable/IOwnable.sol";
 
-contract Ownable2StepFacet is IERC173, IOwnable2Step, Ownable2StepBase, Facet {
+contract Ownable2StepFacet is IOwnable, IOwnable2Step, Ownable2StepBase, Facet {
     function Ownable2Step_init() external onlyInitializing {
         _addInterface(type(IOwnable2Step).interfaceId);
     }
 
     /// @inheritdoc IOwnable2Step
-    function transferOwnership(address newOwner) external override(IERC173, IOwnable2Step) onlyOwner {
+    function transferOwnership(address newOwner) external override(IOwnable, IOwnable2Step) onlyOwner {
         _startTransferOwnership(msg.sender, newOwner);
     }
 
@@ -21,7 +21,7 @@ contract Ownable2StepFacet is IERC173, IOwnable2Step, Ownable2StepBase, Facet {
         _acceptOwnership();
     }
 
-    /// @inheritdoc IERC173
+    /// @inheritdoc IOwnable
     function owner() external view returns (address) {
         return _owner();
     }

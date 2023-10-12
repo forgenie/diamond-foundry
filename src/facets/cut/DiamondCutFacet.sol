@@ -18,7 +18,7 @@ contract DiamondCutFacet is IDiamondCut, DiamondCutBase, Facet {
     )
         external
         onlyDiamondOwner
-        reinitializer(_nextVersion())
+        reinitializer(_getInitializedVersion() + 1)
     {
         _diamondCut(facetCuts, init, initData);
     }

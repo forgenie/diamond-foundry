@@ -5,6 +5,8 @@ import { IFacetRegistry } from "./IFacetRegistry.sol";
 import { FacetRegistryBase } from "./FacetRegistryBase.sol";
 
 contract FacetRegistry is IFacetRegistry, FacetRegistryBase {
+    // todo: add owner protection
+
     /// @inheritdoc IFacetRegistry
     function addFacet(address facet, bytes4[] memory selectors) external {
         _addFacet(facet, selectors);

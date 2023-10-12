@@ -16,7 +16,7 @@ interface IOwnable2Step is IOwnable2StepBase {
     /**
      * @notice Starts the ownership transfer to a new account.
      * @param newOwner The address of the new owner.
-     * @dev Also defined in IERC173.
+     * @dev Also defined in IOwnable.
      */
     function transferOwnership(address newOwner) external;
 

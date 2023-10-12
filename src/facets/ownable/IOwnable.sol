@@ -17,10 +17,10 @@ interface IOwnableBase {
 }
 
 /**
- * @title IERC173
+ * @title IOwnable
  * @notice Interface of the ERC173 contract. See [EIP-173](https://eips.ethereum.org/EIPS/eip-173).
  */
-interface IERC173 is IOwnableBase {
+interface IOwnable is IOwnableBase {
     /**
      * @notice Returns the owner of the contract.
      */
