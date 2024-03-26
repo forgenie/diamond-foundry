@@ -6,8 +6,12 @@ import { OwnableStorage } from "./OwnableStorage.sol";
 
 abstract contract OwnableBase is IOwnableBase {
     modifier onlyOwner() {
-        if (msg.sender != _owner()) revert Ownable_CallerIsNotOwner();
+        _checkOwner();
         _;
+    }
+
+    function _checkOwner() internal view {
+        if (msg.sender != _owner()) revert Ownable_CallerIsNotOwner();
     }
 
     function _owner() internal view returns (address) {
