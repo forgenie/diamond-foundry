@@ -54,7 +54,6 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
     /**
      * ------------------------ addFacet ------------------------
      */
-
     function test_OnAdd_RevertsWhen_FunctionAlreadyExists() public {
         facetCuts.push(mockFacetHelper.makeFacetCut(FacetCutAction.Add));
         diamondCut.diamondCut(facetCuts, address(0), "");
@@ -79,7 +78,6 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
     /**
      * ------------------------ removeFacet ------------------------
      */
-
     function test_OnRemove_RevertsWhen_RemovingFromOtherFacet() public {
         address facet = address(mockFacetHelper.facet());
         bytes4[] memory selectorsToRemove = new bytes4[](1);
@@ -122,7 +120,6 @@ contract DiamondCut_diamondCut is DiamondCutFacetTest {
     /**
      * ------------------------ replaceFacet ------------------------
      */
-
     function test_OnReplace_RevertsWhen_SelectorIsZero() public {
         bytes4[] memory selectorsToReplace = new bytes4[](1);
         selectorsToReplace[0] = bytes4(0);
