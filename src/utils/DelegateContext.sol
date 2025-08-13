@@ -14,12 +14,12 @@ abstract contract DelegateContext {
     address private immutable _self = address(this);
 
     modifier onlyDelegateCall() {
-        if (address(this) == _self) revert OnlyDelegate();
+        require(address(this) != _self, OnlyDelegate());
         _;
     }
 
     modifier noDelegateCall() {
-        if (address(this) != _self) revert DelegateNotAllowed();
+        require(address(this) == _self, DelegateNotAllowed());
         _;
     }
 }

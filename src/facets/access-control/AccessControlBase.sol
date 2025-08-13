@@ -7,7 +7,7 @@ import { DEFAULT_ADMIN_ROLE } from "src/Constants.sol";
 
 abstract contract AccessControlBase is IAccessControlBase {
     modifier onlyAuthorized() {
-        if (!_canCall(msg.sender, msg.sig)) revert AccessControl_CallerIsNotAuthorized();
+        require(_canCall(msg.sender, msg.sig), AccessControl_CallerIsNotAuthorized());
         _;
     }
 
@@ -16,15 +16,16 @@ abstract contract AccessControlBase is IAccessControlBase {
             AccessControlStorage.layout().functionRoles[functionSig] |= bytes32(1 << role);
         } else {
             // Revert if removing admin role from access control functions.
-            if (
-                role == DEFAULT_ADMIN_ROLE
-                    && (
-                        functionSig == IAccessControl.setFunctionAccess.selector
-                            || functionSig == IAccessControl.setUserRole.selector
-                    )
-            ) {
-                revert AccessControl_CannotRemoveAdmin();
-            }
+            require(
+                !(
+                    role == DEFAULT_ADMIN_ROLE
+                        && (
+                            functionSig == IAccessControl.setFunctionAccess.selector
+                                || functionSig == IAccessControl.setUserRole.selector
+                        )
+                ),
+                AccessControl_CannotRemoveAdmin()
+            );
 
             AccessControlStorage.layout().functionRoles[functionSig] &= ~bytes32(1 << role);
         }

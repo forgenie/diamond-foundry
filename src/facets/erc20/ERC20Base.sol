@@ -12,8 +12,8 @@ abstract contract ERC20Base is IERC20Base {
     }
 
     function _approve(address owner, address spender, uint256 amount) internal virtual returns (bool) {
-        if (owner == address(0)) revert ERC20_ApproveFromZeroAddress();
-        if (spender == address(0)) revert ERC20_ApproveToZeroAddress();
+        require(owner != address(0), ERC20_ApproveFromZeroAddress());
+        require(spender != address(0), ERC20_ApproveToZeroAddress());
 
         ERC20Storage.layout().allowances[owner][spender] = amount;
 
@@ -30,7 +30,7 @@ abstract contract ERC20Base is IERC20Base {
     function _spendAllowance(address from, address spender, uint256 amount) internal {
         uint256 currentAllowance = _allowance(from, spender);
 
-        if (amount > currentAllowance) revert ERC20_InsufficientAllowance();
+        require(amount <= currentAllowance, ERC20_InsufficientAllowance());
         unchecked {
             _approve(from, spender, currentAllowance - amount);
         }
@@ -42,7 +42,7 @@ abstract contract ERC20Base is IERC20Base {
      * @param amount quantity of tokens minted.
      */
     function _mint(address account, uint256 amount) internal virtual {
-        if (account == address(0)) revert ERC20_MintToZeroAddress();
+        require(account != address(0), ERC20_MintToZeroAddress());
 
         _beforeTokenTransfer(address(0), account, amount);
 
@@ -60,12 +60,12 @@ abstract contract ERC20Base is IERC20Base {
      * @param amount quantity of tokens burned.
      */
     function _burn(address account, uint256 amount) internal virtual {
-        if (account == address(0)) revert ERC20_BurnFromZeroAddress();
+        require(account != address(0), ERC20_BurnFromZeroAddress());
 
         _beforeTokenTransfer(account, address(0), amount);
 
         uint256 balance = _balanceOf(account);
-        if (amount > balance) revert ERC20_BurnExceedsBalance();
+        require(amount <= balance, ERC20_BurnExceedsBalance());
         unchecked {
             ERC20Storage.layout().balances[account] = balance - amount;
         }
@@ -77,14 +77,14 @@ abstract contract ERC20Base is IERC20Base {
     }
 
     function _transfer(address from, address to, uint256 amount) internal virtual returns (bool) {
-        if (from == address(0)) revert ERC20_TransferFromZeroAddress();
-        if (to == address(0)) revert ERC20_TransferToZeroAddress();
-        if (from == to) revert ERC20_TransferToSelf();
+        require(from != address(0), ERC20_TransferFromZeroAddress());
+        require(to != address(0), ERC20_TransferToZeroAddress());
+        require(from != to, ERC20_TransferToSelf());
 
         _beforeTokenTransfer(from, to, amount);
 
         uint256 fromBalance = _balanceOf(from);
-        if (amount > fromBalance) revert ERC20_TransferExceedsBalance();
+        require(amount <= fromBalance, ERC20_TransferExceedsBalance());
         unchecked {
             ERC20Storage.layout().balances[from] = fromBalance - amount;
         }

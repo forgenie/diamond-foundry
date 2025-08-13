@@ -12,10 +12,10 @@ abstract contract FacetRegistryBase is IFacetRegistryBase {
     using Address for address;
 
     function _addFacet(address facet, bytes4[] memory selectors) internal {
-        if (facet == address(0)) revert FacetRegistry_FacetAddressZero();
-        if (selectors.length == 0) revert FacetRegistry_FacetMustHaveSelectors();
-        if (facet.code.length == 0) revert FacetRegistry_FacetNotContract();
-        if (!FacetRegistryStorage.layout().facets.add(facet)) revert FacetRegistry_FacetAlreadyRegistered();
+        require(facet != address(0), FacetRegistry_FacetAddressZero());
+        require(selectors.length != 0, FacetRegistry_FacetMustHaveSelectors());
+        require(facet.code.length != 0, FacetRegistry_FacetNotContract());
+        require(FacetRegistryStorage.layout().facets.add(facet), FacetRegistry_FacetAlreadyRegistered());
 
         for (uint256 i; i < selectors.length; i++) {
             // slither-disable-next-line unused-return
@@ -27,7 +27,7 @@ abstract contract FacetRegistryBase is IFacetRegistryBase {
 
     function _removeFacet(address facet) internal {
         FacetRegistryStorage.Layout storage l = FacetRegistryStorage.layout();
-        if (!l.facets.remove(facet)) revert FacetRegistry_FacetNotRegistered();
+        require(l.facets.remove(facet), FacetRegistry_FacetNotRegistered());
 
         uint256 selectorCount = l.facetSelectors[facet].length();
         for (uint256 i = 0; i < selectorCount; i++) {

@@ -20,22 +20,20 @@ abstract contract Facet is Initializable, ReentrancyGuardUpgradeable, DelegateCo
     /// @dev Reverts if the caller is not the owner or does not have role access to the function.
     modifier protected() {
         if (IERC165(address(this)).supportsInterface(type(IAccessControl).interfaceId)) {
-            if (!IAccessControl(address(this)).canCall(msg.sender, msg.sig)) {
-                revert CallerIsNotAuthorized();
-            }
-        } else if (msg.sender != IOwnable(address(this)).owner()) {
-            revert CallerIsNotOwner();
+            require(IAccessControl(address(this)).canCall(msg.sender, msg.sig), CallerIsNotAuthorized());
+        } else {
+            require(msg.sender == IOwnable(address(this)).owner(), CallerIsNotOwner());
         }
         _;
     }
 
     modifier onlyDiamondOwner() {
-        if (msg.sender != IOwnable(address(this)).owner()) revert CallerIsNotOwner();
+        require(msg.sender == IOwnable(address(this)).owner(), CallerIsNotOwner());
         _;
     }
 
     modifier onlyDiamondAuthorized() {
-        if (!IAccessControl(address(this)).canCall(msg.sender, msg.sig)) revert CallerIsNotAuthorized();
+        require(IAccessControl(address(this)).canCall(msg.sender, msg.sig), CallerIsNotAuthorized());
         _;
     }
 

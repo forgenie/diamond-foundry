@@ -39,12 +39,8 @@ abstract contract DiamondCutBase is IDiamondCutBase {
         for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
 
-            if (selector == bytes4(0)) {
-                revert DiamondCut_SelectorIsZero();
-            }
-            if (ds.selectorToFacet[selector] != address(0)) {
-                revert DiamondCut_FunctionAlreadyExists(selector);
-            }
+            require(selector != bytes4(0), DiamondCut_SelectorIsZero());
+            require(ds.selectorToFacet[selector] == address(0), DiamondCut_FunctionAlreadyExists(selector));
 
             ds.selectorToFacet[selector] = facet;
             // slither-disable-next-line unused-return
@@ -61,18 +57,10 @@ abstract contract DiamondCutBase is IDiamondCutBase {
             bytes4 selector = selectors[i];
             address oldFacet = ds.selectorToFacet[selector];
 
-            if (selector == bytes4(0)) {
-                revert DiamondCut_SelectorIsZero();
-            }
-            if (oldFacet == address(this)) {
-                revert DiamondCut_ImmutableFacet();
-            }
-            if (oldFacet == facet) {
-                revert DiamondCut_FunctionFromSameFacet(selector);
-            }
-            if (oldFacet == address(0)) {
-                revert DiamondCut_NonExistingFunction(selector);
-            }
+            require((selector != bytes4(0)), DiamondCut_SelectorIsZero());
+            require(oldFacet != address(this), DiamondCut_ImmutableFacet());
+            require(oldFacet != facet, DiamondCut_FunctionFromSameFacet(selector));
+            require(oldFacet != address(0), DiamondCut_NonExistingFunction(selector));
 
             // overwrite selector to new facet
             ds.selectorToFacet[selector] = facet;
@@ -97,15 +85,9 @@ abstract contract DiamondCutBase is IDiamondCutBase {
         for (uint256 i = 0; i < selectors.length; i++) {
             bytes4 selector = selectors[i];
             // also reverts if left side returns zero address
-            if (selector == bytes4(0)) {
-                revert DiamondCut_SelectorIsZero();
-            }
-            if (facet == address(this)) {
-                revert DiamondCut_ImmutableFacet();
-            }
-            if (ds.selectorToFacet[selector] != facet) {
-                revert DiamondCut_CannotRemoveFromOtherFacet(facet, selector);
-            }
+            require(selector != bytes4(0), DiamondCut_SelectorIsZero());
+            require(facet != address(this), DiamondCut_ImmutableFacet());
+            require(ds.selectorToFacet[selector] == facet, DiamondCut_CannotRemoveFromOtherFacet(facet, selector));
 
             delete ds.selectorToFacet[selector];
             // slither-disable-next-line unused-return
@@ -119,18 +101,10 @@ abstract contract DiamondCutBase is IDiamondCutBase {
     }
 
     function _validateFacetCut(IDiamond.FacetCut memory facetCut) internal view {
-        if (uint256(facetCut.action) > 2) {
-            revert DiamondCut_IncorrectFacetCutAction();
-        }
-        if (facetCut.facet == address(0)) {
-            revert DiamondCut_FacetIsZeroAddress();
-        }
-        if (facetCut.facet.code.length == 0) {
-            revert DiamondCut_FacetIsNotContract(facetCut.facet);
-        }
-        if (facetCut.selectors.length == 0) {
-            revert DiamondCut_SelectorArrayEmpty(facetCut.facet);
-        }
+        require(uint256(facetCut.action) <= 2, DiamondCut_IncorrectFacetCutAction());
+        require(facetCut.facet != address(0), DiamondCut_FacetIsZeroAddress());
+        require(facetCut.facet.code.length != 0, DiamondCut_FacetIsNotContract(facetCut.facet));
+        require(facetCut.selectors.length != 0, DiamondCut_SelectorArrayEmpty(facetCut.facet));
     }
 
     function _initializeDiamondCut(IDiamond.FacetCut[] memory, address init, bytes memory initData) internal {
@@ -139,9 +113,7 @@ abstract contract DiamondCutBase is IDiamondCutBase {
             _multiDelegateCall(abi.decode(initData, (IDiamond.MultiInit[])));
             return;
         }
-        if (init.code.length == 0) {
-            revert DiamondCut_InitIsNotContract(init);
-        }
+        require(init.code.length != 0, DiamondCut_InitIsNotContract(init));
         // slither-disable-next-line unused-return
         Address.functionDelegateCall(init, initData);
     }
@@ -150,7 +122,7 @@ abstract contract DiamondCutBase is IDiamondCutBase {
         uint256 length = initData.length;
         for (uint256 i = 0; i < length; i++) {
             address init = initData[i].init;
-            if (init.code.length == 0) revert DiamondCut_InitIsNotContract(init);
+            require(init.code.length != 0, DiamondCut_InitIsNotContract(init));
 
             // slither-disable-next-line unused-return
             Address.functionDelegateCall(init, initData[i].initData);

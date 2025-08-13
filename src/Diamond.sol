@@ -20,6 +20,6 @@ contract Diamond is IDiamond, Proxy, DiamondCutBase, DiamondLoupeBase, Initializ
 
     function _implementation() internal view override returns (address facet) {
         facet = _facetAddress(msg.sig);
-        if (facet == address(0)) revert Diamond_UnsupportedFunction();
+        require(facet != address(0), Diamond_UnsupportedFunction());
     }
 }

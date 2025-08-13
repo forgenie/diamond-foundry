@@ -8,7 +8,7 @@ import { Ownable2StepStorage } from "src/facets/ownable2step/Ownable2StepStorage
 
 abstract contract Ownable2StepBase is IOwnable2StepBase, IOwnableBase, OwnableBase {
     modifier onlyPendingOwner() {
-        if (msg.sender != _pendingOwner()) revert Ownable2Step_NotPendingOwner(msg.sender);
+        require(msg.sender == _pendingOwner(), Ownable2Step_NotPendingOwner(msg.sender));
         _;
     }
 

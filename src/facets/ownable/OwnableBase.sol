@@ -11,7 +11,7 @@ abstract contract OwnableBase is IOwnableBase {
     }
 
     function _checkOwner() internal view {
-        if (msg.sender != _owner()) revert Ownable_CallerIsNotOwner();
+        require(msg.sender == _owner(), Ownable_CallerIsNotOwner());
     }
 
     function _owner() internal view returns (address) {
@@ -19,7 +19,7 @@ abstract contract OwnableBase is IOwnableBase {
     }
 
     function _transferOwnership(address newOwner) internal {
-        if (newOwner == address(0)) revert Ownable_ZeroAddress();
+        require(newOwner != address(0), Ownable_ZeroAddress());
 
         emit OwnershipTransferred(_owner(), newOwner);
         OwnableStorage.layout().owner = newOwner;
